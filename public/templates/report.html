@@ -1,0 +1,757 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Informe Vertedero {{HEADER::ID}}</title>
+    <style>
+      {{__STYLES__}}
+    </style>
+  </head>
+  <body>
+    <div id="idDivPagina">
+      <header
+        style="
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 20px;
+        "
+      >
+        <img src="{{__LOGO_IHOBE__}}" alt="Ihobe" style="height: 60px" />
+        <img src="{{__LOGO_GV__}}" alt="Gobierno Vasco" style="height: 60px" />
+      </header>
+
+      <p class="fechaImpresion">Fecha de impresión: {{__FECHA__}}</p>
+      <br />
+
+      <table class="tabla2" border="1" cellspacing="0" cellpadding="0">
+        <tbody>
+          <tr>
+            <td
+              style="
+                color: #106fae;
+                font-size: x-large;
+                font-weight: bold;
+                width: 20%;
+              "
+            >
+              Vertedero
+            </td>
+            <td style="font-size: large; font-weight: bold; width: 20%">
+              {{HEADER::ID}}
+            </td>
+            <td style="font-size: large">{{HEADER::NAME}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+
+      <span> 1.- Datos generales </span>
+      <br /><br />
+      <table class="tabla2" border="1" cellspacing="0">
+        <tbody>
+          <tr>
+            <td colspan="6" class="tituloTablas">LOCALIZACIÓN</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Territorio Histórico:</td>
+            <td>{{1.- Datos generales::Territorio Histórico}}</td>
+            <td class="campoEtiqueta">Mancomunidad:</td>
+            <td colspan="3">{{1.- Datos generales::Mancomunidad}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Dirección:</td>
+            <td>{{1.- Datos generales::Dirección}}</td>
+            <td class="campoEtiqueta">Acceso Vertedero:</td>
+            <td colspan="3">{{1.- Datos generales::Acceso Vertedero}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Municipio:</td>
+            <td>{{1.- Datos generales::Municipio}}</td>
+            <td class="campoEtiqueta">C.P.:</td>
+            <td>{{1.- Datos generales::C.P.}}</td>
+            <td class="campoEtiqueta">Cuenca:</td>
+            <td>{{1.- Datos generales::Cuenca}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Toponimia del Lugar:</td>
+            <td>{{1.- Datos generales::Toponimia del Lugar}}</td>
+            <td class="campoEtiqueta">Fuente:</td>
+            <td colspan="3">{{1.- Datos generales::Fuente}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">
+              Accesos hasta la entrada del vertedero:
+            </td>
+            <td colspan="100%">
+              {{1.- Datos generales::Accesos hasta la entrada del vertedero}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Accesos al propio vertedero:</td>
+            <td colspan="100%">
+              {{1.- Datos generales::Accesos al propio vertedero}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Superficie (Has):</td>
+            <td>{{1.- Datos generales::Superficie (Has)}}</td>
+            <td class="campoEtiqueta">Fuente:</td>
+            <td colspan="3"></td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Volumen (m<sup>3</sup>):</td>
+            <td>{{1.- Datos generales::Volumen (m3)}}</td>
+            <td class="campoEtiqueta">Fuente:</td>
+            <td colspan="3"></td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">
+              Capacidad total prevista (m<sup>3</sup>):
+            </td>
+            <td>{{1.- Datos generales::Capacidad total prevista (m3)}}</td>
+            <td class="campoEtiqueta">Fuente:</td>
+            <td colspan="3"></td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Coordenada X (UTM):</td>
+            <td>{{1.- Datos generales::Coordenada X (UTM)}}</td>
+            <td class="campoEtiqueta">Coordenada Y (UTM):</td>
+            <td>{{1.- Datos generales::Coordenada Y (UTM)}}</td>
+            <td class="campoEtiqueta">Cartografía:</td>
+            <td>{{1.- Datos generales::Cartografía}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Altitud (m):</td>
+            <td colspan="5">{{1.- Datos generales::Altitud (m)}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <br /><br />
+
+      <table class="tabla2" border="1" cellspacing="0">
+        <tbody>
+          <tr>
+            <td colspan="6" class="tituloTablas">EXPLOTACIÓN</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">
+              Nº Expediente de actividad clasificada:
+            </td>
+            <td colspan="100%">
+              {{1.- Datos generales::Nº Expediente de actividad clasificada}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Tipo de propiedad:</td>
+            <td colspan="100%">{{1.- Datos generales::Tipo de propiedad}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Propietario:</td>
+            <td>{{1.- Datos generales::Propietario}}</td>
+            <td class="campoEtiqueta">Contacto:</td>
+            <td colspan="3">{{1.- Datos generales::Contacto}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Dirección:</td>
+            <td>{{1.- Datos generales::Dirección}}</td>
+            <td class="campoEtiqueta">Teléfono:</td>
+            <td colspan="3">{{1.- Datos generales::Teléfono}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Situación actual de uso:</td>
+            <td colspan="100%">
+              {{1.- Datos generales::Situación actual de uso}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Situación legal:</td>
+            <td>{{1.- Datos generales::Situación legal}}</td>
+            <td class="campoEtiqueta">Características de la Licencia:</td>
+            <td colspan="3">
+              {{1.- Datos generales::Características de la Licencia}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Fecha instalación equipamiento:</td>
+            <td>{{1.- Datos generales::Fecha instalación equipamiento}}</td>
+            <td class="campoEtiqueta">Equipamiento:</td>
+            <td colspan="3">{{1.- Datos generales::Equipamiento}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Fecha de inicio actividad:</td>
+            <td>{{1.- Datos generales::Fecha de inicio actividad}}</td>
+            <td class="campoEtiqueta">Fecha de cese actividad:</td>
+            <td>{{1.- Datos generales::Fecha de cese actividad}}</td>
+            <td class="campoEtiqueta">Años de operación:</td>
+            <td>{{1.- Datos generales::Años de operación}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Tipo de vertedero:</td>
+            <td colspan="100%">{{1.- Datos generales::Tipo de vertedero}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Tipo residuos depositados:</td>
+            <td colspan="100%">
+              {{1.- Datos generales::Tipo residuos depositados}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Descripción de los residuos:</td>
+            <td colspan="100%">
+              {{1.- Datos generales::Descripción de los residuos}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Granulometría:</td>
+            <td colspan="100%">{{1.- Datos generales::Granulometría}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Empresas origen de los residuos:</td>
+            <td colspan="3">
+              {{1.- Datos generales::Empresas origen de los residuos}}
+            </td>
+            <td class="campoEtiqueta">Fuente:</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Incidencias acaecidas:</td>
+            <td colspan="100%">
+              {{1.- Datos generales::Incidencias acaecidas}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Disposición del vertido:</td>
+            <td colspan="100%">
+              {{1.- Datos generales::Disposición del vertido}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Forma del depósito:</td>
+            <td colspan="100%">{{1.- Datos generales::Forma del depósito}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <br /><br />
+
+      <table class="tabla2" border="1" cellspacing="0" cellpadding="0">
+        <tbody>
+          <tr>
+            <td class="tituloTablas" colspan="6">
+              INFRAESTRUCTURA DEL VERTEDERO
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Canalizaciones Subterraneas:</td>
+            <td>{{1.- Datos generales::Canalizaciones Subterraneas}}</td>
+            <td class="campoEtiqueta">Tipo:</td>
+            <td>{{1.- Datos generales::Tipo}}</td>
+            <td class="campoEtiqueta">Personal Empleado:</td>
+            <td>{{1.- Datos generales::Personal Empleado}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Maquinaria existente:</td>
+            <td colspan="100%">
+              {{1.- Datos generales::Maquinaria existente}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">
+              Recogida y canalización de aguas de lluvia y escorrentía:
+            </td>
+            <td colspan="100%">
+              {{1.- Datos generales::Recogida y canalización de aguas de lluvia
+              y escorrentía}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">
+              Arquetas de toma de muestras de lixiviados:
+            </td>
+            <td colspan="100%">
+              {{1.- Datos generales::Arquetas de toma de muestras de
+              lixiviados}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Impermeabilización del lecho:</td>
+            <td>{{1.- Datos generales::Impermeabilización del lecho}}</td>
+            <td class="campoEtiqueta">Impermeabilización lateral:</td>
+            <td colspan="3">
+              {{1.- Datos generales::Impermeabilización lateral}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Cerramiento periférico:</td>
+            <td>{{1.- Datos generales::Cerramiento periférico}}</td>
+            <td class="campoEtiqueta">Pantalla vegetal:</td>
+            <td colspan="3">{{1.- Datos generales::Pantalla vegetal}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Plan de explotación:</td>
+            <td>{{1.- Datos generales::Plan de explotación}}</td>
+            <td class="campoEtiqueta">Plan de clausura:</td>
+            <td colspan="3">{{1.- Datos generales::Plan de clausura}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+
+      <span>2.- Datos del Entorno</span>
+      <br /><br />
+
+      <table class="tabla2" border="1" cellspacing="0" cellpadding="0">
+        <tbody>
+          <tr>
+            <td class="tituloTablas" colspan="2">FAUNA Y VEGETACIÓN</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Cubierta vegetal del vertedero:</td>
+            <td>{{2.- Datos del Entorno::Cubierta vegetal del vertedero}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Descripción de la Cubierta:</td>
+            <td>{{2.- Datos del Entorno::Descripción de la Cubierta}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Vegetación del entorno:</td>
+            <td>{{2.- Datos del Entorno::Vegetación del entorno}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Fauna:</td>
+            <td>{{2.- Datos del Entorno::Fauna}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <br /><br />
+
+      <table class="tabla2" border="1" cellspacing="0" cellpadding="0">
+        <tbody>
+          <tr>
+            <td class="tituloTablas" colspan="4">HIDROLOGIA</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Precipitación anual:</td>
+            <td>{{2.- Datos del Entorno::Precipitación anual}}</td>
+            <td class="campoEtiqueta">Lluvia útil:</td>
+            <td>{{2.- Datos del Entorno::Lluvia útil}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Cuenca:</td>
+            <td>{{2.- Datos del Entorno::Cuenca}}</td>
+            <td class="campoEtiqueta">Red de drenaje:</td>
+            <td colspan="3">{{2.- Datos del Entorno::Red de drenaje}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Captación de aguas próximas:</td>
+            <td>{{2.- Datos del Entorno::Captación de aguas próximas}}</td>
+            <td class="campoEtiqueta">Distancia al cauce más cercano:</td>
+            <td colspan="3">
+              {{2.- Datos del Entorno::Distancia al cauce más cercano}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Tipo de Captación:</td>
+            <td>{{2.- Datos del Entorno::Tipo de Captación}}</td>
+            <td class="campoEtiqueta">Aguas:</td>
+            <td>{{2.- Datos del Entorno::Aguas}}</td>
+            <td class="campoEtiqueta">Distancia:</td>
+            <td>{{2.- Datos del Entorno::Distancia}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Cauce que atraviesa el vertedero:</td>
+            <td>{{2.- Datos del Entorno::Cauce que atraviesa el vertedero}}</td>
+            <td class="campoEtiqueta">Cauce subyacente al vertedero:</td>
+            <td colspan="3">
+              {{2.- Datos del Entorno::Cauce subyacente al vertedero}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Nombre del Arroyo:</td>
+            <td colspan="100%">{{2.- Datos del Entorno::Nombre del Arroyo}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <br /><br />
+
+      <table class="tabla2" border="1" cellspacing="0" cellpadding="0">
+        <tbody>
+          <tr>
+            <td class="tituloTablas" colspan="6">GEOLOGÍA</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">
+              Unidades litológicas y litoestratigráficas:
+            </td>
+            <td colspan="100%">
+              {{2.- Datos del Entorno::Unidades litológicas y
+              litoestratigráficas}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Formaciones superficiales:</td>
+            <td>{{2.- Datos del Entorno::Formaciones superficiales}}</td>
+            <td class="campoEtiqueta">Espesor de regolito:</td>
+            <td colspan="3">{{2.- Datos del Entorno::Espesor de regolito}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Tipo de suelo:</td>
+            <td>{{2.- Datos del Entorno::Tipo de suelo}}</td>
+            <td class="campoEtiqueta">Morfología:</td>
+            <td>{{2.- Datos del Entorno::Morfología}}</td>
+            <td class="campoEtiqueta">Permeabilidad:</td>
+            <td>{{2.- Datos del Entorno::Permeabilidad}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <br /><br />
+
+      <table class="tabla2" border="1" cellspacing="0" cellpadding="0">
+        <tbody>
+          <tr>
+            <td class="tituloTablas" colspan="4">HIDROGEOLOGÍA</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Tipo de acuífero:</td>
+            <td>{{2.- Datos del Entorno::Tipo de acuífero}}</td>
+            <td class="campoEtiqueta">Profundidad estimada:</td>
+            <td colspan="3">{{2.- Datos del Entorno::Profundidad estimada}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Dirección de flujo estimada:</td>
+            <td>{{2.- Datos del Entorno::Dirección de flujo estimada}}</td>
+            <td class="campoEtiqueta">Vulnerabilidad:</td>
+            <td colspan="3">{{2.- Datos del Entorno::Vulnerabilidad}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Unidad Hidrogeológica:</td>
+            <td colspan="100%">
+              {{2.- Datos del Entorno::Unidad Hidrogeológica}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br /><br />
+
+      <table class="tabla2" border="1" cellspacing="0" cellpadding="0">
+        <tbody>
+          <tr>
+            <td class="tituloTablas" colspan="4">
+              CARACTERÍSTICAS GEOTÉCNICAS
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Pendientes de la ladera:</td>
+            <td>{{2.- Datos del Entorno::Pendientes de la ladera}}</td>
+            <td class="campoEtiqueta">Procesos de inestabilidad en ladera:</td>
+            <td colspan="3">
+              {{2.- Datos del Entorno::Procesos de inestabilidad en ladera}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Estabilidad de la masa de vertido:</td>
+            <td>
+              {{2.- Datos del Entorno::Estabilidad de la masa de vertido}}
+            </td>
+            <td class="campoEtiqueta">Inundabilidad:</td>
+            <td colspan="3">{{2.- Datos del Entorno::Inundabilidad}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Erosionabilidad:</td>
+            <td>{{2.- Datos del Entorno::Erosionabilidad}}</td>
+            <td class="campoEtiqueta">
+              Discontinuidad y factores estructurales:
+            </td>
+            <td colspan="3">
+              {{2.- Datos del Entorno::Discontinuidad y factores estructurales}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Cubrición:</td>
+            <td>{{2.- Datos del Entorno::Cubrición}}</td>
+            <td class="campoEtiqueta">Tipo:</td>
+            <td colspan="3">{{2.- Datos del Entorno::Tipo}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Descripción:</td>
+            <td colspan="100%">{{2.- Datos del Entorno::Descripción}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">
+              Disponibilidad de materiales de cubrición:
+            </td>
+            <td colspan="100%">
+              {{2.- Datos del Entorno::Disponibilidad de materiales de
+              cubrición}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Afecciones a estructuras existentes:</td>
+            <td colspan="100%">
+              {{2.- Datos del Entorno::Afecciones a estructuras existentes}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">
+              Elementos que pueden sufrir deslizamientos:
+            </td>
+            <td colspan="100%">
+              {{2.- Datos del Entorno::Elementos que pueden sufrir
+              deslizamientos}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br /><br />
+
+      <table class="tabla2" border="1" cellspacing="0" cellpadding="0">
+        <tbody>
+          <tr>
+            <td class="tituloTablas" colspan="6">MEDIO HUMANO Y SOCIAL</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Población circundante:</td>
+            <td>{{2.- Datos del Entorno::Población circundante}}</td>
+            <td class="campoEtiqueta">
+              Distancia a viviendas/zonas de esparcimiento más próximas:
+            </td>
+            <td>
+              {{2.- Datos del Entorno::Distancia a viviendas/zonas de
+              esparcimiento más próximas}}
+            </td>
+            <td class="campoEtiqueta">Nº de viviendas próximas:</td>
+            <td>{{2.- Datos del Entorno::Nº de viviendas próximas}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">
+              Usos actuales del suelo del vertedero:
+            </td>
+            <td>
+              {{2.- Datos del Entorno::Usos actuales del suelo del vertedero}}
+            </td>
+            <td class="campoEtiqueta">Descripción:</td>
+            <td colspan="3">{{2.- Datos del Entorno::Descripción}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Usos futuros del suelo del vertedero:</td>
+            <td>
+              {{2.- Datos del Entorno::Usos futuros del suelo del vertedero}}
+            </td>
+            <td class="campoEtiqueta">Descripción:</td>
+            <td colspan="3"></td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">
+              Usos del agua superficial en el entorno:
+            </td>
+            <td>
+              {{2.- Datos del Entorno::Usos del agua superficial en el entorno}}
+            </td>
+            <td class="campoEtiqueta">Descripción:</td>
+            <td colspan="3"></td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">
+              Usos del agua subterránea en el entorno:
+            </td>
+            <td>
+              {{2.- Datos del Entorno::Usos del agua subterránea en el entorno}}
+            </td>
+            <td class="campoEtiqueta">Descripción:</td>
+            <td colspan="3"></td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Clasificación urbanística:</td>
+            <td colspan="100%">
+              {{2.- Datos del Entorno::Clasificación urbanística}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Calificación urbanística:</td>
+            <td colspan="100%">
+              {{2.- Datos del Entorno::Calificación urbanística}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+
+      <span>3.- Otras Afecciones e Impactos</span>
+      <br /><br />
+      <table class="tabla2" border="1" cellspacing="0" cellpadding="0">
+        <tbody>
+          <tr>
+            <td class="campoEtiqueta">Descripción del Impacto:</td>
+            <td colspan="100%">
+              {{3.- Otras Afecciones e Impactos::Descripción del Impacto}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Patrimonio natural:</td>
+            <td colspan="100%">
+              {{3.- Otras Afecciones e Impactos::Patrimonio natural}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Malos olores:</td>
+            <td colspan="100%">
+              {{3.- Otras Afecciones e Impactos::Malos olores}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Emisión de partículas:</td>
+            <td>{{3.- Otras Afecciones e Impactos::Emisión de partículas}}</td>
+            <td class="campoEtiqueta">Descripción:</td>
+            <td colspan="3"></td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Circulación de vehículos pesados:</td>
+            <td colspan="100%">
+              {{3.- Otras Afecciones e Impactos::Circulación de vehículos
+              pesados}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Presencia de roedores e insectos:</td>
+            <td colspan="100%">
+              {{3.- Otras Afecciones e Impactos::Presencia de roedores e
+              insectos}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">
+              Impactos derivados de situaciones episódicas:
+            </td>
+            <td colspan="100%">
+              {{3.- Otras Afecciones e Impactos::Impactos derivados de
+              situaciones episódicas}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Pérdida de aprovechamientos:</td>
+            <td colspan="100%">
+              {{3.- Otras Afecciones e Impactos::Pérdida de aprovechamientos}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Patrimonio cultural:</td>
+            <td colspan="100%">
+              {{3.- Otras Afecciones e Impactos::Patrimonio cultural}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Afecciones e impactos:</td>
+            <td colspan="100%">
+              {{3.- Otras Afecciones e Impactos::Afecciones e impactos}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Cuenca visual del entorno:</td>
+            <td>
+              {{3.- Otras Afecciones e Impactos::Cuenca visual del entorno}}
+            </td>
+            <td class="campoEtiqueta">Desde donde se ve el vertedero:</td>
+            <td colspan="3">
+              {{3.- Otras Afecciones e Impactos::Desde donde se ve el
+              vertedero}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Incendios:</td>
+            <td>{{3.- Otras Afecciones e Impactos::Incendios}}</td>
+            <td class="campoEtiqueta">Motivos:</td>
+            <td colspan="3">{{3.- Otras Afecciones e Impactos::Motivos}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Frecuencia:</td>
+            <td colspan="100%">
+              {{3.- Otras Afecciones e Impactos::Frecuencia}}
+            </td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Vuelo de papeles y/o plásticos:</td>
+            <td>
+              {{3.- Otras Afecciones e Impactos::Vuelo de papeles y/o
+              plásticos}}
+            </td>
+            <td class="campoEtiqueta">Motivos:</td>
+            <td colspan="3"></td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+
+      <span> 4.- Medidas correctoras</span>
+      <br /><br />
+      <table class="tabla2" border="1" cellspacing="0" cellpadding="0">
+        <tbody>
+          <tr>
+            <td class="campoEtiqueta">Medidas correctoras:</td>
+            <td>{{4.- Medidas correctoras::Medidas correctoras}}</td>
+            <td class="campoEtiqueta">Descripción:</td>
+            <td colspan="3">{{4.- Medidas correctoras::Descripción}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Fuentes:</td>
+            <td colspan="100%">{{4.- Medidas correctoras::Fuentes}}</td>
+          </tr>
+          <tr>
+            <td class="campoEtiqueta">Otros:</td>
+            <td colspan="100%">{{4.- Medidas correctoras::Otros}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+
+      <span>
+        5.- Localización de los puntos de muestreo y analítica realizada</span
+      >
+      <br /><br />
+      {{__DYNAMIC_TABLES_5__}}
+      <br />
+
+      <span> 7.- Estudios realizados</span>
+      <br /><br />
+      {{__DYNAMIC_TABLES_7__}}
+      <br />
+
+      <span> 10.- Documentación relacionada</span>
+      <br /><br />
+      <div
+        style="
+          border: 1px dashed #106fae;
+          padding: 15px;
+          background-color: #eaf4ff;
+          text-align: center;
+        "
+      >
+        <p style="margin: 0; color: #106fae; font-weight: bold">
+          Los documentos originales (planos, informes detallados) están
+          disponibles para descarga en la aplicación.
+        </p>
+      </div>
+      <br />
+
+      <span> 11.- Imágenes</span>
+      <br /><br />
+      <div id="imagenes-container">{{__IMAGES__}}</div>
+    </div>
+
+    <footer>
+      <p
+        style="
+          text-align: center;
+          font-size: 10px;
+          color: #666;
+          margin-top: 50px;
+          border-top: 1px solid #ccc;
+          padding-top: 10px;
+        "
+      >
+        Ihobe, S.A. Alameda Urquijo Nº36 - 6ª planta, 48011 BILBAO<br />
+        Teléfono: 94 423 07 43 - Fax: 94 423 59 00
+      </p>
+    </footer>
+  </body>
+</html>

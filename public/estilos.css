@@ -1,0 +1,115 @@
+.imagenes {
+  width: 1200px;
+  height: 1000px;
+}
+
+.denominacionIMG {
+  font-weight: bold;
+  color: #0e0e0e;
+  font-size: 10pt;
+  font-family: Lucida Sans Unicode;
+}
+table#idTableEstudiosRealizados tr:first-child {
+  font-weight: bold;
+}
+
+table.tabla3 > tbody > tr:nth-of-type(1) {
+  font-weight: bold;
+}
+
+.fechaImpresion {
+  color: #106fae;
+  font-weight: bold;
+}
+button {
+  background-color: #106fae;
+  border: none;
+  color: white;
+  padding: 7px 22px;
+  text-align: center;
+  display: inline-block;
+  font-size: 13px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+footer {
+  color: gray;
+  font-size: x-small;
+  /*  position: fixed; */
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+.tituloTablas {
+  background-color: #9ba1a7;
+}
+table {
+  /* border-collapse: collapse;
+    border: none; */
+  border-color: lightslategrey;
+  width: 100%;
+  border: 1;
+  cellspacing: 0;
+  cellpadding: 0;
+  width: 704;
+}
+
+td {
+  padding-left: 5px;
+  vertical-align: middle;
+  text-align: left;
+}
+
+span {
+  font-size: 14pt;
+  font-family: Lucida Sans Unicode;
+  color: #106fae;
+}
+
+.campoEtiqueta {
+  color: grey;
+  font-weight: bold;
+}
+
+.campoValor {
+  color: black;
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm; /* Ajusta el margen del papel aquí */
+  }
+
+  body {
+    -webkit-print-color-adjust: exact; /* Importante para que salgan los colores de fondo */
+    print-color-adjust: exact;
+    background-color: white;
+  }
+
+  /* Evitar que las tablas se corten mal */
+  table {
+    page-break-inside: auto;
+  }
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+  thead {
+    display: table-header-group;
+  }
+  tfoot {
+    display: table-footer-group;
+  }
+
+  /* Evitar que imágenes se corten */
+  img {
+    page-break-inside: avoid;
+  }
+
+  /* Ocultar botones si se colaron en el HTML */
+  #idDivBotones {
+    display: none !important;
+  }
+}
