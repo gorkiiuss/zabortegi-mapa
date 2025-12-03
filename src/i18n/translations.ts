@@ -8,6 +8,8 @@ export const translations = {
       extractor: "Extractor de datos",
       search: "Buscador avanzado",
       view: "Vista",
+      sharing: "Compartir",
+      copy_link: "Copiar enlace",
       show_no_info: "Ver vertederos sin información",
       hide_no_info: "Ocultar vertederos sin información",
       help: "Ayuda",
@@ -160,7 +162,7 @@ export const translations = {
     future_feature: {
       title: "Funcionalidad en desarrollo",
       description:
-        "Estamos trabajando para permitir que los usuarios envíen correcciones o sugerencias sobre los datos de los vertederos directamente desde la aplicación.",
+        "Estamos trabajando para implementar esta característica. Pronto podrás acceder a más herramientas.",
       button: "Entendido",
     },
     attributions: {
@@ -175,7 +177,7 @@ export const translations = {
         },
         data: {
           title: "Fuentes de Datos",
-          text: "Datos del Inventario de Suelos de la CAPV proporcionados por <a href='https://www.geo.euskadi.eus/' target='_blank' class='font-semibold text-slate-800 hover:underline'>GeoEuskadi</a> e <a href='https://www.ihobe.eus/' target='_blank' class='font-semibold text-slate-800 hover:underline'>Ihobe</a>. Utilizados bajo licencia <a href='https://creativecommons.org/licenses/by/4.0/deed.es' target='_blank' class='text-emerald-600 font-medium hover:underline'>CC BY 4.0 Internacional</a>."
+          text: "Datos del Inventario de Suelos de la CAPV proporcionados por <a href='https://www.geo.euskadi.eus/' target='_blank' class='font-semibold text-slate-800 hover:underline'>GeoEuskadi</a> e <a href='https://www.ihobe.eus/' target='_blank' class='font-semibold text-slate-800 hover:underline'>Ihobe</a>. Utilizados bajo licencia <a href='https://creativecommons.org/licenses/by/4.0/deed.es' target='_blank' class='text-emerald-600 font-medium hover:underline'>CC BY 4.0 Internacional</a>.",
         },
         code: {
           title: "Tecnología e Infraestructura",
@@ -216,6 +218,11 @@ export const translations = {
         goal_text:
           'Visibilizar la situación para caracterizar los suelos, conocer afecciones y proceder a su <span class="font-semibold underline decoration-emerald-300">clausura y regeneración</span>.',
       },
+      accordion: {
+        whats_new: "Cambios al mapa",
+        new_excl: "¡Novedades!",
+        project_info: "Información del Proyecto",
+      },
     },
     misc: {
       landfill_count: "{{count}} vertederos",
@@ -228,6 +235,12 @@ export const translations = {
       web: "Página web",
       close: "Cerrar",
     },
+    share: {
+      defaultMessage:
+        "Mira este mapa de vertederos en Euskadi: Utzitako zabortegiak EAEn - 2008tik gainditu gabeko irakasgaia",
+      bluesky:
+        "Mira este mapa de vertederos en Euskadi #Zabortegiak #EkologistakMartxan",
+    },
   },
   eu: {
     toolbar: {
@@ -236,6 +249,8 @@ export const translations = {
       extractor: "Datu-erauzlea",
       search: "Bilaketa aurreratua",
       view: "Ikuspegia",
+      sharing: "Partekatu",
+      copy_link: "Esteka kopiatu",
       show_no_info: "Ikusi informaziorik gabekoak",
       hide_no_info: "Ezkutatu informaziorik gabekoak",
       help: "Laguntza",
@@ -390,7 +405,7 @@ export const translations = {
     future_feature: {
       title: "Funtzionalitatea garatzen",
       description:
-        "Lanean ari gara erabiltzaileek zabortegien datuei buruzko zuzenketak edo iradokizunak aplikaziotik zuzenean bidaltzeko aukera izan dezaten.",
+        "Ezaugarri hau ezartzeko lanean ari gara. Laster herraminta gehiago izango dituzu.",
       button: "Ulertuta",
     },
     attributions: {
@@ -405,7 +420,7 @@ export const translations = {
         },
         data: {
           title: "Datuen iturriak",
-          text: "EAEko Lurzoru Inbentarioaren datuak <a href='https://www.geo.euskadi.eus/' target='_blank' class='font-semibold text-slate-800 hover:underline'>GeoEuskadi</a>-k eta <a href='https://www.ihobe.eus/' target='_blank' class='font-semibold text-slate-800 hover:underline'>Ihobe</a>-k emanak. <a href='https://creativecommons.org/licenses/by/4.0/deed.eu' target='_blank' class='text-emerald-600 font-medium hover:underline'>Nazioarteko CC BY 4.0</a> lizentziapean erabiliak."
+          text: "EAEko Lurzoru Inbentarioaren datuak <a href='https://www.geo.euskadi.eus/' target='_blank' class='font-semibold text-slate-800 hover:underline'>GeoEuskadi</a>-k eta <a href='https://www.ihobe.eus/' target='_blank' class='font-semibold text-slate-800 hover:underline'>Ihobe</a>-k emanak. <a href='https://creativecommons.org/licenses/by/4.0/deed.eu' target='_blank' class='text-emerald-600 font-medium hover:underline'>Nazioarteko CC BY 4.0</a> lizentziapean erabiliak.",
         },
         code: {
           title: "Teknologiak eta azpiegiturak",
@@ -417,7 +432,7 @@ export const translations = {
     about: {
       hero: {
         badge: "Ingurumen Larrialdia",
-        title: "Utzitako zabortegiak<br/>EAEn",
+        title: "Utzitako zabortegiak EAEn",
         subtitle: "2008tik gainditu gabeko irakasgaia",
       },
       chips: {
@@ -446,6 +461,11 @@ export const translations = {
         goal_text:
           'Egoera ikusaraztea lurzoruak karakterizatzeko, afekzioak ezagutzeko eta haien <span class="font-semibold underline decoration-emerald-300">itxiera eta onbideratzea</span> bideratzeko.',
       },
+      accordion: {
+        whats_new: "Maparen aldaketak",
+        new_excl: "Berriak!",
+        project_info: "Proiektuaren Informazioa",
+      },
     },
     contact: {
       title: "Kontaktua",
@@ -457,6 +477,11 @@ export const translations = {
     },
     misc: {
       landfill_count: "{{count}} zabortegi",
+    },
+    share: {
+      defaultMessage:
+        "Begiratu EAEn dauden zabortegien mapa hau: Utzitako zabortegiak EAEn - 2008tik gainditu gabeko irakasgaia",
+      bluesky: "Begiratu EAEn dauden zabortegien mapa hau {{hashtags}}",
     },
   },
 };

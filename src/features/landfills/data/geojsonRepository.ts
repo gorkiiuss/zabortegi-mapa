@@ -168,8 +168,8 @@ function mapFeatureToLandfill(
   const sections = (properties.sections ?? {}) as RawSections;
 
   const datosGenerales = sections["1.- Datos generales"] ?? {};
-  const loc = datosGenerales.LOCALIZACIÓN ?? {} ?? {};
-  const expl = datosGenerales.EXPLOTACIÓN ?? {} ?? {};
+  const loc = datosGenerales.LOCALIZACIÓN ?? {};
+  const expl = datosGenerales.EXPLOTACIÓN ?? {};
 
   const rawParcelId = properties.IdParcela;
   const objectId = properties.OBJECTID;

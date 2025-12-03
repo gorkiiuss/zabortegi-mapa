@@ -1,12 +1,14 @@
 import { useMapStore } from "@features/map/state/mapStore";
 import { useUiStore } from "@features/map/state/uiStore";
 import { useLanguageStore } from "@shared/state/languageStore";
+import { shareUtils } from "@shared/utils/sharing";
 
 export interface MenuItem {
   label: string;
   action: () => void;
   disabled?: boolean;
   isActive?: boolean;
+  isFutureFeature?: boolean;
 }
 
 export interface MenuSection {
@@ -29,7 +31,6 @@ export function useToolbarMenu({
     (s) => s.toggleShowNoInfoLandfills,
   );
   const { toggleActiveModal } = useUiStore();
-
   const { t, setLanguage, currentLanguage } = useLanguageStore();
 
   const menuStructure: MenuSection[] = [
@@ -45,13 +46,17 @@ export function useToolbarMenu({
         },
         {
           label: t("toolbar.extractor"),
-          action: () => onCloseUi(),
-          disabled: true,
+          isFutureFeature: true,
+          action: () => {
+            toggleActiveModal("future_feature", true);
+          },
         },
         {
           label: t("toolbar.search"),
-          action: () => onCloseUi(),
-          disabled: true,
+          isFutureFeature: true,
+          action: () => {
+            toggleActiveModal("future_feature", true);
+          },
         },
       ],
     },
@@ -65,6 +70,47 @@ export function useToolbarMenu({
             : t("toolbar.show_no_info"),
           action: () => {
             toggleShowNoInfoLandfills();
+          },
+        },
+      ],
+    },
+    {
+      id: "sharing",
+      label: t("toolbar.sharing"),
+      items: [
+        {
+          label: "WhatsApp",
+          action: () => {
+            shareUtils.whatsapp();
+            onCloseUi();
+          },
+        },
+        {
+          label: "Bluesky",
+          action: () => {
+            shareUtils.bluesky();
+            onCloseUi();
+          },
+        },
+        {
+          label: "Facebook",
+          action: () => {
+            shareUtils.facebook();
+            onCloseUi();
+          },
+        },
+        {
+          label: "Email",
+          action: () => {
+            shareUtils.email();
+            onCloseUi();
+          },
+        },
+        {
+          label: t("toolbar.copy_link"),
+          action: async () => {
+            await shareUtils.copyLink();
+            onCloseUi();
           },
         },
       ],
@@ -93,8 +139,10 @@ export function useToolbarMenu({
         },
         {
           label: t("toolbar.tutorial"),
-          action: () => onCloseUi(),
-          disabled: true,
+          isFutureFeature: true,
+          action: () => {
+            toggleActiveModal("future_feature", true);
+          },
         },
       ],
     },

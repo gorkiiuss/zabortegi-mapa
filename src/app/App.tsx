@@ -30,6 +30,7 @@ import { FutureFeatureModal } from "@shared/components/FutureFeatureModal";
 
 import { useLanguageStore } from "@shared/state/languageStore";
 import { ContactModal } from "@features/toolbar/components/ContactModal";
+import { CHANGELOG_DATA } from "@features/about/data/changelogRepository";
 
 function App() {
   const loadAll = useLandfillsStore((s) => s.loadAll);
@@ -61,9 +62,18 @@ function App() {
   }, [loadAll]);
 
   useEffect(() => {
-    const hasVisited = localStorage.getItem("app_has_visited_before");
-    if (!hasVisited) {
+    const latestUpdateDate = CHANGELOG_DATA[0]?.date;
+    const lastSeenUpdate = localStorage.getItem("app_last_seen_update");
+    const hasVisitedLegacy = localStorage.getItem("app_has_visited_before");
+    if (latestUpdateDate && lastSeenUpdate !== latestUpdateDate) {
       toggleModal("about");
+      localStorage.setItem("app_last_seen_update", latestUpdateDate);
+      localStorage.setItem("app_has_visited_before", "true");
+    } else if (!lastSeenUpdate && !hasVisitedLegacy) {
+      toggleModal("about");
+      if (latestUpdateDate) {
+        localStorage.setItem("app_last_seen_update", latestUpdateDate);
+      }
       localStorage.setItem("app_has_visited_before", "true");
     }
   }, [toggleModal]);
@@ -181,7 +191,7 @@ function App() {
               label={t("app.search_placeholder")}
               orientation="horizontal"
               isOpen={activeModal === "search"}
-              subtitle={hasQuery ? searchQuery : t("toolbar.search")}
+              subtitle={hasQuery ? searchQuery : t("app.search_placeholder")}
               onClear={hasQuery ? () => setSearchQuery("") : undefined}
               onToggle={() => toggleModal("search")}
             />
