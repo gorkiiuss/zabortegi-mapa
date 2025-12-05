@@ -103,7 +103,7 @@ export const translations = {
       download_report: "Descargar Informe PDF",
       generating_report: "Generando informe...",
       related_docs: "Documentos relacionados",
-      add_suggestion: "Añadir sugerencia / corrección",
+      add_correction: "Añadir corrección",
       cards: {
         climate: {
           title: "Clima e hidrología",
@@ -346,7 +346,7 @@ export const translations = {
       download_report: "Deskargatu PDF txostena",
       generating_report: "Txostena sortzen...",
       related_docs: "Erlazionatutako dokumentuak",
-      add_suggestion: "Gehitu iradokizuna / zuzenketa",
+      add_correction: "Gehitu zuzenketa",
       cards: {
         climate: {
           title: "Klima eta hidrologia",

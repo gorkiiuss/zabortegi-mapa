@@ -1,6 +1,6 @@
 import { useLanguageStore } from "@shared/state/languageStore";
 import { StatBox, SectionTitle } from "../ui/AboutSharedComponents";
-import { DropIcon, LegalIcon, TargetIcon } from "../ui/AboutIcons";
+import { Droplet, Scale, Target } from "@shared/components/Icons";
 
 export function ProjectInfoSection() {
   const { t } = useLanguageStore();
@@ -40,7 +40,7 @@ export function ProjectInfoSection() {
 
       {/* 2. MARCO LEGAL */}
       <section>
-        <SectionTitle icon={<LegalIcon />}>
+        <SectionTitle icon={<Scale />}>
           {t("about.legal.title")}
         </SectionTitle>
         <div className="space-y-4 text-sm">
@@ -59,7 +59,7 @@ export function ProjectInfoSection() {
 
       {/* 3. IMPACTO */}
       <section>
-        <SectionTitle icon={<DropIcon />}>
+        <SectionTitle icon={<Droplet />}>
           {t("about.impact.title")}
         </SectionTitle>
         <div className="overflow-hidden rounded-xl border border-slate-200 bg-white text-sm shadow-sm">
@@ -70,7 +70,7 @@ export function ProjectInfoSection() {
           </div>
           <div className="bg-linear-to-r from-emerald-50 to-white p-5 text-slate-700">
             <p className="mb-1 flex items-center gap-2 font-bold text-emerald-500">
-              <TargetIcon /> {t("about.impact.goal_title")}
+              <Target /> {t("about.impact.goal_title")}
             </p>
             <p
               className="text-sm"

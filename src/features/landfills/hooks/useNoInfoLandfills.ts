@@ -1,3 +1,5 @@
+// src/features/landfills/hooks/useNoInfoLandfills.ts
+
 import { useMemo } from "react";
 import { useMapStore } from "../../map/state/mapStore";
 import { useLandfills } from "./useLandfills";

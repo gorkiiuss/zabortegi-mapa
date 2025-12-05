@@ -2,6 +2,7 @@ import SearchCard from "./SearchCard";
 import MoreResultsCard from "./MoreResultsCard";
 import type { LandfillSummary } from "@features/landfills/domain/types";
 import { useLanguageStore } from "@shared/state/languageStore";
+import { Search, X } from "@shared/components/Icons";
 
 interface SearchBodyProps {
   searchQuery: string;
@@ -51,20 +52,7 @@ export function SearchBody({
           // ─── MODO EXPANDIDO / MÓVIL ───
           <div className="relative">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-              <svg
-                className="h-4 w-4 text-slate-400 transition-colors group-focus-within:text-emerald-500"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
+              <Search size={16} className="text-slate-400" />
             </div>
 
             <input
@@ -85,28 +73,14 @@ export function SearchBody({
                 className="absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-slate-100 p-1 text-slate-400 transition-colors hover:bg-slate-200 hover:text-slate-600"
                 aria-label={t("search.aria_clear")}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
+                <X size={14} />
               </button>
             )}
           </div>
         ) : (
           // ─── MODO REDUCIDO ───
           <div className="relative flex cursor-text items-center gap-2 rounded-xl border border-transparent px-3 py-2.5 transition-colors">
-            <span className="text-lg opacity-60">🔍</span>
-
+            <Search size={16} className="text-slate-400" />
             <span
               className={`flex-1 truncate pr-6 text-sm ${searchQuery ? "font-medium text-slate-800" : "text-slate-500"}`}
             >
@@ -121,20 +95,7 @@ export function SearchBody({
                 className="absolute right-2 z-10 rounded-full bg-slate-100 p-1 text-slate-400 transition-colors hover:bg-slate-200 hover:text-slate-600"
                 title={t("search.aria_clear")}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
+                <X size={14} />
               </button>
             )}
           </div>

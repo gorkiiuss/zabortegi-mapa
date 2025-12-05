@@ -1,7 +1,9 @@
+// src/features/about/components/ui/AboutSharedComponents.tsx
+
 import { useState } from "react";
 import { useLanguageStore } from "@shared/state/languageStore";
 import { DropdownMenu, type MenuItem } from "@shared/components/DropdownMenu";
-import { ChevronDownIcon, GlobeIcon } from "./AboutIcons";
+import { ChevronDown, Globe } from "@shared/components/Icons";
 
 // ─── ACCORDION ITEM ───
 interface AccordionItemProps {
@@ -63,7 +65,7 @@ export function AccordionItem({
         <div
           className={`text-slate-400 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
         >
-          <ChevronDownIcon />
+          <ChevronDown />
         </div>
       </button>
 
@@ -187,13 +189,13 @@ export function LanguageSelector() {
           className={`group flex items-center gap-2 rounded-full border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-700 shadow-sm transition-colors ${isOpen ? "bg-slate-100 ring-2 ring-slate-100" : "bg-white hover:bg-slate-50"}`}
         >
           <span className="text-slate-400">
-            <GlobeIcon />
+            <Globe />
           </span>
           <span>{currentLabel}</span>
           <span
             className={`text-slate-400 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
           >
-            <ChevronDownIcon size={12} />
+            <ChevronDown size={12} />
           </span>
         </button>
       }

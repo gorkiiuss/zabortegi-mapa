@@ -1,3 +1,5 @@
+// vite.config.ts
+
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
@@ -13,10 +15,6 @@ export default defineConfig({
       "@features": path.resolve(__dirname, "src/features"),
       "@shared": path.resolve(__dirname, "src/shared"),
       "@app": path.resolve(__dirname, "src/app"),
-      "@selection": path.resolve(
-        __dirname,
-        "src/features/landfills/components/selection",
-      ),
       "@": path.resolve(__dirname, "src"),
     },
   },

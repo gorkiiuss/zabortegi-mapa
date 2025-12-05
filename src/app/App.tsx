@@ -1,3 +1,5 @@
+// src/app/App.tsx
+
 import { AttributionControl, MapContainer, TileLayer } from "react-leaflet";
 import { useEffect, useMemo } from "react";
 
@@ -5,23 +7,23 @@ import { ToolbarDesktop } from "@features/toolbar/components/ToolbarDesktop";
 import { ZoomPanel } from "@features/map/components/ZoomPanel";
 import { useLegendItems } from "@features/legend/hooks/useLegendItems";
 
-import { LandfillsLayer } from "@features/landfills/components/LandfillsLayer";
+import { LandfillsLayer } from "@features/landfills/components/map/LandfillsLayer";
 import { MapViewportTracker } from "@features/map/components/MapViewportTracker";
-import { LandfillIndexModal } from "@features/landfills/components/index/LandfillsIndexModal";
-import { LandfillsLoadingOverlay } from "@features/landfills/components/LandfillsLoadingOverlay";
+import { LandfillListModal } from "@features/landfills/components/list/LandfillsListModal";
+import { LandfillsLoadingOverlay } from "@features/landfills/components/map/LandfillsLoadingOverlay";
 import { useLandfillsStore } from "@features/landfills/state/landfillsStore";
 import { useUiStore } from "@features/map/state/uiStore";
 import { ModalToggleButton } from "@shared/components/ModalToggleButton";
-import { SelectionSidebar } from "@selection/layout/SelectionSidebar";
-import { SelectionModal } from "@selection/modals/SelectionModal";
+import { DetailsSidebar } from "@features/landfills/components/details/DetailsSidebar";
+import { DetailsModal } from "@features/landfills/components/details/DetailsModal";
 import { SearchDesktopPanel } from "@features/search/components/SearchDesktopPanel";
 import { SearchModal } from "@features/search/components/SearchModal";
 import { LegendModal } from "@features/legend/components/LegendModal";
 import { LegendDesktopPanel } from "@features/legend/components/LegendDesktopPanel";
 import { ToolbarModal } from "@features/toolbar/components/ToolbarModal";
-import { SelectionGalleryModal } from "@selection/modals/SelectionGalleryModal";
+import { DetailsGalleryModal } from "@features/landfills/components/details/DetailsGalleryModal";
 import { MapClickDeselector } from "@features/map/components/MapClickDeselector";
-import { RelatedDocumentationModal } from "@features/landfills/components/selection/modals/RelatedDocumentationModal";
+import { DetailsRelatedDocumentationModal } from "@features/landfills/components/details/DetailsRelatedDocumentationModal";
 import { useMapStore } from "@features/map/state/mapStore";
 import { MobileRecenterButton } from "@features/map/components/MobileRecenterButton";
 import { AttributionsModal } from "@features/attributions/components/AttributionsModal";
@@ -170,7 +172,7 @@ function App() {
             <LegendDesktopPanel items={legendItems} />
           </div>
 
-          <SelectionSidebar />
+          <DetailsSidebar />
         </div>
 
         {/* ──────────────────────────────────────────────── */}
@@ -238,7 +240,7 @@ function App() {
             )}
 
           {activeModal === "selection" &&
-            renderModalWrapper(<SelectionModal />)}
+            renderModalWrapper(<DetailsModal />)}
         </div>
 
         {/* ──────────────────────────────────────────────── */}
@@ -247,17 +249,17 @@ function App() {
 
         {activeModal === "index" &&
           renderIndexWrapper(
-            <LandfillIndexModal
+            <LandfillListModal
               initialQuery={indexQuery}
               onClose={closeModal}
             />,
           )}
 
         {activeModal === "gallery" &&
-          renderIndexWrapper(<SelectionGalleryModal />)}
+          renderIndexWrapper(<DetailsGalleryModal />)}
 
         {activeModal === "related_documentation" &&
-          renderIndexWrapper(<RelatedDocumentationModal />)}
+          renderIndexWrapper(<DetailsRelatedDocumentationModal />)}
 
         {activeModal === "attributions" &&
           renderIndexWrapper(<AttributionsModal />)}

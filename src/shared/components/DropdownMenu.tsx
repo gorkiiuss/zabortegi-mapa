@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Plus } from "./Icons";
 
 export interface MenuItem {
   label: string;
@@ -73,20 +74,7 @@ export function DropdownMenu({
               <span>{item.label}</span>
 
               {item.isFutureFeature && !item.disabled && (
-                <svg
-                  className="h-3.5 w-3.5 text-emerald-500/70"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 4v16m8-8H4"
-                  />
-                </svg>
+                <Plus size={14} className="text-emerald-500" />
               )}
             </li>
           ))}

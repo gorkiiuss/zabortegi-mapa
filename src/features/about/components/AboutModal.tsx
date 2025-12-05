@@ -1,3 +1,5 @@
+// src/features/about/components/AboutModal.tsx
+
 import { useLanguageStore } from "@shared/state/languageStore";
 
 import { useAboutModalLogic } from "../hooks/useAboutModalLogic";
@@ -6,9 +8,10 @@ import {
   LanguageSelector,
   AccordionItem,
 } from "./ui/AboutSharedComponents";
-import { GithubIcon, WebIcon, InfoIcon, SparklesIcon } from "./ui/AboutIcons";
 import { ChangelogSection } from "./sections/ChangelogSection";
 import { ProjectInfoSection } from "./sections/ProjectInfoSection";
+import { Github, Globe, Info, Sparkles, X } from "@shared/components/Icons";
+
 const BASE_URL = import.meta.env.BASE_URL;
 const PORTADA = (import.meta.env.VITE_MEDIA_BASE_URL as string | undefined)
   ? `${import.meta.env.VITE_MEDIA_BASE_URL}/imagenes/portada.png`
@@ -41,20 +44,7 @@ export function AboutModal() {
         onClick={handleClose}
         className="absolute top-3 right-3 z-50 rounded-full border border-slate-200 bg-white/80 p-2 text-slate-500 shadow-sm backdrop-blur-sm transition-all hover:bg-white hover:text-slate-800"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
+        <X />
       </button>
 
       {/* Scrollable Body */}
@@ -91,12 +81,12 @@ export function AboutModal() {
             <div className="flex flex-wrap gap-2">
               <Chip
                 href="https://github.com/gorkiiuss/zabortegi-mapa"
-                icon={<GithubIcon />}
+                icon={<Github />}
                 label={t("about.chips.code")}
               />
               <Chip
                 href="https://ekologistakmartxan.org"
-                icon={<WebIcon />}
+                icon={<Globe />}
                 label="Ekologistak Martxan"
                 iconHoverColor="text-green-600"
               />
@@ -104,7 +94,7 @@ export function AboutModal() {
                 onClick={handleOpenAttributions}
                 className="group flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-sm transition-colors hover:bg-slate-50"
               >
-                <InfoIcon /> {t("about.chips.credits")}
+                <Info /> {t("about.chips.credits")}
               </button>
             </div>
             <div className="flex shrink-0 items-center gap-3">
@@ -122,7 +112,7 @@ export function AboutModal() {
               title={t("about.accordion.whats_new") || "Novedades"}
               isOpen={activeSection === "updates"}
               onClick={() => toggleSection("updates")}
-              icon={<SparklesIcon />}
+              icon={<Sparkles />}
               activeColorClass="emerald"
               badge={isLatestVersionNew ? t("about.accordion.new_excl") : null}
             >
@@ -136,7 +126,7 @@ export function AboutModal() {
               }
               isOpen={activeSection === "info"}
               onClick={() => toggleSection("info")}
-              icon={<InfoIcon />}
+              icon={<Info />}
               activeColorClass="slate"
             >
               <ProjectInfoSection />

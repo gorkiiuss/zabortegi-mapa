@@ -1,3 +1,5 @@
+// src/features/landfills/state/landfillsStore.ts
+
 import { create } from "zustand";
 import type { Landfill } from "../domain/types";
 import { geoJsonLandfillRepository } from "../data/geojsonRepository";

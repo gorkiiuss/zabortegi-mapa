@@ -1,6 +1,7 @@
 // src/shared/components/ModalToggleButton.tsx
 
 import { useMapPanelInteractions } from "@shared/hooks/useMapPanelInteractions";
+import { Search } from "./Icons";
 
 interface ModalToggleButtonProps {
   label: string;
@@ -53,8 +54,7 @@ export function ModalToggleButton({
           onClick={onToggle}
           className={` ${containerClasses} max-w-xs gap-2 rounded-full px-3 py-1.5`}
         >
-          <span className="text-sm leading-none">🔍</span>
-
+          <Search size={12} className="text-inherit" />
           <span className="truncate text-[11px] text-inherit">
             {displayText}
           </span>

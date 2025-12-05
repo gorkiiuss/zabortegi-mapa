@@ -1,6 +1,7 @@
 import { useUiStore } from "@features/map/state/uiStore";
 import { useToolbarMenu } from "../hooks/useToolbarMenu";
 import { useMapModalInteractions } from "@shared/hooks/useMapModalInteractions";
+import { ChevronRight, Plus, X } from "@shared/components/Icons";
 
 interface ToolbarModalProps {
   onOpenIndex: () => void;
@@ -55,20 +56,7 @@ export function ToolbarModal({ onOpenIndex }: ToolbarModalProps) {
           className="rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-200 hover:text-slate-600"
           aria-label="Cerrar"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
+          <X size={18} />
         </button>
       </div>
 
@@ -94,36 +82,9 @@ export function ToolbarModal({ onOpenIndex }: ToolbarModalProps) {
                     {!item.disabled && (
                       <>
                         {item.isFutureFeature ? (
-                          <svg
-                            className="h-4 w-4 text-emerald-400"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <path d="M12 5v14M5 12h14" />
-                          </svg>
+                          <Plus size={14} className="text-emerald-500 transition-colors group-hover:text-emerald-600" />
                         ) : (
-                          <svg
-                            className={`h-4 w-4 transition-colors ${
-                              item.isActive
-                                ? "text-white"
-                                : "text-slate-300 group-hover:text-emerald-500"
-                            }`}
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <polyline points="9 18 15 12 9 6"></polyline>
-                          </svg>
+                          <ChevronRight size={14} />
                         )}
                       </>
                     )}
