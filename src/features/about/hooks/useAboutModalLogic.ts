@@ -1,7 +1,9 @@
 import { useState, useEffect, useLayoutEffect, useMemo } from "react";
 import { useMapModalInteractions } from "@shared/hooks/useMapModalInteractions";
 import { useUiStore } from "@features/map/state/uiStore";
-import { CHANGELOG_DATA } from "../data/changelogRepository";
+import { useNewsStore } from "../state/newsStore";
+
+export type AboutTab = "announcements" | "changelog" | "project";
 
 const PULSE_STYLES = `
 @keyframes landfill-pulse-ui {
@@ -27,8 +29,18 @@ export function useAboutModalLogic() {
     useMapModalInteractions();
   const { closeModal, toggleActiveModal } = useUiStore();
 
+  const announcements = useNewsStore((s) => s.announcements);
+  const changelog = useNewsStore((s) => s.changelog);
+
+  const latestAnnouncement = announcements.find(a => a.active);
+  const hasNewAnnouncement = useMemo(() => {
+    if (!latestAnnouncement) return false;
+    const lastSeenAnnouncement = localStorage.getItem("app_last_seen_announcement");
+    return lastSeenAnnouncement !== latestAnnouncement.id;
+  }, [latestAnnouncement]);
+
   const isLatestVersionNew = useMemo(() => {
-    const latestEntry = CHANGELOG_DATA[0];
+    const latestEntry = changelog[0];
     if (!latestEntry) return false;
 
     const today = new Date();
@@ -38,17 +50,24 @@ export function useAboutModalLogic() {
     const diffDays = diffTime / (1000 * 3600 * 24);
 
     return diffDays >= 0 && diffDays <= 3;
-  }, []);
+  }, [changelog]);
 
-  const [activeSection, setActiveSection] = useState<"updates" | "info" | null>(
-    isLatestVersionNew ? "updates" : "info",
-  );
+  const initialTab: AboutTab = hasNewAnnouncement
+    ? "announcements"
+    : isLatestVersionNew
+      ? "changelog"
+      : "project";
+
+  const [activeTab, setActiveTab] = useState<AboutTab>(initialTab);
+
+  useEffect(() => {
+    if (activeTab === "announcements" && latestAnnouncement) {
+      localStorage.setItem("app_last_seen_announcement", latestAnnouncement.id);
+    }
+  }, [activeTab, latestAnnouncement]);
 
   const handleClose = () => closeModal();
   const handleOpenAttributions = () => toggleActiveModal("attributions", true);
-  const toggleSection = (section: "updates" | "info") => {
-    setActiveSection(activeSection === section ? null : section);
-  };
 
   useLayoutEffect(() => {
     ensureStylesInjected();
@@ -71,8 +90,9 @@ export function useAboutModalLogic() {
     handleMouseLeave,
     handleClose,
     handleOpenAttributions,
-    activeSection,
-    toggleSection,
+    activeTab,
+    setActiveTab,
+    hasNewAnnouncement,
     isLatestVersionNew,
     appVersion,
   };

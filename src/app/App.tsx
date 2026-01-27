@@ -32,14 +32,22 @@ import { FutureFeatureModal } from "@shared/components/FutureFeatureModal";
 
 import { useLanguageStore } from "@shared/state/languageStore";
 import { ContactModal } from "@features/toolbar/components/ContactModal";
-import { CHANGELOG_DATA } from "@features/about/data/changelogRepository";
+import { useNewsStore } from "@features/about/state/newsStore";
 
 function App() {
   const loadAll = useLandfillsStore((s) => s.loadAll);
+  const { 
+    fetchNews, 
+    changelog, 
+    announcements, 
+    loading: newsLoading 
+  } = useNewsStore(); 
+  
   const landfills = useLandfillsStore((s) => s.landfills);
 
   const activeModal = useUiStore((s) => s.activeModal);
   const toggleModal = useUiStore((s) => s.toggleActiveModal);
+  const openModal = useUiStore((s) => s.openModal); 
   const setSearchQuery = useUiStore((s) => s.setSearchQuery);
   const searchQuery = useUiStore((s) => s.searchQuery);
   const selectedLandfillId = useUiStore((s) => s.selectedLandfillId);
@@ -61,24 +69,40 @@ function App() {
 
   useEffect(() => {
     loadAll();
-  }, [loadAll]);
+    fetchNews();
+  }, [loadAll, fetchNews]);
 
   useEffect(() => {
-    const latestUpdateDate = CHANGELOG_DATA[0]?.date;
+    if (newsLoading) return;
+    if (changelog.length === 0 && announcements.length === 0) return;
+
+    const latestUpdateDate = changelog[0]?.date;
     const lastSeenUpdate = localStorage.getItem("app_last_seen_update");
+    const hasNewUpdate = latestUpdateDate && lastSeenUpdate !== latestUpdateDate;
+
+    const latestAnnouncement = announcements.find(a => a.active);
+    const latestAnnouncementId = latestAnnouncement?.id;
+    const lastSeenAnnouncementId = localStorage.getItem("app_last_seen_announcement");
+    const hasNewAnnouncement = latestAnnouncementId && lastSeenAnnouncementId !== latestAnnouncementId;
+
     const hasVisitedLegacy = localStorage.getItem("app_has_visited_before");
-    if (latestUpdateDate && lastSeenUpdate !== latestUpdateDate) {
-      toggleModal("about");
-      localStorage.setItem("app_last_seen_update", latestUpdateDate);
-      localStorage.setItem("app_has_visited_before", "true");
-    } else if (!lastSeenUpdate && !hasVisitedLegacy) {
-      toggleModal("about");
-      if (latestUpdateDate) {
-        localStorage.setItem("app_last_seen_update", latestUpdateDate);
+
+    const shouldOpen = !hasVisitedLegacy || hasNewUpdate || hasNewAnnouncement;
+
+    if (shouldOpen) {
+      openModal("about");
+
+      if (!hasVisitedLegacy) {
+        localStorage.setItem("app_has_visited_before", "true");
+        if (latestUpdateDate) {
+          localStorage.setItem("app_last_seen_update", latestUpdateDate);
+        }
+        if (latestAnnouncementId) {
+          localStorage.setItem("app_last_seen_announcement", latestAnnouncementId);
+        }
       }
-      localStorage.setItem("app_has_visited_before", "true");
-    }
-  }, [toggleModal]);
+          }
+  }, [openModal, newsLoading, changelog, announcements]);
 
   // Wrapper para paneles móviles (Search, Legend, etc.)
   const renderModalWrapper = (content: React.ReactNode) => {

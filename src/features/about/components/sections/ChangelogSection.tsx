@@ -1,5 +1,5 @@
+import { useNewsStore } from "@features/about/state/newsStore";
 import { useLanguageStore } from "@shared/state/languageStore";
-import { CHANGELOG_DATA } from "../../data/changelogRepository";
 
 interface ChangelogSectionProps {
   highlightLatest?: boolean;
@@ -10,12 +10,13 @@ export function ChangelogSection({
 }: ChangelogSectionProps) {
   const { currentLanguage } = useLanguageStore();
   const lang = currentLanguage as "es" | "eu";
+  const changelog = useNewsStore((s) => s.changelog);
 
   return (
     <div className="relative space-y-8 px-2 py-2">
       <div className="absolute top-4 bottom-4 left-[1.65rem] w-px bg-slate-200" />
 
-      {CHANGELOG_DATA.map((item, idx) => {
+      {changelog.map((item, idx) => {
         const isLatest = idx === 0 && highlightLatest;
 
         return (

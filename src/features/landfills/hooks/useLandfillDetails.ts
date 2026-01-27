@@ -11,6 +11,7 @@ export function useSelectionLogic() {
   const selectedId = useUiStore((s) => s.selectedLandfillId);
   const activeModal = useUiStore((s) => s.activeModal);
   const setActiveModal = useUiStore((s) => s.openModal);
+  const closeModal = useUiStore((s) => s.closeModal);
 
   const landfills = useNoInfoLandfills();
   const [isDownloading, setIsDownloading] = useState(false);
@@ -27,17 +28,19 @@ export function useSelectionLogic() {
       prevSelectedIdRef.current = selectedId;
 
       if (selectedId) {
-        setActiveModal("selection");
+        if (useUiStore.getState().activeModal !== "selection") {
+          setActiveModal("selection");
+        }
       } else {
         if (activeModal === "selection") {
-          setActiveModal("none");
+          closeModal();
         }
       }
     }
-  }, [selectedId, setActiveModal]); //
+  }, [selectedId, setActiveModal, closeModal]);
 
   const handleClose = () => {
-    setActiveModal("none");
+    closeModal();
   };
 
   const handleDownloadReport = async () => {

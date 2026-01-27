@@ -187,6 +187,14 @@ export const translations = {
       },
     },
     about: {
+      tabs: {
+        announcements_title: "Avisos",
+        announcements: {
+          no_active_announcements: "No hay avisos activos actualmente.",
+        },
+        whats_new: "Novedades",
+        project_info: "Proyecto",
+      },
       hero: {
         badge: "Emergencia Medioambiental",
         title: "Vertederos abandonados<br/>en la CAPV",
@@ -430,6 +438,14 @@ export const translations = {
       },
     },
     about: {
+      tabs: {
+        announcements_title: "Oharrak",
+        announcements: {
+          no_active_announcements: "Une honetan ez dago ohar aktiborik.",
+        },
+        whats_new: "Berriak",
+        project_info: "Proiektua",
+      },
       hero: {
         badge: "Ingurumen Larrialdia",
         title: "Utzitako zabortegiak EAEn",

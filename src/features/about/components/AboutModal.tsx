@@ -2,15 +2,15 @@
 
 import { useLanguageStore } from "@shared/state/languageStore";
 
-import { useAboutModalLogic } from "../hooks/useAboutModalLogic";
+import { useAboutModalLogic, type AboutTab } from "../hooks/useAboutModalLogic";
 import {
   Chip,
   LanguageSelector,
-  AccordionItem,
 } from "./ui/AboutSharedComponents";
 import { ChangelogSection } from "./sections/ChangelogSection";
 import { ProjectInfoSection } from "./sections/ProjectInfoSection";
-import { Github, Globe, Info, Sparkles, X } from "@shared/components/Icons";
+import { Github, Globe, Info, Megaphone, Sparkles, X } from "@shared/components/Icons";
+import { AnnouncementsSection } from "./sections/AnnouncementsSection";
 
 const BASE_URL = import.meta.env.BASE_URL;
 const PORTADA = (import.meta.env.VITE_MEDIA_BASE_URL as string | undefined)
@@ -26,11 +26,37 @@ export function AboutModal() {
     handleMouseLeave,
     handleClose,
     handleOpenAttributions,
-    activeSection,
-    toggleSection,
+    activeTab,
+    setActiveTab,
+    hasNewAnnouncement,
     isLatestVersionNew,
     appVersion,
   } = useAboutModalLogic();
+
+  const renderTab = (
+    id: AboutTab,
+    icon: React.ReactNode,
+    label: string,
+    hasNotificationDot: boolean
+  ) => {
+    const isActive = activeTab === id;
+    return (
+      <button
+        onClick={() => setActiveTab(id)}
+        className={`relative flex items-center gap-2 border-b-2 px-4 py-3 text-sm font-medium transition-colors outline-none ${
+          isActive
+            ? "border-emerald-500 text-emerald-700 bg-emerald-50/10"
+            : "border-transparent text-slate-500 hover:border-slate-200 hover:text-slate-700"
+        }`}
+      >
+        {icon}
+        {label}
+        {hasNotificationDot && (
+          <span className="absolute top-2 right-1 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white animate-pulse" />
+        )}
+      </button>
+  );
+  };
 
   return (
     <div
@@ -47,17 +73,12 @@ export function AboutModal() {
         <X />
       </button>
 
-      {/* Scrollable Body */}
-      <div className="flex-1 overflow-y-auto overscroll-contain bg-slate-50/30 pb-8">
-        {/* 1. HERO SECTION */}
-        <div className="group relative h-56 w-full bg-slate-900 sm:h-64">
-          <img
+      <div className="group relative h-48 w-full shrink-0 bg-slate-900 sm:h-56">
+         <img
             src={PORTADA}
             alt="Portada"
             className="h-full w-full object-cover object-top opacity-90"
-            onError={(e) => {
-              (e.target as HTMLImageElement).style.display = "none";
-            }}
+            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
           />
           <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
           <div className="absolute bottom-0 left-0 w-full p-6 text-white">
@@ -68,72 +89,37 @@ export function AboutModal() {
               className="text-2xl leading-tight font-bold drop-shadow-md sm:text-3xl"
               dangerouslySetInnerHTML={{ __html: t("about.hero.title") }}
             />
-            <p className="mt-2 mb-4 text-sm font-light text-slate-200 drop-shadow-sm">
+            <p className="mt-2 mb-0 text-sm font-light text-slate-200 drop-shadow-sm">
               {t("about.hero.subtitle")}
             </p>
           </div>
-        </div>
-
-        {/* 2. CONTENIDO PRINCIPAL */}
-        <div className="relative z-10 -mt-6 space-y-6 px-6">
-          {/* Navegación y Chips */}
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="flex flex-wrap gap-2">
-              <Chip
-                href="https://github.com/gorkiiuss/zabortegi-mapa"
-                icon={<Github />}
-                label={t("about.chips.code")}
-              />
-              <Chip
-                href="https://ekologistakmartxan.org"
-                icon={<Globe />}
-                label="Ekologistak Martxan"
-                iconHoverColor="text-green-600"
-              />
-              <button
-                onClick={handleOpenAttributions}
-                className="group flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-sm transition-colors hover:bg-slate-50"
-              >
-                <Info /> {t("about.chips.credits")}
-              </button>
-            </div>
-            <div className="flex shrink-0 items-center gap-3">
-              <span className="font-mono text-[10px] font-medium text-slate-400 select-none">
-                v{appVersion}
-              </span>
-              <LanguageSelector />
-            </div>
+      </div>
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 bg-white px-6 py-4">
+          <div className="flex flex-wrap gap-2">
+            <Chip href="https://github.com/gorkiiuss/zabortegi-mapa" icon={<Github />} label={t("about.chips.code")} />
+            <Chip href="https://ekologistakmartxan.org" icon={<Globe />} label="Ekologistak Martxan" iconHoverColor="text-green-600" />
+            <button onClick={handleOpenAttributions} className="group flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-sm transition-colors hover:bg-slate-50">
+              <Info /> {t("about.chips.credits")}
+            </button>
           </div>
-
-          {/* Acordeones */}
-          <div className="space-y-3">
-            {/* A. Novedades */}
-            <AccordionItem
-              title={t("about.accordion.whats_new") || "Novedades"}
-              isOpen={activeSection === "updates"}
-              onClick={() => toggleSection("updates")}
-              icon={<Sparkles />}
-              activeColorClass="emerald"
-              badge={isLatestVersionNew ? t("about.accordion.new_excl") : null}
-            >
-              <ChangelogSection highlightLatest={isLatestVersionNew} />
-            </AccordionItem>
-
-            {/* B. Info Proyecto */}
-            <AccordionItem
-              title={
-                t("about.accordion.project_info") || "Información del Proyecto"
-              }
-              isOpen={activeSection === "info"}
-              onClick={() => toggleSection("info")}
-              icon={<Info />}
-              activeColorClass="slate"
-            >
-              <ProjectInfoSection />
-            </AccordionItem>
+          <div className="flex shrink-0 items-center gap-3">
+            <span className="font-mono text-[10px] font-medium text-slate-400 select-none">v{appVersion}</span>
+            <LanguageSelector />
           </div>
+      </div>
+
+      <div className="sticky top-0 z-20 flex w-full border-b border-slate-200 bg-white px-4 shadow-xs">
+        {renderTab("announcements", <Megaphone size={16} />, t("about.tabs.announcements_title") || "Avisos", hasNewAnnouncement)}
+        {renderTab("changelog", <Sparkles size={16} />, t("about.tabs.whats_new") || "Novedades", isLatestVersionNew)}
+        {renderTab("project", <Info size={16} />, t("about.tabs.project_info") || "Proyecto", false)}
+      </div>
+
+      <div className="flex-1 overflow-y-auto overscroll-contain bg-slate-50/30 p-6 pb-12">
+        <div className="mx-auto max-w-3xl animate-in fade-in slide-in-from-bottom-2 duration-300">
+          {activeTab === "announcements" && <AnnouncementsSection />}
+          {activeTab === "changelog" && <ChangelogSection highlightLatest={isLatestVersionNew} />}
+          {activeTab === "project" && <ProjectInfoSection />}
         </div>
       </div>
-    </div>
-  );
+    </div>  );
 }

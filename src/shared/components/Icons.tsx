@@ -31,7 +31,8 @@ import {
   Wrench,
   Scale,
   Droplet,
-  Target
+  Target,
+  Megaphone
 } from "lucide-react";
 
 export interface IconProps extends SVGProps<SVGSVGElement> {
@@ -97,5 +98,6 @@ export {
   Wrench,
   Scale,
   Droplet,
-  Target
+  Target,
+  Megaphone
 };

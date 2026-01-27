@@ -30,3 +30,7 @@ public/media/
 # Si tienes archivos temporales de tus scripts
 temp/
 *.log
+public/data/changelog.json
+.gitignore
+public/data/announcements.json
+manage-content.js
