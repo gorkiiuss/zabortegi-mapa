@@ -1,6 +1,8 @@
+// src/features/about/hooks/useAboutModalLogic.ts
+
 import { useState, useEffect, useLayoutEffect, useMemo } from "react";
 import { useMapModalInteractions } from "@shared/hooks/useMapModalInteractions";
-import { useUiStore } from "@features/map/state/uiStore";
+import { useUiStore, type AboutData } from "@features/map/state/uiStore";
 import { useNewsStore } from "../state/newsStore";
 
 export type AboutTab = "announcements" | "changelog" | "project";
@@ -27,47 +29,42 @@ function ensureStylesInjected() {
 export function useAboutModalLogic() {
   const { handleMouseEnter, handleMouseLeave, modalRef } =
     useMapModalInteractions();
-  const { closeModal, toggleActiveModal } = useUiStore();
+
+  const { closeModal, openModal, modalData } = useUiStore();
 
   const announcements = useNewsStore((s) => s.announcements);
   const changelog = useNewsStore((s) => s.changelog);
 
-  const latestAnnouncement = announcements.find(a => a.active);
-  const hasNewAnnouncement = useMemo(() => {
-    if (!latestAnnouncement) return false;
-    const lastSeenAnnouncement = localStorage.getItem("app_last_seen_announcement");
-    return lastSeenAnnouncement !== latestAnnouncement.id;
-  }, [latestAnnouncement]);
+  const data = (modalData as AboutData) || {};
 
+  const targetTab = data.initialTab || "project";
+
+  const [activeTab, setActiveTab] = useState<AboutTab>(targetTab);
+
+  useEffect(() => {
+    if (data.initialTab) {
+      setActiveTab(data.initialTab);
+    }
+  }, [data.initialTab]);
+
+
+  const lastSeenUpdate = localStorage.getItem("app_last_seen_update");
   const isLatestVersionNew = useMemo(() => {
     const latestEntry = changelog[0];
     if (!latestEntry) return false;
+    return latestEntry.date !== lastSeenUpdate;
+  }, [changelog, lastSeenUpdate]);
 
-    const today = new Date();
-    const updateDate = new Date(latestEntry.date);
+  const lastSeenAnnouncementId = localStorage.getItem("app_last_seen_announcement");
+  const hasNewAnnouncement = useMemo(() => {
+    const latestAnnouncement = announcements.find(a => a.active);
+    if (!latestAnnouncement) return false;
+    return latestAnnouncement.id !== lastSeenAnnouncementId;
+  }, [announcements, lastSeenAnnouncementId]);
 
-    const diffTime = today.getTime() - updateDate.getTime();
-    const diffDays = diffTime / (1000 * 3600 * 24);
-
-    return diffDays >= 0 && diffDays <= 3;
-  }, [changelog]);
-
-  const initialTab: AboutTab = hasNewAnnouncement
-    ? "announcements"
-    : isLatestVersionNew
-      ? "changelog"
-      : "project";
-
-  const [activeTab, setActiveTab] = useState<AboutTab>(initialTab);
-
-  useEffect(() => {
-    if (activeTab === "announcements" && latestAnnouncement) {
-      localStorage.setItem("app_last_seen_announcement", latestAnnouncement.id);
-    }
-  }, [activeTab, latestAnnouncement]);
 
   const handleClose = () => closeModal();
-  const handleOpenAttributions = () => toggleActiveModal("attributions", true);
+  const handleOpenAttributions = () => openModal("attributions", true);
 
   useLayoutEffect(() => {
     ensureStylesInjected();

@@ -1,3 +1,5 @@
+// src/i18n/translations.ts
+
 export type Language = "eu" | "es";
 
 export const translations = {
@@ -196,7 +198,7 @@ export const translations = {
         project_info: "Proyecto",
       },
       hero: {
-        badge: "Emergencia Medioambiental",
+        badge: "Emergencia Medioambiental y de Salud Pública",
         title: "Vertederos abandonados<br/>en la CAPV",
         subtitle: "Una asignatura pendiente desde 2008",
       },
@@ -447,7 +449,7 @@ export const translations = {
         project_info: "Proiektua",
       },
       hero: {
-        badge: "Ingurumen Larrialdia",
+        badge: "Ingurumen eta Osasun Publiko Larrialdia",
         title: "Utzitako zabortegiak EAEn",
         subtitle: "2008tik gainditu gabeko irakasgaia",
       },

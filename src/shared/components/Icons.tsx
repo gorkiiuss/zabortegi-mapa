@@ -32,7 +32,8 @@ import {
   Scale,
   Droplet,
   Target,
-  Megaphone
+  Megaphone,
+  Calendar
 } from "lucide-react";
 
 export interface IconProps extends SVGProps<SVGSVGElement> {
@@ -72,12 +73,12 @@ export {
   ChevronRight,
   ChevronDown,
   Menu,
-  
+
   Search,
   Download,
   ExternalLink,
   Loader2 as Spinner,
-  
+
   Info,
   FileText,
   Globe,
@@ -99,5 +100,6 @@ export {
   Scale,
   Droplet,
   Target,
-  Megaphone
+  Megaphone,
+  Calendar
 };

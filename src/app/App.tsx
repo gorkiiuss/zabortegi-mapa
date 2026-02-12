@@ -1,7 +1,7 @@
 // src/app/App.tsx
 
 import { AttributionControl, MapContainer, TileLayer } from "react-leaflet";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 import { ToolbarDesktop } from "@features/toolbar/components/ToolbarDesktop";
 import { ZoomPanel } from "@features/map/components/ZoomPanel";
@@ -21,7 +21,7 @@ import { SearchModal } from "@features/search/components/SearchModal";
 import { LegendModal } from "@features/legend/components/LegendModal";
 import { LegendDesktopPanel } from "@features/legend/components/LegendDesktopPanel";
 import { ToolbarModal } from "@features/toolbar/components/ToolbarModal";
-import { DetailsGalleryModal } from "@features/landfills/components/details/DetailsGalleryModal";
+import { GalleryModal } from "@shared/components/GalleryModal";
 import { MapClickDeselector } from "@features/map/components/MapClickDeselector";
 import { DetailsRelatedDocumentationModal } from "@features/landfills/components/details/DetailsRelatedDocumentationModal";
 import { useMapStore } from "@features/map/state/mapStore";
@@ -36,18 +36,18 @@ import { useNewsStore } from "@features/about/state/newsStore";
 
 function App() {
   const loadAll = useLandfillsStore((s) => s.loadAll);
-  const { 
-    fetchNews, 
-    changelog, 
-    announcements, 
-    loading: newsLoading 
-  } = useNewsStore(); 
-  
+  const {
+    fetchNews,
+    changelog,
+    announcements,
+    loading: newsLoading
+  } = useNewsStore();
+
   const landfills = useLandfillsStore((s) => s.landfills);
 
   const activeModal = useUiStore((s) => s.activeModal);
   const toggleModal = useUiStore((s) => s.toggleActiveModal);
-  const openModal = useUiStore((s) => s.openModal); 
+  const openModal = useUiStore((s) => s.openModal);
   const setSearchQuery = useUiStore((s) => s.setSearchQuery);
   const searchQuery = useUiStore((s) => s.searchQuery);
   const selectedLandfillId = useUiStore((s) => s.selectedLandfillId);
@@ -72,9 +72,35 @@ function App() {
     fetchNews();
   }, [loadAll, fetchNews]);
 
+  const hasCheckedUpdatesRef = useRef(false);
+
   useEffect(() => {
     if (newsLoading) return;
-    if (changelog.length === 0 && announcements.length === 0) return;
+
+    if (hasCheckedUpdatesRef.current) return;
+
+    const hasVisitedLegacy = localStorage.getItem("app_has_visited_before");
+    const dataEmpty = changelog.length === 0 && announcements.length === 0;
+
+    if (!hasVisitedLegacy) {
+      openModal("about", false, { initialTab: "project" });
+
+      localStorage.setItem("app_has_visited_before", "true");
+
+      if (changelog[0]?.date) {
+        localStorage.setItem("app_last_seen_update", changelog[0].date);
+      }
+      if (announcements.find(a => a.active)?.id) {
+        localStorage.setItem("app_last_seen_announcement", announcements.find(a => a.active)!.id);
+      }
+
+      hasCheckedUpdatesRef.current = true;
+      return;
+    }
+
+    if (dataEmpty) {
+      return;
+    }
 
     const latestUpdateDate = changelog[0]?.date;
     const lastSeenUpdate = localStorage.getItem("app_last_seen_update");
@@ -85,23 +111,30 @@ function App() {
     const lastSeenAnnouncementId = localStorage.getItem("app_last_seen_announcement");
     const hasNewAnnouncement = latestAnnouncementId && lastSeenAnnouncementId !== latestAnnouncementId;
 
-    const hasVisitedLegacy = localStorage.getItem("app_has_visited_before");
+    let shouldOpen = false;
+    let initialTab: 'project' | 'announcements' | 'changelog' = 'project';
 
-    const shouldOpen = !hasVisitedLegacy || hasNewUpdate || hasNewAnnouncement;
+    if (hasNewAnnouncement) {
+      shouldOpen = true;
+      initialTab = "announcements";
+    } else if (hasNewUpdate) {
+      shouldOpen = true;
+      initialTab = "changelog";
+    }
 
     if (shouldOpen) {
-      openModal("about");
+      openModal("about", false, { initialTab });
 
-      if (!hasVisitedLegacy) {
-        localStorage.setItem("app_has_visited_before", "true");
-        if (latestUpdateDate) {
-          localStorage.setItem("app_last_seen_update", latestUpdateDate);
-        }
-        if (latestAnnouncementId) {
-          localStorage.setItem("app_last_seen_announcement", latestAnnouncementId);
-        }
+      if (latestUpdateDate) {
+        localStorage.setItem("app_last_seen_update", latestUpdateDate);
       }
-          }
+      if (latestAnnouncementId) {
+        localStorage.setItem("app_last_seen_announcement", latestAnnouncementId);
+      }
+    }
+
+    hasCheckedUpdatesRef.current = true;
+
   }, [openModal, newsLoading, changelog, announcements]);
 
   // Wrapper para paneles móviles (Search, Legend, etc.)
@@ -280,7 +313,7 @@ function App() {
           )}
 
         {activeModal === "gallery" &&
-          renderIndexWrapper(<DetailsGalleryModal />)}
+          renderIndexWrapper(<GalleryModal />)}
 
         {activeModal === "related_documentation" &&
           renderIndexWrapper(<DetailsRelatedDocumentationModal />)}

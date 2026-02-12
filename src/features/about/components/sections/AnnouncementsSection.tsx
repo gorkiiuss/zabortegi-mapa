@@ -1,18 +1,21 @@
+// src/features/about/components/sections/AnnouncementsSection.tsx
+
 import { useLanguageStore } from "@shared/state/languageStore";
-import { FileText, ExternalLink, MapPin } from "@shared/components/Icons";
+import { FileText, ExternalLink, MapPin, Calendar } from "@shared/components/Icons";
 import { useLandfillsStore } from "@features/landfills/state/landfillsStore";
 import { useLandfillNavigation } from "@features/landfills/hooks/useLandfillNavigation";
 import { useNewsStore } from "@features/about/state/newsStore";
+import { WidgetRenderer } from "../widgets/WidgetRenderer";
 
 export function AnnouncementsSection() {
-  const { currentLanguage, t } = useLanguageStore();
-  
+  const { currentLanguage, t, formatDate } = useLanguageStore();
+
   const landfills = useLandfillsStore((s) => s.landfills);
   const { navigateByCode } = useLandfillNavigation();
   const announcements = useNewsStore((s) => s.announcements);
 
   const activePosts = announcements.filter((a) => a.active);
-  const sortedPosts = activePosts.sort((a, b) => 
+  const sortedPosts = activePosts.sort((a, b) =>
     new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 
@@ -25,83 +28,76 @@ export function AnnouncementsSection() {
   }
 
   return (
-    <div className="space-y-8 py-2">
+    <div className="space-y-12 py-4">
       {sortedPosts.map((post) => (
         <article
           key={post.id}
-          className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-md"
+          className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-md"
         >
-          {post.image && (
-            <div className="h-48 w-full overflow-hidden bg-slate-100">
-              <img
-                src={post.image}
-                alt=""
-                className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
-              />
-            </div>
-          )}
+          <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-blue-400 to-emerald-400 opacity-0 transition-opacity group-hover:opacity-100" />
 
-          <div className="p-5">
-            <div className="mb-4">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                {post.date}
-              </span>
-              <h3 className="mt-1 text-lg font-bold leading-tight text-slate-800">
-                {post.title[currentLanguage]}
-              </h3>
+          <div className="p-6 sm:p-8">
+            <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
+              <Calendar className="h-3 w-3" />
+              <time dateTime={post.date}>{formatDate(post.date, "numeric")}</time>
             </div>
+
+            <h3 className="mb-4 text-2xl font-bold leading-tight text-slate-800">
+              {post.title[currentLanguage]}
+            </h3>
+
+            <WidgetRenderer widgets={post.widgets} />
 
             <div
-              className="prose prose-sm prose-slate max-w-none text-slate-600"
+              className="prose prose-sm prose-slate max-w-none text-slate-600 leading-relaxed"
               dangerouslySetInnerHTML={{ __html: post.content[currentLanguage] }}
             />
 
-            {post.relatedLandfillCodes && post.relatedLandfillCodes.length > 0 && (
-              <div className="mt-4 rounded-xl border border-blue-100 bg-blue-50/50 p-3">
-                <span className="mb-2 block text-[10px] font-bold uppercase tracking-wide text-blue-400">
-                  {currentLanguage === "es" ? "Afecta a:" : "Eragina dauka:"}
-                </span>
-                <div className="flex flex-wrap gap-2">
-                  {post.relatedLandfillCodes.map((code) => {
-                    const lf = landfills.find((l) => l.code === code);
-                    if (!lf) return null;
+            {(post.relatedLandfillCodes?.length || post.attachments?.length) ? (
+              <div className="mt-8 flex flex-col gap-6 border-t border-slate-100 pt-6">
 
-                    return (
-                      <button
-                        key={code}
-                        onClick={() => navigateByCode(code)}
-                        className="group flex items-center gap-1.5 rounded-lg border border-blue-200 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 shadow-sm transition-all hover:border-blue-400 hover:text-blue-700 hover:shadow-md active:scale-95"
+                {post.relatedLandfillCodes && post.relatedLandfillCodes.length > 0 && (
+                  <div className="flex flex-col gap-3">
+                    <span className="text-[10px] font-bold uppercase tracking-wide text-slate-400">
+                      {currentLanguage === "es" ? "Mencionado en:" : "Aipatua:"}
+                    </span>
+                    <div className="flex flex-wrap gap-2">
+                      {post.relatedLandfillCodes.map((code) => {
+                        const lf = landfills.find((l) => l.code === code);
+                        if (!lf) return null;
+                        return (
+                          <button
+                            key={code}
+                            onClick={() => navigateByCode(code)}
+                            className="group/btn flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600 transition-colors hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700"
+                          >
+                            <MapPin size={12} className="text-slate-400 transition-colors group-hover/btn:text-blue-500" />
+                            {lf.name}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {post.attachments && post.attachments.length > 0 && (
+                  <div className="flex flex-wrap gap-3">
+                    {post.attachments.map((att, idx) => (
+                      <a
+                        key={idx}
+                        href={att.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-xs font-semibold text-white shadow-sm transition-transform hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md active:translate-y-0"
                       >
-                        <MapPin size={12} className="text-blue-400 transition-colors group-hover:text-blue-600" />
-                        {lf.name} <span className="text-slate-400 font-normal">({code})</span>
-                      </button>
-                    );
-                  })}
-                </div>
+                        {att.type === "pdf" ? <FileText size={14} /> : <ExternalLink size={14} />}
+                        {att.label[currentLanguage]}
+                      </a>
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
-
-            {/* Adjuntos */}
-            {post.attachments && post.attachments.length > 0 && (
-              <div className="mt-5 flex flex-wrap gap-2 border-t border-slate-100 pt-4">
-                {post.attachments.map((att, idx) => (
-                  <a
-                    key={idx}
-                    href={att.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-700 transition-all hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800"
-                  >
-                    {att.type === "pdf" ? (
-                      <FileText size={14} className="text-slate-400 group-hover:text-emerald-500" />
-                    ) : (
-                      <ExternalLink size={14} className="text-slate-400 group-hover:text-emerald-500" />
-                    )}
-                    <span>{att.label[currentLanguage]}</span>
-                  </a>
-                ))}
-              </div>
-            )}
+            ) : null}
           </div>
         </article>
       ))}

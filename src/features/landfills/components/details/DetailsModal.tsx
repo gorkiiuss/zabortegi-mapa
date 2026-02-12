@@ -54,8 +54,7 @@ export function DetailsModal() {
       <div className="flex-1 overflow-y-auto overscroll-contain bg-slate-50/30">
         <div className="flex flex-col gap-4 p-4">
           <DetailsHeader
-            imgsCount={data.imgsCount}
-            coverImageUrl={data.coverImageUrl ?? undefined}
+            landfill={landfill}
           />
 
           <DetailsBody

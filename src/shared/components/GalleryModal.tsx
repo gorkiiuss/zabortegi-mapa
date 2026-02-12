@@ -1,46 +1,34 @@
-// src/features/landfills/components/details/DetailsGalleryModal.tsx
+// src/shared/components/GalleryModal.tsx
 
-import { useEffect, useMemo, useState } from "react";
-import { useUiStore } from "@features/map/state/uiStore";
-import { buildSelectionPanelData } from "../../domain/mappers/landfillDetailsMapper";
-import { useMapModalInteractions } from "@shared/hooks/useMapModalInteractions";
-import { useLandfillsStore } from "@features/landfills/state/landfillsStore";
+import { useEffect, useState } from "react";
+import { useUiStore, type GalleryData } from "@features/map/state/uiStore";
 import { useLanguageStore } from "@shared/state/languageStore";
+import { useMapModalInteractions } from "@shared/hooks/useMapModalInteractions";
 import { ChevronLeft, ChevronRight, X } from "@shared/components/Icons";
 
-export function DetailsGalleryModal() {
-  const closeModal = useUiStore((s) => s.closeModal);
-  const selectedId = useUiStore((s) => s.selectedLandfillId);
-  const landfills = useLandfillsStore((s) => s.landfills);
+export function GalleryModal() {
+  const { closeModal, modalData } = useUiStore();
   const { t } = useLanguageStore();
 
   const { modalRef, handleMouseEnter, handleMouseLeave } =
     useMapModalInteractions();
 
-  const landfill = useMemo(
-    () => landfills.find((lf) => lf.parcelId === selectedId),
-    [landfills, selectedId],
-  );
+  const data = (modalData as GalleryData) || { title: "", images: [] };
 
-  const galleryData = useMemo(() => {
-    if (!landfill) return null;
-    const data = buildSelectionPanelData(landfill);
-    return {
-      images: data.galleryImages,
-      title: landfill.name,
-    };
-  }, [landfill]);
+  const images = data.images || [];
+  const mainTitle = data.title || "";
 
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  const images = galleryData?.images ?? [];
-  const mainTitle = galleryData?.title ?? "";
   const currentImg = images[currentIndex];
 
   const handleNext = () =>
     setCurrentIndex((prev) => (prev + 1) % images.length);
   const handlePrev = () =>
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [images.length]);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -64,7 +52,7 @@ export function DetailsGalleryModal() {
     return () => window.removeEventListener("keydown", handler);
   }, [closeModal, images.length]);
 
-  if (!landfill || images.length === 0 || !currentImg) return null;
+  if (images.length === 0 || !currentImg) return null;
 
   return (
     <div
@@ -74,7 +62,7 @@ export function DetailsGalleryModal() {
       className="fixed inset-0 z-2000 flex flex-col bg-slate-50/95 backdrop-blur-md transition-all duration-300"
       onClick={closeModal}
     >
-      {/* ─── HEADER FLOTANTE (Blanco y limpio) ─── */}
+      {/* ─── HEADER FLOTANTE ─── */}
       <div className="pointer-events-none absolute top-0 right-0 left-0 z-2010 flex items-center justify-between px-6 py-5">
         <div className="pointer-events-auto flex flex-col">
           <h2 className="text-lg leading-tight font-bold text-slate-800">
@@ -96,7 +84,7 @@ export function DetailsGalleryModal() {
           className="pointer-events-auto rounded-full border border-slate-200 bg-white p-2.5 text-slate-400 shadow-sm transition-all duration-200 hover:scale-105 hover:border-slate-300 hover:text-slate-700 hover:shadow-md"
           aria-label={t("selection.gallery.close")}
         >
-          <X size={20}/>
+          <X size={20} />
         </button>
       </div>
 
