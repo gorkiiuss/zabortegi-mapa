@@ -1,5 +1,7 @@
 // src/features/about/domain/types.ts
 
+import type { AppAction } from "@features/orchestrator/domain/types";
+
 export interface Attachment {
   type: "pdf" | "link";
   label: { es: string; eu: string };
@@ -8,11 +10,11 @@ export interface Attachment {
 
 export interface CounterWidgetConfig {
   type: 'counter';
-  targetDate?: string; 
+  targetDate?: string;
   startDate?: string;
   label: { es: string; eu: string };
   targetDateLabel?: { es: string; eu: string };
-  style?: 'neutral' | 'alarm' | 'success'; 
+  style?: 'neutral' | 'alarm' | 'success';
 }
 
 export interface GalleryWidgetConfig {
@@ -27,19 +29,24 @@ export interface AnnouncementPost {
   date: string;
   active: boolean;
   title: { es: string; eu: string };
-  
+
   content: { es: string; eu: string };
-  
+
   widgets?: Widget[];
-  
+
   attachments?: Attachment[];
-  
+
   relatedLandfillCodes?: string[];
+}
+
+export interface ChangeLogItem {
+  text: { es: string; eu: string };
+  action?: AppAction;
 }
 
 export interface ChangeLogEntry {
   version: string;
   date: string;
   title: { es: string; eu: string };
-  changes: { es: string[]; eu: string[] };
+  items: ChangeLogItem[];
 }
