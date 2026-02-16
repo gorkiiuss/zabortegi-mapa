@@ -79,6 +79,15 @@ function App() {
 
     if (hasCheckedUpdatesRef.current) return;
 
+    const params = new URLSearchParams(window.location.search);
+    const deepLinkNewsId = params.get("newsId");
+
+    if (deepLinkNewsId) {
+      openModal("about", false, { initialTab: "announcements" });
+      hasCheckedUpdatesRef.current = true;
+      return;
+    }
+
     const hasVisitedLegacy = localStorage.getItem("app_has_visited_before");
     const dataEmpty = changelog.length === 0 && announcements.length === 0;
 

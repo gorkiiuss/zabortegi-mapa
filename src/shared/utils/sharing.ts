@@ -1,51 +1,75 @@
+// src/shared/utils/sharing.ts
+
 import { useLanguageStore } from "@shared/state/languageStore";
 
 export const APP_URL = "https://zabortegiak.ekologistakmartxan.org";
 
-const getShareMessages = () => {
+// Interfaz para cuando compartimos algo específico
+interface ShareData {
+  title: string;
+  id: string; // El ID del anuncio para el deep link
+}
+
+const getShareMessages = (data?: ShareData) => {
   const t = useLanguageStore.getState().t;
 
+  // Si hay datos específicos (Noticia), generamos texto específico
+  if (data) {
+    const specificUrl = `${APP_URL}/?newsId=${data.id}`;
+    return {
+      whatsapp: `${data.title} - ${t("app.title") || "Zabortegiak"} ${specificUrl}`,
+      bluesky: `${data.title} #Zabortegiak ${specificUrl}`,
+      emailSubject: `${data.title} - Zabortegiak`,
+      emailBody: `${t("share.defaultMessage") || "Mira esta noticia"}: ${data.title}\n\n${specificUrl}`,
+      url: specificUrl
+    };
+  }
+
+  // Si no, genérico (Home)
   return {
-    default:
-      t("share.defaultMessage") ||
-      "Mira este mapa de vertederos / Begiratu zabortegi mapa hau",
-    bluesky:
-      t("share.bluesky", { hashtags: "#Zabortegiak #EkologistakMartxan" }) ||
-      "Mira este mapa #Zabortegiak",
+    whatsapp: `${t("share.defaultMessage") || "Mira este mapa"} ${APP_URL}`,
+    bluesky: `${t("share.bluesky", { hashtags: "#Zabortegiak" })} ${APP_URL}`,
+    emailSubject: "Mapa de vertederos / Zabortegien mapa",
+    emailBody: `${t("share.defaultMessage") || "Mira este mapa"}\n\n${APP_URL}`,
+    url: APP_URL
   };
 };
 
 export const shareUtils = {
-  whatsapp: () => {
-    const msgs = getShareMessages();
-    const text = encodeURIComponent(`${msgs.default} ${APP_URL}`);
+  whatsapp: (data?: ShareData) => {
+    const msgs = getShareMessages(data);
+    const text = encodeURIComponent(msgs.whatsapp);
     window.open(`https://wa.me/?text=${text}`, "_blank");
   },
 
-  bluesky: () => {
-    const msgs = getShareMessages();
-    const text = encodeURIComponent(`${msgs.bluesky} ${APP_URL}`);
+  bluesky: (data?: ShareData) => {
+    const msgs = getShareMessages(data);
+    const text = encodeURIComponent(msgs.bluesky);
     window.open(`https://bsky.app/intent/compose?text=${text}`, "_blank");
   },
 
-  facebook: () => {
-    const url = encodeURIComponent(APP_URL);
+  facebook: (data?: ShareData) => {
+    const msgs = getShareMessages(data);
+    const url = encodeURIComponent(msgs.url);
+    // Facebook solo permite compartir URL, no texto predefinido fácilmente
     window.open(
       `https://www.facebook.com/sharer/sharer.php?u=${url}`,
       "_blank",
     );
   },
 
-  email: () => {
-    const msgs = getShareMessages();
-    const subject = encodeURIComponent("Mapa de vertederos / Zabortegien mapa");
-    const body = encodeURIComponent(`${msgs.default}\n\n${APP_URL}`);
+  email: (data?: ShareData) => {
+    const msgs = getShareMessages(data);
+    const subject = encodeURIComponent(msgs.emailSubject);
+    const body = encodeURIComponent(msgs.emailBody);
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
   },
 
-  copyLink: async () => {
+  copyLink: async (data?: ShareData) => {
+    const msgs = getShareMessages(data);
     try {
-      await navigator.clipboard.writeText(APP_URL);
+      await navigator.clipboard.writeText(msgs.url);
+      // Aquí podrías disparar un toast de "Copiado"
     } catch (err) {
       console.error("Error al copiar", err);
     }

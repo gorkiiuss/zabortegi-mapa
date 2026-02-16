@@ -1,3 +1,5 @@
+// src/features/toolbar/hooks/useToolbarMenu.ts
+
 import { useMapStore } from "@features/map/state/mapStore";
 import { useUiStore } from "@features/map/state/uiStore";
 import { useLanguageStore } from "@shared/state/languageStore";

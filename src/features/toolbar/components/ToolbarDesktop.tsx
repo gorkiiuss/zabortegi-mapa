@@ -1,4 +1,5 @@
 // src/features/toolbar/components/ToolbarDesktop.tsx
+
 import { useState } from "react";
 import { useToolbarMenu } from "../hooks/useToolbarMenu";
 import { useMapPanelInteractions } from "@shared/hooks/useMapPanelInteractions";

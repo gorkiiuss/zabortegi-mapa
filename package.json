@@ -12,6 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@inquirer/editor": "^5.0.4",
     "@tailwindcss/vite": "^4.1.17",
     "clsx": "^2.1.1",
     "html2pdf.js": "^0.12.1",
