@@ -66,7 +66,7 @@ export function AnnouncementsSection() {
                       aria-label="Compartir"
                     >
                       <Share2 size={14} />
-                      <span>{currentLanguage === 'es' ? 'Compartir' : 'Partekatu'}</span>
+                      <span>{t("about.announcements.share")}</span>
                     </button>
                   }
                   items={[
@@ -120,7 +120,7 @@ export function AnnouncementsSection() {
                 {post.relatedLandfillCodes && post.relatedLandfillCodes.length > 0 && (
                   <div className="flex flex-col gap-3">
                     <span className="text-[10px] font-bold uppercase tracking-wide text-slate-400">
-                      {currentLanguage === "es" ? "Mencionado en:" : "Aipatua:"}
+                      {t("about.announcements.mentioned_in")}
                     </span>
                     <div className="flex flex-wrap gap-2">
                       {post.relatedLandfillCodes.map((code) => {

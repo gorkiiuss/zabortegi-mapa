@@ -19,7 +19,7 @@ interface TimeState {
 }
 
 export function CounterWidget({ config }: Props) {
-  const { currentLanguage, formatDate } = useLanguageStore();
+  const { currentLanguage, t, formatDate } = useLanguageStore();
 
   const [state, setState] = useState<TimeState>({
     days: 0, hours: 0, minutes: 0, seconds: 0, progress: 0, isFinished: false
@@ -106,7 +106,7 @@ export function CounterWidget({ config }: Props) {
             {/* Mensaje de Finalizado */}
             {state.isFinished && (
               <span className="mt-1 block text-[10px] font-bold uppercase tracking-wider text-red-600">
-                {currentLanguage === 'es' ? 'Plazo finalizado' : 'Epea amaituta'}
+                {t("about.widget.countdown.finished")}
               </span>
             )}
 
@@ -121,7 +121,7 @@ export function CounterWidget({ config }: Props) {
 
         {/* Números */}
         <div className="flex justify-center gap-2 text-center" style={{ color: dynamicColor }}>
-          <TimeUnit value={state.days} label={currentLanguage === 'es' ? 'Días' : 'Egun'} />
+          <TimeUnit value={state.days} label={t("about.widget.countdown.days")} />
           <span className="mt-2 text-lg font-light opacity-30">:</span>
           <TimeUnit value={state.hours} label="H" />
           <span className="mt-2 text-lg font-light opacity-30">:</span>

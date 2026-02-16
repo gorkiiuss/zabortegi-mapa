@@ -11,7 +11,7 @@ interface Props {
 
 export function GalleryWidget({ config }: Props) {
   const { toggleActiveModal } = useUiStore();
-  const { currentLanguage } = useLanguageStore();
+  const { t } = useLanguageStore();
 
   const images = config.images || [];
 
@@ -19,7 +19,7 @@ export function GalleryWidget({ config }: Props) {
 
   const handleOpenGallery = () => {
     toggleActiveModal("gallery", true, {
-      title: currentLanguage === 'es' ? 'Galería de imágenes' : 'Irudi galeria',
+      title: t("about.widget.gallery.title"),
       images: images.map(url => ({ url, title: '' }))
     });
   };
@@ -66,9 +66,7 @@ export function GalleryWidget({ config }: Props) {
       >
         <ImageIcon size={14} />
         <span>
-          {currentLanguage === 'es'
-            ? `Ver galería (${images.length} imágenes)`
-            : `Ikusi galeria (${images.length} irudi)`}
+          {t("about.widget.gallery.see", { count: images.length })}
         </span>
       </button>
     </div>
