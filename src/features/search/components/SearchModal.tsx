@@ -1,3 +1,5 @@
+// src/features/search/components/SearchModal.tsx
+
 import { useUiStore } from "@features/map/state/uiStore";
 import { useSearchLogic } from "../hooks/useSearchLogic";
 import { SearchBody } from "./SearchBody";

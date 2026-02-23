@@ -29,6 +29,7 @@ export function DetailsSidebar() {
 
   return (
     <div
+      id="tutorial-details-sidebar"
       ref={ref}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -79,6 +80,7 @@ export function DetailsSidebar() {
             landfill={landfill}
             isDownloading={isDownloading}
             onDownload={handleDownloadReport}
+            idPrefix="desktop"
           />
         </div>
       </div>

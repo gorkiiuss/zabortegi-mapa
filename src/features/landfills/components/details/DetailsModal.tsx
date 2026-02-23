@@ -27,6 +27,7 @@ export function DetailsModal() {
 
   return (
     <div
+      id="tutorial-mobile-details"
       ref={modalRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -62,6 +63,7 @@ export function DetailsModal() {
             landfill={landfill}
             isDownloading={isDownloading}
             onDownload={handleDownloadReport}
+            idPrefix="mobile"
           />
         </div>
       </div>

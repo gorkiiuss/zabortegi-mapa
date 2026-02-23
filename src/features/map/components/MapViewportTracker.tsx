@@ -1,6 +1,8 @@
 // src/features/map/components/MapViewportTracker.tsx
-import { useEffect } from "react";
+
+import { use, useEffect } from "react";
 import { useMap } from "react-leaflet";
+import L from "leaflet";
 import { useMapStore } from "../state/mapStore";
 import { useNoInfoLandfills } from "@features/landfills/hooks/useNoInfoLandfills";
 
@@ -10,7 +12,10 @@ export function MapViewportTracker() {
   const setBounds = useMapStore((s) => s.setBounds);
 
   const focusLandfillId = useMapStore((s) => s.focusLandfillId);
+  const focusOffset = useMapStore((s) => s.focusOffset);
   const setFocusLandfillId = useMapStore((s) => s.setFocusLandfillId);
+
+  const resetZoomSignal = useMapStore((s) => s.resetZoomSignal);
 
   const landfills = useNoInfoLandfills();
 
@@ -45,11 +50,9 @@ export function MapViewportTracker() {
   }, [map, setViewport, setBounds]);
 
   useEffect(() => {
-    if (!focusLandfillId) return;
-    if (!landfills.length) return;
+    if (!focusLandfillId || !landfills.length) return;
 
     const lf = landfills.find((l) => l.parcelId === focusLandfillId);
-
     if (!lf) {
       setFocusLandfillId(null);
       return;
@@ -58,11 +61,26 @@ export function MapViewportTracker() {
     const currentZoom = map.getZoom();
     const targetZoom = Math.max(currentZoom, 14);
 
-    map.flyTo([lf.centroid.lat, lf.centroid.lng], targetZoom, {
-      duration: 0.8,
-    });
+    const originalLatLng = L.latLng(lf.centroid.lat, lf.centroid.lng);
+    if (focusOffset) {
+      let targetPoint = map.project(originalLatLng, targetZoom);
+      targetPoint = L.point(targetPoint.x - focusOffset[0], targetPoint.y - focusOffset[1]);
+      const offsetLatLng = map.unproject(targetPoint, targetZoom);
+      map.flyTo(offsetLatLng, targetZoom, { duration: 0.8 });
+    } else {
+      map.flyTo([lf.centroid.lat, lf.centroid.lng], targetZoom, {
+        duration: 0.8,
+      });
+    }
 
     setFocusLandfillId(null);
-  }, [focusLandfillId, landfills, map, setFocusLandfillId]);
+  }, [focusLandfillId, focusOffset, landfills, map, setFocusLandfillId]);
+
+  useEffect(() => {
+    if (resetZoomSignal > 0) {
+      map.flyTo([43.4, -2.9], 9, { duration: 0.8 });
+    }
+  }, [resetZoomSignal, map]);
+
   return null;
 }

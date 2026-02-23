@@ -45,6 +45,9 @@ interface UiState {
   closeModal: () => void;
 
   openIndexWithQuery: (q: string) => void;
+
+  openToolbarDropdownId: string | null;
+  setOpenToolbarDropdownId: (id: string | null) => void;
 }
 
 export const useUiStore = create<UiState>((set) => ({
@@ -54,6 +57,8 @@ export const useUiStore = create<UiState>((set) => ({
   activeModal: "none",
   modalStack: [],
   modalData: null,
+  openToolbarDropdownId: null,
+
 
   setSelectedLandfillId: (id) => set({ selectedLandfillId: id }),
   setSearchQuery: (q) => set({ searchQuery: q }),
@@ -105,6 +110,7 @@ export const useUiStore = create<UiState>((set) => ({
         activeModal: prev,
         modalStack: newStack,
         modalData: null,
+        openToolbarDropdownId: null,
       };
     }),
 
@@ -128,4 +134,6 @@ export const useUiStore = create<UiState>((set) => ({
         modalData: null,
       };
     }),
+
+  setOpenToolbarDropdownId: (id) => set({ openToolbarDropdownId: id }),
 }));

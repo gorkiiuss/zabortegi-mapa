@@ -1,3 +1,5 @@
+// src/features/toolbar/components/ToolbarModal.tsx
+
 import { useUiStore } from "@features/map/state/uiStore";
 import { useToolbarMenu } from "../hooks/useToolbarMenu";
 import { useMapModalInteractions } from "@shared/hooks/useMapModalInteractions";
@@ -73,6 +75,7 @@ export function ToolbarModal({ onOpenIndex }: ToolbarModalProps) {
                 {section.items.map((item, idx) => (
                   <button
                     key={idx}
+                    id={item.id ? `mobile-${item.id}` : undefined}
                     onClick={!item.disabled ? item.action : undefined}
                     className={getItemClasses(item)}
                   >

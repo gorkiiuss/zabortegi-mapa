@@ -1,4 +1,5 @@
 // src/features/map/state/mapStore.ts
+
 import { create } from "zustand";
 
 interface MapViewport {
@@ -13,12 +14,16 @@ interface MapState {
   showNoInfoLandfills: boolean;
 
   focusLandfillId: string | null;
+  focusOffset?: [number, number];
+  resetZoomSignal: number;
 
   setViewport: (partial: Partial<MapViewport>) => void;
   setBounds: (bounds: [number, number, number, number] | undefined) => void;
   toggleShowNoInfoLandfills: () => void;
   setMaxVisibleInReduced: (value: number) => void;
-  setFocusLandfillId: (id: string | null) => void;
+
+  setFocusLandfillId: (id: string | null, offset?: [number, number]) => void;
+  triggerResetZoom: () => void;
 }
 
 export const useMapStore = create<MapState>((set) => ({
@@ -30,6 +35,8 @@ export const useMapStore = create<MapState>((set) => ({
   showNoInfoLandfills: false,
   maxVisibleInReduced: 20,
   focusLandfillId: null,
+  focusOffset: undefined,
+  resetZoomSignal: 0,
 
   setViewport: (partial) =>
     set((state) => ({
@@ -54,5 +61,6 @@ export const useMapStore = create<MapState>((set) => ({
 
   setMaxVisibleInReduced: (maxVisibleInReduced) => set({ maxVisibleInReduced }),
 
-  setFocusLandfillId: (focusLandfillId) => set({ focusLandfillId }),
+  setFocusLandfillId: (id, offset) => set({ focusLandfillId: id, focusOffset: offset }),
+  triggerResetZoom: () => set((state) => ({ resetZoomSignal: state.resetZoomSignal + 1 })),
 }));

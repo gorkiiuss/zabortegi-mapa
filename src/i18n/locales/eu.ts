@@ -22,6 +22,7 @@ export default {
         menu: "Menua",
         search_placeholder: "Bilatu zabortegiak...",
         legend: "Legenda",
+        title: "Zabortegien Mapa"
     },
     loading: {
         title: "Zabortegiak kargatzen...",
@@ -260,5 +261,11 @@ export default {
         defaultMessage:
             "Begiratu EAEn dauden zabortegien mapa hau: Utzitako zabortegiak EAEn - 2008tik gainditu gabeko irakasgaia",
         bluesky: "Begiratu EAEn dauden zabortegien mapa hau {{hashtags}}",
+    },
+    tutorial: {
+        title: "Tutoriala",
+        previous: "Aurrekoa",
+        next: "Hurrengoa",
+        start: "Hasi"
     }
 }

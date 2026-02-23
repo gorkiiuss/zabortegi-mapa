@@ -1,3 +1,5 @@
+// src/features/search/components/SearchDesktopPanel.tsx
+
 import { useState, useEffect } from "react";
 import { useSearchLogic } from "../hooks/useSearchLogic";
 import { SearchBody } from "./SearchBody";
@@ -7,9 +9,10 @@ import { X } from "@shared/components/Icons";
 
 interface SearchDesktopPanelProps {
   onOpenIndex?: (initialQuery: string) => void;
+  id?: string;
 }
 
-export function SearchDesktopPanel({ onOpenIndex }: SearchDesktopPanelProps) {
+export function SearchDesktopPanel({ onOpenIndex, id }: SearchDesktopPanelProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const { t } = useLanguageStore();
 
@@ -41,6 +44,7 @@ export function SearchDesktopPanel({ onOpenIndex }: SearchDesktopPanelProps) {
 
   return (
     <div
+      id={id}
       ref={ref}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

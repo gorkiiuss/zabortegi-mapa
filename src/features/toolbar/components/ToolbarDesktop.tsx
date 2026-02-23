@@ -4,44 +4,48 @@ import { useState } from "react";
 import { useToolbarMenu } from "../hooks/useToolbarMenu";
 import { useMapPanelInteractions } from "@shared/hooks/useMapPanelInteractions";
 import { DropdownMenu } from "@shared/components/DropdownMenu";
+import { useUiStore } from "@features/map/state/uiStore";
 
 interface ToolbarDesktopProps {
   onOpenLandfillIndex: () => void;
+  id?: string;
 }
 
-export function ToolbarDesktop({ onOpenLandfillIndex }: ToolbarDesktopProps) {
-  const [openSectionId, setOpenSectionId] = useState<string | null>(null);
-
+export function ToolbarDesktop({ onOpenLandfillIndex, id }: ToolbarDesktopProps) {
+  const { openToolbarDropdownId, setOpenToolbarDropdownId } = useUiStore();
   const { menuStructure } = useToolbarMenu({
     onOpenIndex: onOpenLandfillIndex,
-    onCloseUi: () => setOpenSectionId(null),
+    onCloseUi: () => setOpenToolbarDropdownId(null),
   });
 
   const toggle = (id: string) => {
-    setOpenSectionId((current) => (current === id ? null : id));
+    setOpenToolbarDropdownId(openToolbarDropdownId === id ? null : id);
   };
 
   const { ref, handleMouseEnter, handleMouseLeave } = useMapPanelInteractions();
 
   return (
     <div
+      id={id}
       ref={ref}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className="absolute top-3 left-3 z-1000 flex gap-3"
     >
       {menuStructure.map((section) => {
-        const isOpen = openSectionId === section.id;
+        const isOpen = openToolbarDropdownId === section.id;
 
         return (
           <DropdownMenu
             key={section.id}
             isOpen={isOpen}
-            onClose={() => setOpenSectionId(null)}
+            onClose={() => setOpenToolbarDropdownId(null)}
             items={section.items}
             align="left"
+            idPrefix="desktop"
             trigger={
               <button
+                id={`tutorial-menu-${section.id}`}
                 onClick={() => toggle(section.id)}
                 className={`flex items-center gap-2 rounded-b-lg border-x border-b border-slate-300 px-3 py-1 text-sm shadow-sm transition-colors ${isOpen ? "bg-slate-100 font-medium" : "bg-white/90 hover:bg-white"}`}
               >

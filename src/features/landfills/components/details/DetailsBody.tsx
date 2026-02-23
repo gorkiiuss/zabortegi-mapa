@@ -16,6 +16,7 @@ interface DetailsBodyProps {
   landfill: any;
   isDownloading: boolean;
   onDownload: () => void;
+  idPrefix?: string;
 }
 
 export function DetailsBody({
@@ -23,6 +24,7 @@ export function DetailsBody({
   landfill,
   isDownloading,
   onDownload,
+  idPrefix = "",
 }: DetailsBodyProps) {
   const toggleActiveModal = useUiStore((s) => s.toggleActiveModal);
   const { t } = useLanguageStore();
@@ -45,15 +47,17 @@ export function DetailsBody({
     hover:border-emerald-400 hover:bg-emerald-50
   `;
 
+  const buildId = (base: string) => idPrefix ? `${idPrefix}-${base}` : base;
+
   return (
     <div className="flex-1 space-y-3.5 pr-1.5 pb-1 text-slate-700 md:space-y-4">
       {/* BOTÓN 1: Descargar Informe */}
       <button
+        id={buildId("tutorial-btn-pdf")}
         onClick={onDownload}
         disabled={isDownloading}
-        className={`${baseLayoutClasses} ${standardVariant} ${
-          isDownloading ? "cursor-wait opacity-70" : ""
-        }`}
+        className={`${baseLayoutClasses} ${standardVariant} ${isDownloading ? "cursor-wait opacity-70" : ""
+          }`}
       >
         {isDownloading ? (
           <Spinner className="h-4 w-4 animate-spin text-slate-600" />
@@ -69,14 +73,16 @@ export function DetailsBody({
 
       {/* BOTÓN 2: Documentos Relacionados */}
       <button
+        id={buildId("tutorial-btn-docs")}
         className={`${baseLayoutClasses} ${standardVariant}`}
         onClick={() => toggleActiveModal("related_documentation", true)}
       >
-        <Folder size={18} className="text-slate-500"/>
+        <Folder size={18} className="text-slate-500" />
         <span>{t("selection.related_docs")}</span>
       </button>
 
       <button
+        id={buildId("tutorial-btn-corrections")}
         className={`${baseLayoutClasses} ${unimplementedVariant}`}
         onClick={() => toggleActiveModal("future_feature" as any, true)}
       >

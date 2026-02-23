@@ -9,7 +9,7 @@ import { WidgetRenderer } from "../widgets/WidgetRenderer";
 import { DropdownMenu } from "@shared/components/DropdownMenu";
 import { useState } from "react";
 import { shareUtils } from "@shared/utils/sharing";
-import { Share2 } from "lucide-react";
+import { Share } from "@shared/components/Icons";
 
 export function AnnouncementsSection() {
   const { currentLanguage, t, formatDate } = useLanguageStore();
@@ -40,10 +40,10 @@ export function AnnouncementsSection() {
           key={post.id}
           className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-md"
         >
-          <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-blue-400 to-emerald-400 opacity-0 transition-opacity group-hover:opacity-100" />
+          <div className="absolute left-0 top-0 h-full w-1 bg-linear-to-b from-blue-400 to-emerald-400 opacity-0 transition-opacity group-hover:opacity-100" />
 
           <div className="p-6 sm:p-8">
-            
+
             <div className="mb-3 flex items-start justify-between">
               <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
                 <Calendar className="h-3 w-3" />
@@ -53,7 +53,7 @@ export function AnnouncementsSection() {
               </div>
 
               {/* BOTÓN COMPARTIR */}
-<div className="relative">
+              <div className="relative">
                 <DropdownMenu
                   isOpen={openShareId === post.id}
                   onClose={() => setOpenShareId(null)}
@@ -61,11 +61,10 @@ export function AnnouncementsSection() {
                   trigger={
                     <button
                       onClick={() => setOpenShareId(openShareId === post.id ? null : post.id)}
-                      // Cambio de estilo: quitamos h-8 w-8, añadimos padding y gap para el texto
                       className="group flex items-center gap-2 rounded-full border border-transparent bg-white px-3 py-1.5 text-xs font-medium text-slate-400 transition-all hover:border-slate-100 hover:bg-slate-50 hover:text-blue-600 hover:shadow-sm"
                       aria-label="Compartir"
                     >
-                      <Share2 size={14} />
+                      <Share size={14} />
                       <span>{t("about.announcements.share")}</span>
                     </button>
                   }
@@ -81,6 +80,20 @@ export function AnnouncementsSection() {
                       label: "Bluesky",
                       action: () => {
                         shareUtils.bluesky({ title: post.title[currentLanguage], id: post.id });
+                        setOpenShareId(null);
+                      }
+                    },
+                    {
+                      label: "Mastodon",
+                      action: () => {
+                        shareUtils.mastodon({ title: post.title[currentLanguage], id: post.id });
+                        setOpenShareId(null);
+                      }
+                    },
+                    {
+                      label: "Facebook",
+                      action: () => {
+                        shareUtils.facebook({ title: post.title[currentLanguage], id: post.id });
                         setOpenShareId(null);
                       }
                     },
@@ -149,7 +162,7 @@ export function AnnouncementsSection() {
                         href={att.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-xs font-bold !text-white shadow-sm transition-transform hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md active:translate-y-0"                      >
+                        className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-xs font-bold text-white! shadow-sm transition-transform hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md active:translate-y-0"                      >
                         {att.type === "pdf" ? <FileText size={14} /> : <ExternalLink size={14} />}
                         {att.label[currentLanguage]}
                       </a>

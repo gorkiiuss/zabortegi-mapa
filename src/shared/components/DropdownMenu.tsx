@@ -1,3 +1,5 @@
+// src/shared/components/DropdownMenu.tsx
+
 import type { ReactNode } from "react";
 import { Plus } from "./Icons";
 
@@ -7,6 +9,7 @@ export interface MenuItem {
   isActive?: boolean;
   disabled?: boolean;
   isFutureFeature?: boolean;
+  id?: string;
 }
 
 export interface DropdownMenuProps {
@@ -16,6 +19,7 @@ export interface DropdownMenuProps {
   onClose: () => void;
   align?: "left" | "right";
   widthClass?: string;
+  idPrefix?: string;
 }
 
 export function DropdownMenu({
@@ -25,6 +29,7 @@ export function DropdownMenu({
   onClose,
   align = "left",
   widthClass = "w-56",
+  idPrefix = "",
 }: DropdownMenuProps) {
   const originClass =
     align === "left" ? "origin-top-left left-0" : "origin-top-right right-0";
@@ -53,16 +58,16 @@ export function DropdownMenu({
       {trigger}
 
       <div
-        className={`absolute top-full z-50 mt-2 ${widthClass} ${originClass} overflow-hidden rounded-xl border border-slate-200 bg-white text-sm shadow-lg transition-all duration-150 ${
-          isOpen
+        className={`absolute top-full z-50 mt-2 ${widthClass} ${originClass} overflow-hidden rounded-xl border border-slate-200 bg-white text-sm shadow-lg transition-all duration-150 ${isOpen
             ? "translate-y-0 scale-100 opacity-100"
             : "pointer-events-none -translate-y-1 scale-95 opacity-0"
-        }`}
+          }`}
       >
         <ul className="divide-y divide-slate-100">
           {items.map((item, idx) => (
             <li
               key={idx}
+              id={item.id ? (idPrefix ? `${idPrefix}-${item.id}` : item.id) : undefined}
               onClick={() => {
                 if (!item.disabled) {
                   item.action();

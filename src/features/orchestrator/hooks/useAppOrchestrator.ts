@@ -2,11 +2,16 @@
 
 import { useCallback } from "react";
 import { useUiStore } from "@features/map/state/uiStore";
+import { useTutorialStore } from "@features/tutorial/state/tutorialStore";
+import { useMapStore } from "@features/map/state/mapStore";
 import type { AppAction } from "../domain/types";
 
 export function useAppOrchestrator() {
-    const { toggleActiveModal } = useUiStore();
+    const { toggleActiveModal, setSelectedLandfillId, setOpenToolbarDropdownId } = useUiStore();
     const openIndexWithQuery = useUiStore((s) => s.openIndexWithQuery);
+    const { startTutorial } = useTutorialStore();
+    const setFocusedLandfillId = useMapStore((s) => s.setFocusLandfillId);
+    const triggerResetZoom = useMapStore((s) => s.triggerResetZoom);
 
     const dispatch = useCallback((action: AppAction) => {
         console.log("Orchestrator Dispatch:", action.type, action.payload);
@@ -27,10 +32,30 @@ export function useAppOrchestrator() {
                 );
                 break;
 
+            case 'START_TUTORIAL':
+                startTutorial(action.payload.tutorialId);
+                break;
+
+            case 'SELECT_LANDFILL':
+                setSelectedLandfillId(action.payload.landfillId);
+                if (action.payload.landfillId) {
+                    console.log("Se está haciendo un zoom al vertedero " + action.payload.landfillId + " con un offset de " + action.payload.offset);
+                    setFocusedLandfillId(action.payload.landfillId, action.payload.offset);
+                }
+                break;
+
+            case 'RESET_MAP_ZOOM':
+                triggerResetZoom();
+                break;
+
+            case 'OPEN_TOOLBAR_DROPDOWN':
+                setOpenToolbarDropdownId(action.payload.dropdownId);
+                break;
+
             default:
                 console.warn("Acción no implementada en el orquestador:", action);
         }
-    }, [toggleActiveModal, openIndexWithQuery]);
+    }, [toggleActiveModal, openIndexWithQuery, setSelectedLandfillId, setFocusedLandfillId, triggerResetZoom, setOpenToolbarDropdownId]);
 
     return { dispatch };
 }

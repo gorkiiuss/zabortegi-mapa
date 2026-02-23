@@ -34,6 +34,9 @@ import { useLanguageStore } from "@shared/state/languageStore";
 import { ContactModal } from "@features/toolbar/components/ContactModal";
 import { useNewsStore } from "@features/about/state/newsStore";
 
+import { TutorialManager } from "@features/tutorial/components/TutorialManager";
+import { useAppOrchestrator } from "@features/orchestrator/hooks/useAppOrchestrator";
+
 function App() {
   const loadAll = useLandfillsStore((s) => s.loadAll);
   const {
@@ -44,6 +47,8 @@ function App() {
   } = useNewsStore();
 
   const landfills = useLandfillsStore((s) => s.landfills);
+
+  const landfillsLoading = useLandfillsStore((s) => s.loading);
 
   const activeModal = useUiStore((s) => s.activeModal);
   const toggleModal = useUiStore((s) => s.toggleActiveModal);
@@ -67,6 +72,8 @@ function App() {
     [landfills, selectedLandfillId],
   );
 
+  const { dispatch } = useAppOrchestrator()
+
   useEffect(() => {
     loadAll();
     fetchNews();
@@ -75,8 +82,7 @@ function App() {
   const hasCheckedUpdatesRef = useRef(false);
 
   useEffect(() => {
-    if (newsLoading) return;
-
+    if (newsLoading || landfillsLoading || landfills.length == 0) return;
     if (hasCheckedUpdatesRef.current) return;
 
     const params = new URLSearchParams(window.location.search);
@@ -89,13 +95,13 @@ function App() {
     }
 
     const hasVisitedLegacy = localStorage.getItem("app_has_visited_before");
-    const dataEmpty = changelog.length === 0 && announcements.length === 0;
 
     if (!hasVisitedLegacy) {
-      openModal("about", false, { initialTab: "project" });
+      const isMobile = window.innerWidth < 1024;
+      const tutorialId = isMobile ? "onboarding-mobile" : "onboarding";
+      dispatch({ type: "START_TUTORIAL", payload: { tutorialId } });
 
       localStorage.setItem("app_has_visited_before", "true");
-
       if (changelog[0]?.date) {
         localStorage.setItem("app_last_seen_update", changelog[0].date);
       }
@@ -106,6 +112,8 @@ function App() {
       hasCheckedUpdatesRef.current = true;
       return;
     }
+
+    const dataEmpty = changelog.length === 0 && announcements.length === 0;
 
     if (dataEmpty) {
       return;
@@ -144,7 +152,7 @@ function App() {
 
     hasCheckedUpdatesRef.current = true;
 
-  }, [openModal, newsLoading, changelog, announcements]);
+  }, [openModal, newsLoading, changelog, announcements, dispatch, landfillsLoading]);
 
   // Wrapper para paneles móviles (Search, Legend, etc.)
   const renderModalWrapper = (content: React.ReactNode) => {
@@ -225,17 +233,17 @@ function App() {
         {/* DESKTOP                                          */}
         {/* ──────────────────────────────────────────────── */}
         <div className="hidden lg:block">
-          <ToolbarDesktop onOpenLandfillIndex={() => openIndexWithQuery("")} />
+          <ToolbarDesktop id="tutorial-menu-btn" onOpenLandfillIndex={() => openIndexWithQuery("")} />
 
           <div className="absolute top-6 left-1/2 z-950 -translate-x-1/2">
-            <SearchDesktopPanel onOpenIndex={openIndexWithQuery} />
+            <SearchDesktopPanel id="tutorial-search-btn" onOpenIndex={openIndexWithQuery} />
           </div>
 
           <div className="absolute bottom-3 left-3 z-900 flex flex-col gap-3">
             <div className="self-start">
               <ZoomPanel />
             </div>
-            <LegendDesktopPanel items={legendItems} />
+            <LegendDesktopPanel id="tutorial-legend-btn" items={legendItems} />
           </div>
 
           <DetailsSidebar />
@@ -245,7 +253,7 @@ function App() {
         {/* MOBILE                                           */}
         {/* ──────────────────────────────────────────────── */}
         <div className="block lg:hidden">
-          <div className="absolute top-4 left-4 z-950">
+          <div id="tutorial-mobile-menu" className="absolute top-4 left-4 z-950">
             <ModalToggleButton
               label={t("app.menu")}
               orientation="vertical"
@@ -254,7 +262,7 @@ function App() {
             />
           </div>
 
-          <div className="absolute top-4 left-1/2 z-950 -translate-x-1/2">
+          <div id="tutorial-mobile-search" className="absolute top-4 left-1/2 z-950 -translate-x-1/2">
             <ModalToggleButton
               label={t("app.search_placeholder")}
               orientation="horizontal"
@@ -265,7 +273,7 @@ function App() {
             />
           </div>
 
-          <div className="absolute bottom-2 left-2 z-950">
+          <div id="tutorial-mobile-legend" className="absolute bottom-2 left-2 z-950">
             <ModalToggleButton
               label={t("app.legend")}
               orientation="vertical"
@@ -338,6 +346,7 @@ function App() {
         {activeModal === ("contact" as any) &&
           renderCenteredAlertWrapper(<ContactModal />)}
       </MapContainer>
+      <TutorialManager />
       <LandfillsLoadingOverlay />
     </>
   );

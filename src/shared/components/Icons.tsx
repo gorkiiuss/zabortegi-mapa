@@ -33,7 +33,13 @@ import {
   Droplet,
   Target,
   Megaphone,
-  Calendar
+  Calendar,
+  Share2,
+  MousePointerClick,
+  ArrowRightCircle,
+  Clock,
+  Ban,
+  GraduationCap
 } from "lucide-react";
 
 export interface IconProps extends SVGProps<SVGSVGElement> {
@@ -101,5 +107,11 @@ export {
   Droplet,
   Target,
   Megaphone,
-  Calendar
+  Calendar,
+  Share2 as Share,
+  MousePointerClick,
+  ArrowRightCircle,
+  Clock,
+  Ban,
+  GraduationCap
 };

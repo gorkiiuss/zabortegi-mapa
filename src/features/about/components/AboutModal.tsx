@@ -3,10 +3,8 @@
 import { useLanguageStore } from "@shared/state/languageStore";
 
 import { useAboutModalLogic, type AboutTab } from "../hooks/useAboutModalLogic";
-import {
-  Chip,
-  LanguageSelector,
-} from "./ui/AboutSharedComponents";
+import { Chip } from "./ui/AboutSharedComponents";
+import { LanguageSelector } from "@shared/components/LanguageSelector";
 import { ChangelogSection } from "./sections/ChangelogSection";
 import { ProjectInfoSection } from "./sections/ProjectInfoSection";
 import { Github, Globe, Info, Megaphone, Sparkles, X } from "@shared/components/Icons";
@@ -43,11 +41,10 @@ export function AboutModal() {
     return (
       <button
         onClick={() => setActiveTab(id)}
-        className={`relative flex items-center gap-2 border-b-2 px-4 py-3 text-sm font-medium transition-colors outline-none ${
-          isActive
-            ? "border-emerald-500 text-emerald-700 bg-emerald-50/10"
-            : "border-transparent text-slate-500 hover:border-slate-200 hover:text-slate-700"
-        }`}
+        className={`relative flex items-center gap-2 border-b-2 px-4 py-3 text-sm font-medium transition-colors outline-none ${isActive
+          ? "border-emerald-500 text-emerald-700 bg-emerald-50/10"
+          : "border-transparent text-slate-500 hover:border-slate-200 hover:text-slate-700"
+          }`}
       >
         {icon}
         {label}
@@ -55,7 +52,7 @@ export function AboutModal() {
           <span className="absolute top-2 right-1 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white animate-pulse" />
         )}
       </button>
-  );
+    );
   };
 
   return (
@@ -74,38 +71,38 @@ export function AboutModal() {
       </button>
 
       <div className="group relative h-48 w-full shrink-0 bg-slate-900 sm:h-56">
-         <img
-            src={PORTADA}
-            alt="Portada"
-            className="h-full w-full object-cover object-top opacity-90"
-            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+        <img
+          src={PORTADA}
+          alt="Portada"
+          className="h-full w-full object-cover object-top opacity-90"
+          onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+        />
+        <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
+        <div className="absolute bottom-0 left-0 w-full p-6 text-white">
+          <div className="mb-2 inline-block animate-pulse rounded bg-red-600 px-2 py-0.5 text-[10px] font-bold tracking-widest text-white uppercase shadow-lg">
+            {t("about.hero.badge")}
+          </div>
+          <h1
+            className="text-2xl leading-tight font-bold drop-shadow-md sm:text-3xl"
+            dangerouslySetInnerHTML={{ __html: t("about.hero.title") }}
           />
-          <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
-          <div className="absolute bottom-0 left-0 w-full p-6 text-white">
-            <div className="mb-2 inline-block animate-pulse rounded bg-red-600 px-2 py-0.5 text-[10px] font-bold tracking-widest text-white uppercase shadow-lg">
-              {t("about.hero.badge")}
-            </div>
-            <h1
-              className="text-2xl leading-tight font-bold drop-shadow-md sm:text-3xl"
-              dangerouslySetInnerHTML={{ __html: t("about.hero.title") }}
-            />
-            <p className="mt-2 mb-0 text-sm font-light text-slate-200 drop-shadow-sm">
-              {t("about.hero.subtitle")}
-            </p>
-          </div>
+          <p className="mt-2 mb-0 text-sm font-light text-slate-200 drop-shadow-sm">
+            {t("about.hero.subtitle")}
+          </p>
+        </div>
       </div>
-            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 bg-white px-6 py-4">
-          <div className="flex flex-wrap gap-2">
-            <Chip href="https://github.com/gorkiiuss/zabortegi-mapa" icon={<Github />} label={t("about.chips.code")} />
-            <Chip href="https://ekologistakmartxan.org" icon={<Globe />} label="Ekologistak Martxan" iconHoverColor="text-green-600" />
-            <button onClick={handleOpenAttributions} className="group flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-sm transition-colors hover:bg-slate-50">
-              <Info /> {t("about.chips.credits")}
-            </button>
-          </div>
-          <div className="flex shrink-0 items-center gap-3">
-            <span className="font-mono text-[10px] font-medium text-slate-400 select-none">v{appVersion}</span>
-            <LanguageSelector />
-          </div>
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 bg-white px-6 py-4">
+        <div className="flex flex-wrap gap-2">
+          <Chip href="https://github.com/gorkiiuss/zabortegi-mapa" icon={<Github />} label={t("about.chips.code")} />
+          <Chip href="https://ekologistakmartxan.org" icon={<Globe />} label="Ekologistak Martxan" iconHoverColor="text-green-600" />
+          <button onClick={handleOpenAttributions} className="group flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-sm transition-colors hover:bg-slate-50">
+            <Info /> {t("about.chips.credits")}
+          </button>
+        </div>
+        <div className="flex shrink-0 items-center gap-3">
+          <span className="font-mono text-[10px] font-medium text-slate-400 select-none">v{appVersion}</span>
+          <LanguageSelector />
+        </div>
       </div>
 
       <div className="sticky top-0 z-20 flex w-full border-b border-slate-200 bg-white px-4 shadow-xs">
@@ -121,5 +118,5 @@ export function AboutModal() {
           {activeTab === "project" && <ProjectInfoSection />}
         </div>
       </div>
-    </div>  );
+    </div>);
 }

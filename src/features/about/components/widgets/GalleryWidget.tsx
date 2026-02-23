@@ -3,7 +3,7 @@
 import { useUiStore } from "@features/map/state/uiStore";
 import { useLanguageStore } from "@shared/state/languageStore";
 import type { GalleryWidgetConfig } from "../../domain/types";
-import { Image as ImageIcon, Plus } from "lucide-react";
+import { Image as ImageIcon, Plus } from "@shared/components/Icons";
 
 interface Props {
   config: GalleryWidgetConfig;

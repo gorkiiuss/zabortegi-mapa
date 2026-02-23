@@ -1,3 +1,5 @@
+// src/features/legend/components/LegendModal.tsx
+
 import { useLegendLogic } from "../hooks/useLegendLogic";
 import { LegendBody } from "./LegendBody";
 import type { LegendItem } from "../domain/types";

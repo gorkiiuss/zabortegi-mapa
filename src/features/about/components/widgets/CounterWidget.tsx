@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import type { CounterWidgetConfig } from "../../domain/types";
 import { useLanguageStore } from "@shared/state/languageStore";
-import { Clock, Ban } from "lucide-react";
+import { Clock, Ban } from "@shared/components/Icons";
 
 interface Props {
   config: CounterWidgetConfig;

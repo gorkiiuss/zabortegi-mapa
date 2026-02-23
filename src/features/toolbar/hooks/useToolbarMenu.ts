@@ -11,6 +11,7 @@ export interface MenuItem {
   disabled?: boolean;
   isActive?: boolean;
   isFutureFeature?: boolean;
+  id?: string;
 }
 
 export interface MenuSection {
@@ -128,6 +129,7 @@ export function useToolbarMenu({
           },
         },
         {
+          id: "tutorial-btn-about-project",
           label: t("toolbar.about"),
           action: () => {
             toggleActiveModal("about", true);

@@ -5,8 +5,11 @@ import type { ModalId } from "@features/map/state/uiStore";
 export type ActionType =
     | 'TOGGLE_MODAL'
     | 'NAVIGATE_EXTERNAL'
-    | 'TRIGGER_SEARCH';
-// TODO  | 'START_TUTORIAL';
+    | 'TRIGGER_SEARCH'
+    | 'START_TUTORIAL'
+    | 'SELECT_LANDFILL'
+    | 'RESET_MAP_ZOOM'
+    | 'OPEN_TOOLBAR_DROPDOWN'
 
 export interface ToggleModalAction {
     type: 'TOGGLE_MODAL';
@@ -32,7 +35,38 @@ export interface TriggerSearchAction {
     };
 }
 
+export interface StartTutorialAction {
+    type: 'START_TUTORIAL';
+    payload: {
+        tutorialId: string;
+    };
+}
+
+export interface SelectLandfillAction {
+    type: 'SELECT_LANDFILL';
+    payload: {
+        landfillId: string | null;
+        offset?: [number, number];
+    };
+}
+
+export interface ResetMapZoomAction {
+    type: 'RESET_MAP_ZOOM';
+    payload: {};
+}
+
+export interface OpenToolbarDropdownAction {
+    type: 'OPEN_TOOLBAR_DROPDOWN';
+    payload: {
+        dropdownId: string | null;
+    };
+}
+
 export type AppAction =
     | ToggleModalAction
     | NavigateExternalAction
-    | TriggerSearchAction;
+    | TriggerSearchAction
+    | StartTutorialAction
+    | SelectLandfillAction
+    | ResetMapZoomAction
+    | OpenToolbarDropdownAction;

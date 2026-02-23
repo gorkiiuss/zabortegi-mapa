@@ -1,7 +1,9 @@
+// src/features/about/components/sections/ChangelogSection.tsx
+
 import { useNewsStore } from "@features/about/state/newsStore";
 import { useLanguageStore } from "@shared/state/languageStore";
 import { useAppOrchestrator } from "@features/orchestrator/hooks/useAppOrchestrator";
-import { MousePointerClick, ArrowRightCircle } from "lucide-react"; // Nuevos iconos para indicar acción
+import { MousePointerClick, ArrowRightCircle } from "@shared/components/Icons";
 
 interface ChangelogSectionProps {
   highlightLatest?: boolean;

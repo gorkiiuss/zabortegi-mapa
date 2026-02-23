@@ -1,4 +1,5 @@
 // src/features/legend/components/LegendDesktopPanel.tsx
+
 import { useMapPanelInteractions } from "@shared/hooks/useMapPanelInteractions";
 import { useLegendLogic } from "../hooks/useLegendLogic";
 import { LegendBody } from "./LegendBody";
@@ -6,15 +7,17 @@ import type { LegendItem } from "../domain/types";
 
 interface LegendDesktopPanelProps {
   items: LegendItem[];
+  id?: string;
 }
 
-export function LegendDesktopPanel({ items }: LegendDesktopPanelProps) {
+export function LegendDesktopPanel({ items, id }: LegendDesktopPanelProps) {
   const logic = useLegendLogic();
 
   const { ref, handleMouseEnter, handleMouseLeave } = useMapPanelInteractions();
 
   return (
     <div
+      id={id}
       ref={ref}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
