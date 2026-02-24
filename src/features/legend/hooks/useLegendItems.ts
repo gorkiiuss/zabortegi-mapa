@@ -16,10 +16,10 @@ export function useLegendItems(): LegendItem[] {
         icon: {
           kind: "image",
           src: config.icon.src,
-          alt: t(labelKey),
+          alt: t(labelKey as any),
         },
-        label: t(labelKey),
-        note: t(noteKey),
+        label: t(labelKey as any),
+        note: t(noteKey as any),
       };
     });
   }, [t]);

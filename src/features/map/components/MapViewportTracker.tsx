@@ -1,6 +1,6 @@
 // src/features/map/components/MapViewportTracker.tsx
 
-import { use, useEffect } from "react";
+import { useEffect } from "react";
 import { useMap } from "react-leaflet";
 import L from "leaflet";
 import { useMapStore } from "../state/mapStore";

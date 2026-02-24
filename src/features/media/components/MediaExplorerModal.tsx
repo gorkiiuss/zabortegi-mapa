@@ -48,7 +48,7 @@ export function MediaExplorerModal() {
             }];
         }
 
-        const groups: Record<string, { label: string; items: MediaItem[] }> = {};
+        const groups: Record<string, { key: string; label: string; items: MediaItem[] }> = {};
 
         filteredMedia.forEach((item) => {
             let key = "other";
@@ -67,7 +67,7 @@ export function MediaExplorerModal() {
                 label = item.relatedName;
             }
 
-            if (!groups[key]) groups[key] = { label, items: [] };
+            if (!groups[key]) groups[key] = { key, label, items: [] };
             groups[key].items.push(item);
         });
         

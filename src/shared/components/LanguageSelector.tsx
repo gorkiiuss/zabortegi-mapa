@@ -8,7 +8,7 @@ interface LanguageSelectorProps {
   direction?: "up" | "down";
 }
 
-export function LanguageSelector({ className = "", direction = "down" }: LanguageSelectorProps) {
+export function LanguageSelector({ className = "" }: LanguageSelectorProps) {
   const { currentLanguage, setLanguage, t } = useLanguageStore();
   const [isOpen, setIsOpen] = useState(false);
 

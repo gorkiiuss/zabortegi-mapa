@@ -2,7 +2,7 @@
 
 import { useLanguageStore } from "@shared/state/languageStore";
 import { Search, X } from "@shared/components/Icons";
-import { useMediaExplorerStore, type SortOption, type ViewMode } from "../state/mediaExplorerStore";
+import { useMediaExplorerStore, type SortOption } from "../state/mediaExplorerStore";
 import { ArrowDown, ArrowUp } from "@shared/components/Icons";
 
 interface Props {

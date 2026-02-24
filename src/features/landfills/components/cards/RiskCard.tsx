@@ -109,7 +109,7 @@ export function RiskCard({
           <div className="space-y-2 border-t border-slate-200/50 pt-2">
             {sections.map(({ id, label, percent }) => (
               <div key={id} className="flex items-center gap-2">
-                <span className={sectionLabelClasses}>{t(label)}</span>
+                <span className={sectionLabelClasses}>{t(label as any)}</span>
                 {percent != null ? (
                   <>
                     <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-200">
