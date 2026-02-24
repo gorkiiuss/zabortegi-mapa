@@ -14,13 +14,13 @@ const CSS_URL =
   `${BASE_URL}estilos.css`;
 const LOGO_IHOBE =
   (import.meta.env.VITE_MEDIA_BASE_URL as string | undefined) ??
-  `${BASE_URL}imagenes/ihobe.jpg`;
+  `${BASE_URL}assets/brand/ihobe.jpg`;
 const LOGO_GV =
   (import.meta.env.VITE_MEDIA_BASE_URL as string | undefined) ??
-  `${BASE_URL}imagenes/gobiernovasco.jpg`;
+  `${BASE_URL}assets/brand/gobiernovasco.jpg`;
 const BASE_DATA_URL =
   (import.meta.env.VITE_MEDIA_BASE_URL as string | undefined) ??
-  `${BASE_URL}media`;
+  `${BASE_URL}media/landfills`;
 const TEMPLATE_URL =
   (import.meta.env.VITE_MEDIA_BASE_URL as string | undefined) ??
   `${BASE_URL}templates/report.html`;

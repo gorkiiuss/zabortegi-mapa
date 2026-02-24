@@ -39,7 +39,6 @@ export function LandfillListModal({
   const setSelectedLandfillId = useUiStore((s) => s.setSelectedLandfillId);
   const setFocusLandfillId = useMapStore((s) => s.setFocusLandfillId);
 
-  // Sincronizar query cuando cambia la prop
   useEffect(() => {
     setQuery(initialQuery);
   }, [initialQuery]);
@@ -63,7 +62,6 @@ export function LandfillListModal({
     onClose();
   };
 
-  // ─── Helpers de estado para acordeones ───
   const makeTerritoryKey = (tKey: string) => `t::${tKey}`;
   const makeMunicipalityKey = (tKey: string, mKey: string) =>
     `m::${tKey}::${mKey}`;
@@ -107,7 +105,6 @@ export function LandfillListModal({
         onClose={onClose}
       />
 
-      {/* Body con scroll */}
       <div className="flex-1 overflow-y-auto overscroll-contain bg-slate-50/30 px-4 py-4">
         {grouped.territories.length > 0 ? (
           grouped.territories.map((territoryGroup) => {
@@ -128,7 +125,6 @@ export function LandfillListModal({
             );
           })
         ) : (
-          /* Estado vacío si la búsqueda no arroja resultados */
           <div className="flex h-full flex-col items-center justify-center p-8 text-center text-slate-400">
             <p className="text-sm">{t("index.not_found")}</p>
           </div>

@@ -1,18 +1,10 @@
 // src/features/landfills/domain/symbology.ts
+
 import type { ClpSymbol, RiskLevel } from "./types";
 
 const NEUTRAL_COLOR = "#a3a3c9ff";
 const NEUTRAL_SIZE = 10;
 
-/**
- * Color de relleno según nivel + riskScore.
- *
- * Usamos una progresión "exponencial inversa" hacia el rojo:
- * con pocos puntos de riesgo el color ya se pone bastante rojizo.
- *
- * - score: 0–100 (como ya lo calculas en el repositorio)
- * - level: se usa para tratar el caso "unknown".
- */
 export function getRiskFillColor(
   level: RiskLevel,
   score: number,
@@ -32,10 +24,7 @@ export function getRiskFillColor(
 
   return `#${((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1).toUpperCase()}`;
 }
-/**
- * Tamaño del marcador según nivel de riesgo.
- * Más peligroso = más grande.
- */
+
 export function getMarkerSize(
   level: RiskLevel,
   score: number,
@@ -52,29 +41,26 @@ export function getMarkerSize(
   return start + (end - start) * t;
 }
 
-/**
- * Ruta al icono CLP (SVG) en /public.
- */
 export function getClpIconPath(
   symbol: ClpSymbol | null | undefined,
 ): string | null {
   if (!symbol) return null;
 
-  const base = import.meta.env.BASE_URL; // "/zabortegiak/"
+  const base = import.meta.env.BASE_URL;
 
   switch (symbol) {
     case "acute-toxicity":
-      return `${base}icons/landfills/clp_acute-toxicity.svg`;
+      return `${base}assets/icons/landfills/clp_acute-toxicity.svg`;
     case "health-hazard":
-      return `${base}icons/landfills/clp_health-hazard.svg`;
+      return `${base}assets/icons/landfills/clp_health-hazard.svg`;
     case "corrosive":
-      return `${base}icons/landfills/clp_corrosive.svg`;
+      return `${base}assets/icons/landfills/clp_corrosive.svg`;
     case "flammable":
-      return `${base}icons/landfills/clp_flammable.svg`;
+      return `${base}assets/icons/landfills/clp_flammable.svg`;
     case "environmental":
-      return `${base}icons/landfills/clp_environmental.svg`;
+      return `${base}assets/icons/landfills/clp_environmental.svg`;
     case "irritant":
-      return `${base}icons/landfills/clp_irritant.svg`;
+      return `${base}assets/icons/landfills/clp_irritant.svg`;
     default:
       return null;
   }

@@ -27,7 +27,7 @@ const TUTORIAL_STYLES = `
 
 export function TutorialManager() {
   const { activeTutorialId, currentStepIndex, tutorials, nextStep, prevStep, endTutorial } = useTutorialStore();
-  const { currentLanguage } = useLanguageStore();
+  const { t, currentLanguage } = useLanguageStore();
   const { dispatch } = useAppOrchestrator();
   const lang = currentLanguage as 'es' | 'eu';
 
@@ -203,7 +203,7 @@ export function TutorialManager() {
             className={`group flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold text-slate-500 transition-all hover:bg-slate-100 hover:text-slate-800 ${currentStepIndex === 0 ? "invisible" : ""}`}
           >
             <ChevronLeft size={16} className="transition-transform group-hover:-translate-x-0.5" />
-            {lang === 'es' ? 'Anterior' : 'Aurrekoa'}
+              {t("tutorial.previous")}
           </button>
 
           <button
@@ -211,8 +211,8 @@ export function TutorialManager() {
             className="group flex items-center gap-2 rounded-xl border border-slate-900 bg-slate-900 px-5 py-2 text-xs font-bold text-white shadow-lg transition-all hover:bg-slate-800 hover:shadow-xl active:scale-95"
           >
             {currentStepIndex === activeTutorial.steps.length - 1
-              ? (lang === 'es' ? 'Empezar' : 'Hasi')
-              : (lang === 'es' ? 'Siguiente' : 'Hurrengoa')
+              ? t("tutorial.start")
+              : t("tutorial.next")
             }
             {currentStepIndex !== activeTutorial.steps.length - 1 && (
               <ChevronRight size={16} className="transition-transform group-hover:translate-x-0.5" />

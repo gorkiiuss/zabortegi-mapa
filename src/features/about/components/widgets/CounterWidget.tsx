@@ -148,7 +148,7 @@ export function CounterWidget({ config }: Props) {
 }
 
 const TimeUnit = ({ value, label }: { value: number; label: string }) => (
-  <div className="flex flex-col items-center min-w-[3rem]">
+  <div className="flex flex-col items-center min-w-12">
     <span className="text-2xl font-mono font-bold leading-none tracking-tight">
       {String(value).padStart(2, '0')}
     </span>

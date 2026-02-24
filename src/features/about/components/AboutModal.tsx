@@ -13,7 +13,7 @@ import { AnnouncementsSection } from "./sections/AnnouncementsSection";
 const BASE_URL = import.meta.env.BASE_URL;
 const PORTADA = (import.meta.env.VITE_MEDIA_BASE_URL as string | undefined)
   ? `${import.meta.env.VITE_MEDIA_BASE_URL}/imagenes/portada.png`
-  : `${BASE_URL}imagenes/portada.png`;
+  : `${BASE_URL}assets/ui/portada.png`;
 
 export function AboutModal() {
   const { t } = useLanguageStore();

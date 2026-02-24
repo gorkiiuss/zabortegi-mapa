@@ -17,6 +17,7 @@ export default {
         basque: "Euskara",
         spanish: "Gaztelania",
         contact: "Kontaktua",
+        media_explorer: "Media esploratzailea"
     },
     app: {
         menu: "Menua",
@@ -267,5 +268,18 @@ export default {
         previous: "Aurrekoa",
         next: "Hurrengoa",
         start: "Hasi"
+    },
+    media_explorer: {
+        title: "Media esploratzailea",
+        subtitle: "{{count}} fitxategi aurkituta",
+        search_placeholder: "Izenaren, zabortegiaren edo albistearen arabera bilatu...",
+        all_files: "Fitxategi guztiak",
+        image_context_label: "Txostenetako Argazkiak",
+        document_context_label: "Dokumentazio Ofiziala",
+        announcement_context_label: "Oharren Fitxategiak",
+        image_label: "Irudiak",
+        document_label: "PDF Dokumentuak",
+        items_count: "{{count}} fitxategi",
+        load_more: "{{count}} fitxategi kargatzeko"
     }
 }

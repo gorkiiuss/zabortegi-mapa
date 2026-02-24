@@ -2,6 +2,7 @@
 
 import { useMapStore } from "@features/map/state/mapStore";
 import { useUiStore } from "@features/map/state/uiStore";
+import { useTutorialStore } from "@features/tutorial/state/tutorialStore";
 import { useLanguageStore } from "@shared/state/languageStore";
 import { shareUtils } from "@shared/utils/sharing";
 
@@ -35,6 +36,7 @@ export function useToolbarMenu({
   );
   const { toggleActiveModal } = useUiStore();
   const { t, setLanguage, currentLanguage } = useLanguageStore();
+  const { startTutorial } = useTutorialStore();
 
   const menuStructure: MenuSection[] = [
     {
@@ -45,6 +47,12 @@ export function useToolbarMenu({
           label: t("toolbar.index"),
           action: () => {
             onOpenIndex();
+          },
+        },
+        {
+          label: t("toolbar.media_explorer"),
+          action: () => {
+            toggleActiveModal("media_explorer", true);
           },
         },
         {
@@ -143,9 +151,8 @@ export function useToolbarMenu({
         },
         {
           label: t("toolbar.tutorial"),
-          isFutureFeature: true,
           action: () => {
-            toggleActiveModal("future_feature", true);
+            startTutorial("onboarding");    
           },
         },
       ],

@@ -25,7 +25,8 @@ export type ModalId =
   | "attributions"
   | "about"
   | "future_feature"
-  | "contact";
+  | "contact"
+  | "media_explorer";
 
 interface UiState {
   selectedLandfillId: string | null;

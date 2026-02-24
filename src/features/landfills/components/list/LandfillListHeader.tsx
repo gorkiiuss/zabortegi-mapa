@@ -28,7 +28,6 @@ export function LandfillListHeader({
 
   return (
     <div className="flex shrink-0 flex-col border-b border-slate-200 bg-slate-50/50">
-      {/* ─── FILA SUPERIOR: Título y Cerrar ─── */}
       <div className="flex items-center justify-between px-4 py-3">
         <div>
           <h2 className="text-sm font-semibold text-slate-800">
@@ -46,7 +45,6 @@ export function LandfillListHeader({
         </button>
       </div>
 
-      {/* ─── FILA INFERIOR: Buscador Integrado ─── */}
       <div className="px-4 pb-3">
         <div className="group relative">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">

@@ -36,6 +36,7 @@ import { useNewsStore } from "@features/about/state/newsStore";
 
 import { TutorialManager } from "@features/tutorial/components/TutorialManager";
 import { useAppOrchestrator } from "@features/orchestrator/hooks/useAppOrchestrator";
+import { MediaExplorerModal } from "@features/media/components/MediaExplorerModal";
 
 function App() {
   const loadAll = useLandfillsStore((s) => s.loadAll);
@@ -345,6 +346,8 @@ function App() {
 
         {activeModal === ("contact" as any) &&
           renderCenteredAlertWrapper(<ContactModal />)}
+
+        {activeModal === "media_explorer" && renderIndexWrapper(<MediaExplorerModal />)}
       </MapContainer>
       <TutorialManager />
       <LandfillsLoadingOverlay />

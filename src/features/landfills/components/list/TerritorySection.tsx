@@ -36,7 +36,6 @@ export function TerritorySection({ group, onSelect }: TerritorySectionProps) {
 
   return (
     <section className="mb-4 overflow-hidden rounded-xl border border-slate-200 bg-slate-50/60">
-      {/* Cabecera territorio (desplegable) */}
       <button
         type="button"
         className="flex w-full items-center justify-between bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-100/80"
@@ -49,7 +48,6 @@ export function TerritorySection({ group, onSelect }: TerritorySectionProps) {
         </div>
       </button>
 
-      {/* Contenido territorio */}
       {isOpen && (
         <div className="space-y-3 bg-white px-4 py-3">
           {group.municipalities.map(renderMunicipality)}

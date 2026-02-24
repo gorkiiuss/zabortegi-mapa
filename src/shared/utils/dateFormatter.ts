@@ -1,6 +1,6 @@
 // src/shared/utils/dateFormatter.ts
 
-import type { Language } from "../../i18n/translations";
+import type { Language } from "i18n/config";
 
 export const formatLiteralDate = (
   dateStr: string,

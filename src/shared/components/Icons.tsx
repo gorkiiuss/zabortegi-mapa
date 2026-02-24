@@ -36,10 +36,10 @@ import {
   Calendar,
   Share2,
   MousePointerClick,
-  ArrowRightCircle,
+  ArrowRightCircle, ArrowUp, ArrowDown,
   Clock,
   Ban,
-  GraduationCap
+  GraduationCap,
 } from "lucide-react";
 
 export interface IconProps extends SVGProps<SVGSVGElement> {
@@ -110,7 +110,7 @@ export {
   Calendar,
   Share2 as Share,
   MousePointerClick,
-  ArrowRightCircle,
+  ArrowRightCircle, ArrowDown, ArrowUp,
   Clock,
   Ban,
   GraduationCap

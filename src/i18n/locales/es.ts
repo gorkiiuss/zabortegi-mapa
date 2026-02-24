@@ -17,6 +17,7 @@ export default {
     basque: "Euskera",
     spanish: "Castellano",
     contact: "Contacto",
+    media_explorer: "Explorador de medios"
   },
   app: {
     menu: "Menú",
@@ -266,5 +267,19 @@ export default {
     previous: "Anterior",
     next: "Siguiente",
     start: "Empezar"
+  },
+  media_explorer: {
+    title: "Explorador de medios",
+    subtitle: "{{count}} archivos encontrados",
+    search_placeholder: "Buscar por título, tipo o contexto...",
+    all_files: "Todos los archivos",
+    image_context_label: "Fotos de Informes",
+    document_context_label: "Documentación Oficial",
+    announcement_context_label: "Archivos de Avisos",
+    image_label: "Imágenes",
+    document_label: "Documentos PDF",
+    items_count: "{{count}} archivos",
+    load_more: "{{count}} archivos por cargar",
+    toggle_sort_direction: "Cambiar dirección de ordenamiento"
   }
 }
