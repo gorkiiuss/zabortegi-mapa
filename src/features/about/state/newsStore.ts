@@ -25,10 +25,12 @@ export const useNewsStore = create<NewsState>((set, get) => ({
 
     try {
       const baseUrl = import.meta.env.BASE_URL;
+      
+      const cacheBuster = Date.now();
 
       const [annRes, logRes] = await Promise.all([
-        fetch(`${baseUrl}data/announcements.json`),
-        fetch(`${baseUrl}data/changelog.json`)
+        fetch(`${baseUrl}data/announcements.json?v=${cacheBuster}`),
+        fetch(`${baseUrl}data/changelog.json?v=${cacheBuster}`)
       ]);
 
       if (!annRes.ok || !logRes.ok) throw new Error("Error loading data");
