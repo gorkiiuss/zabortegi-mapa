@@ -4,26 +4,23 @@ import { useNewsStore } from "@features/about/state/newsStore";
 import { useLanguageStore } from "@shared/state/languageStore";
 import { useAppOrchestrator } from "@features/orchestrator/hooks/useAppOrchestrator";
 import { MousePointerClick, ArrowRightCircle } from "@shared/components/Icons";
+import { isItemNew } from "@features/about/utils/isNew";
 
-interface ChangelogSectionProps {
-  highlightLatest?: boolean;
-}
-
-export function ChangelogSection({
-  highlightLatest = false,
-}: ChangelogSectionProps) {
+export function ChangelogSection() {
   const { currentLanguage } = useLanguageStore();
   const lang = currentLanguage as "es" | "eu";
 
   const changelog = useNewsStore((s) => s.changelog);
   const { dispatch } = useAppOrchestrator();
 
+  const lastSeenUpdate = localStorage.getItem("app_last_seen_update");
+
   return (
     <div className="relative space-y-8 px-2 py-2">
       <div className="absolute top-4 bottom-4 left-[1.65rem] w-px bg-slate-200" />
 
       {changelog.map((entry, idx) => {
-        const isLatest = idx === 0 && highlightLatest;
+        const isLatest = isItemNew(entry, "update", lastSeenUpdate);
 
         return (
           <div key={idx} className={`relative flex gap-5 ${isLatest ? "mb-2" : ""}`}>

@@ -10,6 +10,7 @@ import { DropdownMenu } from "@shared/components/DropdownMenu";
 import { useState } from "react";
 import { shareUtils } from "@shared/utils/sharing";
 import { Share } from "@shared/components/Icons";
+import { isItemNew } from "@features/about/utils/isNew";
 
 export function AnnouncementsSection() {
   const { currentLanguage, t, formatDate } = useLanguageStore();
@@ -33,147 +34,162 @@ export function AnnouncementsSection() {
     );
   }
 
+  const lastSeenAnnouncementId = localStorage.getItem("app_last_seen_announcement");
+  const lastSeenAnnouncementDate = lastSeenAnnouncementId
+    ? announcements.find((a) => a.id === lastSeenAnnouncementId)?.date || null
+    : null;
+
   return (
     <div className="space-y-12 py-4">
-      {sortedPosts.map((post) => (
-        <article
-          key={post.id}
-          className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-md"
-        >
-          <div className="absolute left-0 top-0 h-full w-1 bg-linear-to-b from-blue-400 to-emerald-400 opacity-0 transition-opacity group-hover:opacity-100" />
+      {sortedPosts.map((post) => {
+        const isLatest = isItemNew(post, "announcement", lastSeenAnnouncementDate);
 
-          <div className="p-6 sm:p-8">
+        return (
+          <article
+            key={post.id}
+            className={`group relative overflow-hidden rounded-2xl border bg-white shadow-sm transition-all hover:shadow-md ${isLatest ? "border-emerald-200 ring-1 ring-emerald-100" : "border-slate-200"
+              }`}
+          >
+            <div className={`absolute left-0 top-0 h-full w-1 transition-opacity ${isLatest ? "bg-emerald-500 opacity-100" : "bg-linear-to-b from-blue-400 to-emerald-400 opacity-0 group-hover:opacity-100"}`} />
 
-            <div className="mb-3 flex items-start justify-between">
-              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
-                <Calendar className="h-3 w-3" />
-                <time dateTime={post.date}>
-                  {formatDate ? formatDate(post.date, 'numeric') : post.date}
-                </time>
-              </div>
+            <div className="p-6 sm:p-8">
 
-              {/* BOTÓN COMPARTIR */}
-              <div className="relative">
-                <DropdownMenu
-                  isOpen={openShareId === post.id}
-                  onClose={() => setOpenShareId(null)}
-                  align="right"
-                  trigger={
-                    <button
-                      onClick={() => setOpenShareId(openShareId === post.id ? null : post.id)}
-                      className="group flex items-center gap-2 rounded-full border border-transparent bg-white px-3 py-1.5 text-xs font-medium text-slate-400 transition-all hover:border-slate-100 hover:bg-slate-50 hover:text-blue-600 hover:shadow-sm"
-                      aria-label="Compartir"
-                    >
-                      <Share size={14} />
-                      <span>{t("about.announcements.share")}</span>
-                    </button>
-                  }
-                  items={[
-                    {
-                      label: "WhatsApp",
-                      action: () => {
-                        shareUtils.whatsapp({ title: post.title[currentLanguage], id: post.id });
-                        setOpenShareId(null);
-                      }
-                    },
-                    {
-                      label: "Bluesky",
-                      action: () => {
-                        shareUtils.bluesky({ title: post.title[currentLanguage], id: post.id });
-                        setOpenShareId(null);
-                      }
-                    },
-                    {
-                      label: "Mastodon",
-                      action: () => {
-                        shareUtils.mastodon({ title: post.title[currentLanguage], id: post.id });
-                        setOpenShareId(null);
-                      }
-                    },
-                    {
-                      label: "Facebook",
-                      action: () => {
-                        shareUtils.facebook({ title: post.title[currentLanguage], id: post.id });
-                        setOpenShareId(null);
-                      }
-                    },
-                    {
-                      label: "Email",
-                      action: () => {
-                        shareUtils.email({ title: post.title[currentLanguage], id: post.id });
-                        setOpenShareId(null);
-                      }
-                    },
-                    {
-                      label: t("toolbar.copy_link") || "Copiar enlace",
-                      action: () => {
-                        shareUtils.copyLink({ title: post.title[currentLanguage], id: post.id });
-                        setOpenShareId(null);
-                      }
+              <div className="mb-3 flex items-start justify-between">
+                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
+                  <Calendar className="h-3 w-3" />
+                  <time dateTime={post.date}>
+                    {formatDate ? formatDate(post.date, 'numeric') : post.date}
+                  </time>
+                </div>
+
+                {/* BOTÓN COMPARTIR */}
+                <div className="relative">
+                  <DropdownMenu
+                    isOpen={openShareId === post.id}
+                    onClose={() => setOpenShareId(null)}
+                    align="right"
+                    trigger={
+                      <button
+                        onClick={() => setOpenShareId(openShareId === post.id ? null : post.id)}
+                        className="group flex items-center gap-2 rounded-full border border-transparent bg-white px-3 py-1.5 text-xs font-medium text-slate-400 transition-all hover:border-slate-100 hover:bg-slate-50 hover:text-blue-600 hover:shadow-sm"
+                        aria-label="Compartir"
+                      >
+                        <Share size={14} />
+                        <span>{t("about.announcements.share")}</span>
+                      </button>
                     }
-                  ]}
-                />
+                    items={[
+                      {
+                        label: "WhatsApp",
+                        action: () => {
+                          shareUtils.whatsapp({ title: post.title[currentLanguage], id: post.id });
+                          setOpenShareId(null);
+                        }
+                      },
+                      {
+                        label: "Bluesky",
+                        action: () => {
+                          shareUtils.bluesky({ title: post.title[currentLanguage], id: post.id });
+                          setOpenShareId(null);
+                        }
+                      },
+                      {
+                        label: "Mastodon",
+                        action: () => {
+                          shareUtils.mastodon({ title: post.title[currentLanguage], id: post.id });
+                          setOpenShareId(null);
+                        }
+                      },
+                      {
+                        label: "Facebook",
+                        action: () => {
+                          shareUtils.facebook({ title: post.title[currentLanguage], id: post.id });
+                          setOpenShareId(null);
+                        }
+                      },
+                      {
+                        label: "Email",
+                        action: () => {
+                          shareUtils.email({ title: post.title[currentLanguage], id: post.id });
+                          setOpenShareId(null);
+                        }
+                      },
+                      {
+                        label: t("toolbar.copy_link") || "Copiar enlace",
+                        action: () => {
+                          shareUtils.copyLink({ title: post.title[currentLanguage], id: post.id });
+                          setOpenShareId(null);
+                        }
+                      }
+                    ]}
+                  />
+                </div>
               </div>
-            </div>
 
-            <h3 className="mb-4 text-2xl font-bold leading-tight text-slate-800">
-              {post.title[currentLanguage]}
-            </h3>
+              <h3 className="mb-4 flex items-center flex-wrap gap-2 text-2xl font-bold leading-tight text-slate-800">
+                {post.title[currentLanguage]}
+                {isLatest && (
+                  <span className="inline-flex animate-pulse items-center rounded-full bg-emerald-600 px-2 py-0.5 text-[10px] font-bold tracking-wider text-white uppercase shadow-sm">
+                    {currentLanguage === "es" ? "Nuevo" : "Berria"}
+                  </span>
+                )}
+              </h3>
 
-            <WidgetRenderer widgets={post.widgets} />
+              <WidgetRenderer widgets={post.widgets} />
 
-            <div
-              className="prose prose-sm prose-slate max-w-none text-slate-600 leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: post.content[currentLanguage] }}
-            />
+              <div
+                className="prose prose-sm prose-slate max-w-none text-slate-600 leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: post.content[currentLanguage] }}
+              />
 
-            {(post.relatedLandfillCodes?.length || post.attachments?.length) ? (
-              <div className="mt-8 flex flex-col gap-6 border-t border-slate-100 pt-6">
+              {(post.relatedLandfillCodes?.length || post.attachments?.length) ? (
+                <div className="mt-8 flex flex-col gap-6 border-t border-slate-100 pt-6">
 
-                {post.relatedLandfillCodes && post.relatedLandfillCodes.length > 0 && (
-                  <div className="flex flex-col gap-3">
-                    <span className="text-[10px] font-bold uppercase tracking-wide text-slate-400">
-                      {t("about.announcements.mentioned_in")}
-                    </span>
-                    <div className="flex flex-wrap gap-2">
-                      {post.relatedLandfillCodes.map((code) => {
-                        const lf = landfills.find((l) => l.code === code);
-                        if (!lf) return null;
-                        return (
-                          <button
-                            key={code}
-                            onClick={() => navigateByCode(code)}
-                            className="group/btn flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600 transition-colors hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700"
-                          >
-                            <MapPin size={12} className="text-slate-400 transition-colors group-hover/btn:text-blue-500" />
-                            {lf.name}
-                          </button>
-                        );
-                      })}
+                  {post.relatedLandfillCodes && post.relatedLandfillCodes.length > 0 && (
+                    <div className="flex flex-col gap-3">
+                      <span className="text-[10px] font-bold uppercase tracking-wide text-slate-400">
+                        {t("about.announcements.mentioned_in")}
+                      </span>
+                      <div className="flex flex-wrap gap-2">
+                        {post.relatedLandfillCodes.map((code) => {
+                          const lf = landfills.find((l) => l.code === code);
+                          if (!lf) return null;
+                          return (
+                            <button
+                              key={code}
+                              onClick={() => navigateByCode(code)}
+                              className="group/btn flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600 transition-colors hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700"
+                            >
+                              <MapPin size={12} className="text-slate-400 transition-colors group-hover/btn:text-blue-500" />
+                              {lf.name}
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {post.attachments && post.attachments.length > 0 && (
-                  <div className="flex flex-wrap gap-3">
-                    {post.attachments.map((att, idx) => (
-                      <a
-                        key={idx}
-                        href={att.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-xs font-bold text-white! shadow-sm transition-transform hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md active:translate-y-0"                      >
-                        {att.type === "pdf" ? <FileText size={14} /> : <ExternalLink size={14} />}
-                        {att.label[currentLanguage]}
-                      </a>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ) : null}
-          </div>
-        </article>
-      ))}
+                  {post.attachments && post.attachments.length > 0 && (
+                    <div className="flex flex-wrap gap-3">
+                      {post.attachments.map((att, idx) => (
+                        <a
+                          key={idx}
+                          href={att.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-xs font-bold text-white! shadow-sm transition-transform hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md active:translate-y-0"                      >
+                          {att.type === "pdf" ? <FileText size={14} /> : <ExternalLink size={14} />}
+                          {att.label[currentLanguage]}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : null}
+            </div>
+          </article>
+        );
+      })}
     </div>
   );
 }

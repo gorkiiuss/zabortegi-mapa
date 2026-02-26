@@ -4,6 +4,7 @@ import { useState, useEffect, useLayoutEffect, useMemo } from "react";
 import { useMapModalInteractions } from "@shared/hooks/useMapModalInteractions";
 import { useUiStore, type AboutData } from "@features/map/state/uiStore";
 import { useNewsStore } from "../state/newsStore";
+import { isItemUnseenAndNew } from "../utils/isNew";
 
 export type AboutTab = "announcements" | "changelog" | "project";
 
@@ -49,18 +50,20 @@ export function useAboutModalLogic() {
 
 
   const lastSeenUpdate = localStorage.getItem("app_last_seen_update");
-  const isLatestVersionNew = useMemo(() => {
-    const latestEntry = changelog[0];
-    if (!latestEntry) return false;
-    return latestEntry.date !== lastSeenUpdate;
+  const hasUnseenUpdate = useMemo(() => {
+    return changelog.some(c => isItemUnseenAndNew(c, lastSeenUpdate));
   }, [changelog, lastSeenUpdate]);
 
   const lastSeenAnnouncementId = localStorage.getItem("app_last_seen_announcement");
-  const hasNewAnnouncement = useMemo(() => {
-    const latestAnnouncement = announcements.find(a => a.active);
-    if (!latestAnnouncement) return false;
-    return latestAnnouncement.id !== lastSeenAnnouncementId;
+  const lastSeenAnnouncementDate = useMemo(() => {
+    return lastSeenAnnouncementId
+      ? announcements.find((a) => a.id === lastSeenAnnouncementId)?.date || null
+      : null;
   }, [announcements, lastSeenAnnouncementId]);
+
+  const hasUnseenAnnouncement = useMemo(() => {
+    return announcements.filter(a => a.active).some(a => isItemUnseenAndNew(a, lastSeenAnnouncementDate));
+  }, [announcements, lastSeenAnnouncementDate]);
 
 
   const handleClose = () => closeModal();
@@ -89,8 +92,8 @@ export function useAboutModalLogic() {
     handleOpenAttributions,
     activeTab,
     setActiveTab,
-    hasNewAnnouncement,
-    isLatestVersionNew,
+    hasUnseenAnnouncement,
+    hasUnseenUpdate,
     appVersion,
   };
 }

@@ -37,6 +37,7 @@ import { useNewsStore } from "@features/about/state/newsStore";
 import { TutorialManager } from "@features/tutorial/components/TutorialManager";
 import { useAppOrchestrator } from "@features/orchestrator/hooks/useAppOrchestrator";
 import { MediaExplorerModal } from "@features/media/components/MediaExplorerModal";
+import { isItemUnseenAndNew } from "@features/about/utils/isNew";
 
 function App() {
   const loadAll = useLandfillsStore((s) => s.loadAll);
@@ -122,20 +123,23 @@ function App() {
 
     const latestUpdateDate = changelog[0]?.date;
     const lastSeenUpdate = localStorage.getItem("app_last_seen_update");
-    const hasNewUpdate = latestUpdateDate && lastSeenUpdate !== latestUpdateDate;
+    const hasUnseenUpdate = changelog.some((c) => isItemUnseenAndNew(c, lastSeenUpdate));
 
-    const latestAnnouncement = announcements.find(a => a.active);
-    const latestAnnouncementId = latestAnnouncement?.id;
+    const latestAnnouncementId = announcements.find((a) => a.active)?.id;
     const lastSeenAnnouncementId = localStorage.getItem("app_last_seen_announcement");
-    const hasNewAnnouncement = latestAnnouncementId && lastSeenAnnouncementId !== latestAnnouncementId;
+    const lastSeenAnnouncementDate = lastSeenAnnouncementId
+      ? announcements.find((a) => a.id === lastSeenAnnouncementId)?.date || null
+      : null;
+    const activeAnnouncements = announcements.filter(a => a.active);
+    const hasUnseenAnnouncement = activeAnnouncements.some((a) => isItemUnseenAndNew(a, lastSeenAnnouncementDate));
 
     let shouldOpen = false;
     let initialTab: 'project' | 'announcements' | 'changelog' = 'project';
 
-    if (hasNewAnnouncement) {
+    if (hasUnseenAnnouncement) {
       shouldOpen = true;
       initialTab = "announcements";
-    } else if (hasNewUpdate) {
+    } else if (hasUnseenUpdate) {
       shouldOpen = true;
       initialTab = "changelog";
     }
@@ -143,11 +147,11 @@ function App() {
     if (shouldOpen) {
       openModal("about", false, { initialTab });
 
-      if (latestUpdateDate) {
-        localStorage.setItem("app_last_seen_update", latestUpdateDate);
+      if (hasUnseenUpdate && initialTab === "changelog") {
+        localStorage.setItem("app_last_seen_update", latestUpdateDate || "");
       }
-      if (latestAnnouncementId) {
-        localStorage.setItem("app_last_seen_announcement", latestAnnouncementId);
+      if (hasUnseenAnnouncement && initialTab === "announcements") {
+        localStorage.setItem("app_last_seen_announcement", latestAnnouncementId || "");
       }
     }
 

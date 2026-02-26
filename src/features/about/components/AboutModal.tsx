@@ -26,8 +26,8 @@ export function AboutModal() {
     handleOpenAttributions,
     activeTab,
     setActiveTab,
-    hasNewAnnouncement,
-    isLatestVersionNew,
+    hasUnseenAnnouncement,
+    hasUnseenUpdate,
     appVersion,
   } = useAboutModalLogic();
 
@@ -106,15 +106,15 @@ export function AboutModal() {
       </div>
 
       <div className="sticky top-0 z-20 flex w-full border-b border-slate-200 bg-white px-4 shadow-xs">
-        {renderTab("announcements", <Megaphone size={16} />, t("about.tabs.announcements_title") || "Avisos", hasNewAnnouncement)}
-        {renderTab("changelog", <Sparkles size={16} />, t("about.tabs.whats_new") || "Novedades", isLatestVersionNew)}
+        {renderTab("announcements", <Megaphone size={16} />, t("about.tabs.announcements_title") || "Avisos", hasUnseenAnnouncement)}
+        {renderTab("changelog", <Sparkles size={16} />, t("about.tabs.whats_new") || "Novedades", hasUnseenUpdate)}
         {renderTab("project", <Info size={16} />, t("about.tabs.project_info") || "Proyecto", false)}
       </div>
 
       <div className="flex-1 overflow-y-auto overscroll-contain bg-slate-50/30 p-6 pb-12">
         <div className="mx-auto max-w-3xl animate-in fade-in slide-in-from-bottom-2 duration-300">
           {activeTab === "announcements" && <AnnouncementsSection />}
-          {activeTab === "changelog" && <ChangelogSection highlightLatest={isLatestVersionNew} />}
+          {activeTab === "changelog" && <ChangelogSection />}
           {activeTab === "project" && <ProjectInfoSection />}
         </div>
       </div>
