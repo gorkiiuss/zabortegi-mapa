@@ -208,6 +208,7 @@ export default {
         stats: {
             intro:
                 "Kutsatzaileak izan daitezkeen jarduerak edo instalazioak jasan dituzten edo jasaten dituzten lurzoruen inbentarioak guztira honako hau erregistratu du:",
+            contaminated_soils: "Presio",
             total_label: "Zabortegi Guztira",
             undocumented: "Dokumentatu gabe",
         },

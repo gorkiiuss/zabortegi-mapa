@@ -206,6 +206,7 @@ export default {
     stats: {
       intro:
         "El inventario de suelos que soportan o han soportado actividades o instalaciones potencialmente contaminantes tiene registrados un total de:",
+      contaminated_soils: "Presiones",
       total_label: "Vertederos Totales",
       undocumented: "Sin documentar",
     },
