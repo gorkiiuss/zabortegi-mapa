@@ -7,12 +7,17 @@ import { useLandfillNavigation } from "@features/landfills/hooks/useLandfillNavi
 import { useNewsStore } from "@features/about/state/newsStore";
 import { WidgetRenderer } from "../widgets/WidgetRenderer";
 import { DropdownMenu } from "@shared/components/DropdownMenu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { shareUtils } from "@shared/utils/sharing";
 import { Share } from "@shared/components/Icons";
 import { isItemNew } from "@features/about/utils/isNew";
+import { useUiStore } from "@features/map/state/uiStore";
+interface AnnouncementsSectionProps {
+  targetId?: string;
+  isActive: boolean;
+}
 
-export function AnnouncementsSection() {
+export function AnnouncementsSection({ targetId, isActive }: AnnouncementsSectionProps) {
   const { currentLanguage, t, formatDate } = useLanguageStore();
 
   const landfills = useLandfillsStore((s) => s.landfills);
@@ -20,6 +25,32 @@ export function AnnouncementsSection() {
   const announcements = useNewsStore((s) => s.announcements);
 
   const [openShareId, setOpenShareId] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Si la ID existe y estamos activos/visibles, disparamos el scroll
+    if (targetId && isActive) {
+      const timer = setTimeout(() => {
+        const el = document.getElementById(`announcement-${targetId}`);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+
+          // Opcionalmente borrar el store tras lograr scrollear por si un change de tabs manual lo vuelve a lanzar repetidamente
+          useUiStore.setState((state) => {
+            if (!state.modalData || !('initialTab' in state.modalData)) return state;
+
+            return {
+              ...state,
+              modalData: {
+                ...state.modalData,
+                targetAnnouncementId: undefined
+              }
+            };
+          });
+        }
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [targetId, isActive]);
 
   const activePosts = announcements.filter((a) => a.active);
   const sortedPosts = activePosts.sort((a, b) =>
@@ -47,6 +78,7 @@ export function AnnouncementsSection() {
         return (
           <article
             key={post.id}
+            id={`announcement-${post.id}`}
             className={`group relative overflow-hidden rounded-2xl border bg-white shadow-sm transition-all hover:shadow-md ${isLatest ? "border-emerald-200 ring-1 ring-emerald-100" : "border-slate-200"
               }`}
           >

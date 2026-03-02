@@ -44,9 +44,10 @@ export function useAboutModalLogic() {
 
   useEffect(() => {
     if (data.initialTab) {
+      // Forzamos que la pestaña salte a donde indique el modalData (ej: cuando pulsan el botón interno)
       setActiveTab(data.initialTab);
     }
-  }, [data.initialTab]);
+  }, [data.initialTab, data.targetAnnouncementId]);
 
 
   const lastSeenUpdate = localStorage.getItem("app_last_seen_update");
@@ -95,5 +96,6 @@ export function useAboutModalLogic() {
     hasUnseenAnnouncement,
     hasUnseenUpdate,
     appVersion,
+    targetAnnouncementId: data.targetAnnouncementId,
   };
 }

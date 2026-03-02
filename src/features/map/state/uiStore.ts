@@ -9,6 +9,7 @@ export interface GalleryData {
 
 export interface AboutData {
   initialTab: "changelog" | "announcements" | "project";
+  targetAnnouncementId?: string;
 }
 
 export type ModalPayload = GalleryData | AboutData | null;
@@ -66,6 +67,13 @@ export const useUiStore = create<UiState>((set) => ({
 
   openModal: (id, stackPrevious = false, data = null) =>
     set((state) => {
+      // Si el modal ya está abierto y le pasamos nuevos datos o es la misma ID, actualizamos el modalData
+      if (state.activeModal === id) {
+        return {
+          modalData: data,
+        };
+      }
+
       const newStack =
         stackPrevious && state.activeModal !== "none"
           ? [...state.modalStack, state.activeModal]

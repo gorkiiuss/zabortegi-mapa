@@ -1,4 +1,5 @@
 import { useLanguageStore } from "@shared/state/languageStore";
+import { useUiStore } from "@features/map/state/uiStore";
 import { StatBox, SectionTitle } from "../ui/AboutSharedComponents";
 import { Droplet, Scale, Target } from "@shared/components/Icons";
 import { useLandfillGeneralStats } from "@features/landfills/hooks/useLandfillGeneralStats";
@@ -13,22 +14,36 @@ export function ProjectInfoSection() {
   return (
     <div className="space-y-8 pt-2">
       <section className="space-y-4">
+        {/* BLOQUE DESTACADO: 40.404 Presiones */}
+        <div className="flex justify-center mb-2">
+          <div className="relative inline-flex flex-col items-center justify-center rounded-xl border-2 border-amber-200 bg-amber-50 px-8 py-3 pb-8 text-amber-800 shadow-sm transition-all hover:shadow-md w-full sm:w-auto">
+            <span className="text-4xl font-extrabold tracking-tight drop-shadow-xs">
+              40.404
+            </span>
+            <span className="mt-1 text-xs font-bold tracking-wider uppercase text-center">
+              {t("about.stats.contaminated_soils")}
+            </span>
+            <button
+              onClick={() =>
+                useUiStore.getState().openModal("about", false, {
+                  initialTab: "announcements",
+                  targetAnnouncementId: "aclaracion-40404-2026",
+                })
+              }
+              className="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-amber-300 bg-white px-3 py-1 text-[10px] font-bold text-amber-700 shadow-sm hover:scale-105 hover:bg-amber-100 transition-transform cursor-pointer"
+            >
+              {t("about.stats.contaminated_soils" as any)} + Info
+            </button>
+          </div>
+        </div>
+
+        {/* CONTENEDOR INVENTARIO (Texto introductorio + Resto de estadísticas) */}
         <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-4">
           <p className="mb-4 text-sm leading-relaxed text-slate-600">
             {t("about.stats.intro")}
           </p>
 
           <div className="mb-6 flex flex-col gap-4">
-            <div className="flex justify-center">
-              <div className="inline-flex flex-col items-center justify-center rounded-xl border-2 border-amber-200 bg-amber-50 px-8 py-3 text-amber-800 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
-                <span className="text-4xl font-extrabold tracking-tight drop-shadow-xs">
-                  40.404
-                </span>
-                <span className="mt-1 text-xs font-bold tracking-wider uppercase text-center">
-                  {t("about.stats.contaminated_soils")}
-                </span>
-              </div>
-            </div>
 
             <div className="flex justify-center">
               <div className="landfill-pulse-target inline-flex flex-col items-center justify-center rounded-xl border-2 border-red-100 bg-red-50 px-8 py-3 text-red-700 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">

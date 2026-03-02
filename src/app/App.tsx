@@ -91,7 +91,10 @@ function App() {
     const deepLinkNewsId = params.get("newsId");
 
     if (deepLinkNewsId) {
-      openModal("about", false, { initialTab: "announcements" });
+      openModal("about", false, {
+        initialTab: "announcements",
+        targetAnnouncementId: deepLinkNewsId
+      });
       hasCheckedUpdatesRef.current = true;
       return;
     }

@@ -29,6 +29,7 @@ export function AboutModal() {
     hasUnseenAnnouncement,
     hasUnseenUpdate,
     appVersion,
+    targetAnnouncementId,
   } = useAboutModalLogic();
 
   const renderTab = (
@@ -113,9 +114,15 @@ export function AboutModal() {
 
       <div className="flex-1 overflow-y-auto overscroll-contain bg-slate-50/30 p-6 pb-12">
         <div className="mx-auto max-w-3xl animate-in fade-in slide-in-from-bottom-2 duration-300">
-          {activeTab === "announcements" && <AnnouncementsSection />}
-          {activeTab === "changelog" && <ChangelogSection />}
-          {activeTab === "project" && <ProjectInfoSection />}
+          <div className={activeTab === "announcements" ? "block" : "hidden"}>
+            <AnnouncementsSection targetId={targetAnnouncementId} isActive={activeTab === "announcements"} />
+          </div>
+          <div className={activeTab === "changelog" ? "block" : "hidden"}>
+            <ChangelogSection />
+          </div>
+          <div className={activeTab === "project" ? "block" : "hidden"}>
+            <ProjectInfoSection />
+          </div>
         </div>
       </div>
     </div>);
