@@ -248,6 +248,13 @@ export default {
             }
         }
     },
+    clock: {
+        label: "Legegintzaldiaren amaiera",
+        days: "Egun",
+        hours: "H",
+        mins: "Min",
+        secs: "Seg"
+    },
     contact: {
         title: "Kontaktua",
         subtitle: "Zalantzarik baduzu, jarri gurekin harremanetan",

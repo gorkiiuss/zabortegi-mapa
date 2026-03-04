@@ -246,6 +246,13 @@ export default {
       }
     }
   },
+  clock: {
+    label: "Fin de legislatura",
+    days: "Días",
+    hours: "H",
+    mins: "Min",
+    secs: "Seg"
+  },
   misc: {
     landfill_count: "{{count}} vertederos",
   },

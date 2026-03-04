@@ -29,6 +29,7 @@ import { MobileRecenterButton } from "@features/map/components/MobileRecenterBut
 import { AttributionsModal } from "@features/attributions/components/AttributionsModal";
 import { AboutModal } from "@features/about/components/AboutModal";
 import { FutureFeatureModal } from "@shared/components/FutureFeatureModal";
+import { GlobalClockOverlay } from "@features/map/components/GlobalClockOverlay";
 
 import { useLanguageStore } from "@shared/state/languageStore";
 import { ContactModal } from "@features/toolbar/components/ContactModal";
@@ -247,6 +248,11 @@ function App() {
             <SearchDesktopPanel id="tutorial-search-btn" onOpenIndex={openIndexWithQuery} />
           </div>
 
+          {/* RELOJ DESKTOP */}
+          <div className="absolute top-3 right-3 z-900 animate-in fade-in slide-in-from-top-4 duration-500">
+            <GlobalClockOverlay />
+          </div>
+
           <div className="absolute bottom-3 left-3 z-900 flex flex-col gap-3">
             <div className="self-start">
               <ZoomPanel />
@@ -279,6 +285,11 @@ function App() {
               onClear={hasQuery ? () => setSearchQuery("") : undefined}
               onToggle={() => toggleModal("search")}
             />
+          </div>
+
+          {/* RELOJ MOBILE */}
+          <div className="absolute top-4 right-4 z-950 animate-in fade-in slide-in-from-top-4 duration-500">
+            <GlobalClockOverlay />
           </div>
 
           <div id="tutorial-mobile-legend" className="absolute bottom-2 left-2 z-950">
