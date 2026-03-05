@@ -9,7 +9,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "format": "prettier . --write",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "cms": "node cms/server.js"
   },
   "dependencies": {
     "@inquirer/editor": "^5.0.4",
@@ -33,10 +34,13 @@
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@vitejs/plugin-react": "^5.1.0",
+    "cors": "^2.8.6",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
+    "express": "^5.2.1",
     "globals": "^16.5.0",
+    "multer": "^2.1.1",
     "prettier": "^3.7.3",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "typescript": "~5.9.3",
