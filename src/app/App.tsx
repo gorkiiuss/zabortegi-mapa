@@ -186,11 +186,11 @@ function App() {
   const renderIndexWrapper = (content: React.ReactNode) => {
     return (
       <div
-        className="absolute inset-0 z-2000 flex items-center justify-center bg-black/30 p-4 backdrop-blur-[2px] sm:p-8"
+        className="absolute inset-0 z-2000 flex items-center justify-center bg-black/30 p-2 backdrop-blur-[2px] sm:p-8"
         onClick={() => toggleModal("none")}
       >
         <div
-          className="h-[85vh] w-full max-w-5xl"
+          className="h-[96dvh] sm:h-[85vh] w-full max-w-5xl"
           onClick={(e) => e.stopPropagation()}
         >
           {content}

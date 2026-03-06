@@ -83,7 +83,7 @@ export function AnnouncementsSection({ targetId, isActive }: AnnouncementsSectio
           >
             <div className={`absolute left-0 top-0 h-full w-1 transition-opacity ${isLatest ? "bg-emerald-500 opacity-100" : "bg-linear-to-b from-blue-400 to-emerald-400 opacity-0 group-hover:opacity-100"}`} />
 
-            <div className="p-6 sm:p-8">
+            <div className="p-4 sm:p-8">
 
               <div className="mb-3 flex items-start justify-between">
                 <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
@@ -156,10 +156,10 @@ export function AnnouncementsSection({ targetId, isActive }: AnnouncementsSectio
                 </div>
               </div>
 
-              <h3 className="mb-4 flex items-center flex-wrap gap-2 text-2xl font-bold leading-tight text-slate-800">
+              <h3 className="mb-3 sm:mb-4 flex items-center flex-wrap gap-2 text-xl sm:text-2xl font-bold leading-tight text-slate-800">
                 {post.title[currentLanguage]}
                 {isLatest && (
-                  <span className="inline-flex animate-pulse items-center rounded-full bg-emerald-600 px-2 py-0.5 text-[10px] font-bold tracking-wider text-white uppercase shadow-sm">
+                  <span className="inline-flex animate-pulse items-center rounded-full bg-emerald-600 px-2 py-0.5 text-[11px] sm:text-xs font-bold tracking-wider text-white uppercase shadow-sm">
                     {currentLanguage === "es" ? "Nuevo" : "Berria"}
                   </span>
                 )}
@@ -168,7 +168,7 @@ export function AnnouncementsSection({ targetId, isActive }: AnnouncementsSectio
               <WidgetRenderer widgets={post.widgets} />
 
               <div
-                className="prose prose-sm prose-slate max-w-none text-slate-600 leading-relaxed"
+                className="text-sm prose prose-sm prose-slate max-w-none text-slate-600 leading-relaxed"
                 dangerouslySetInnerHTML={{ __html: post.content[currentLanguage] }}
               />
 
