@@ -248,6 +248,18 @@ export default {
             }
         }
     },
+    changelog: {
+        show_development_versions: "Erakutsi garapen-bertsioak",
+        in_development: "Garapenean",
+        new: "Berria",
+        upcoming: "Laster"
+    },
+    folder_explorer: {
+        title: "Karpeta Bilatzailea",
+        search_placeholder: "Bilatu karpetetan...",
+        no_results: "Ez da fitxategirik aurkitu",
+        empty_folder: "Karpeta hau hutsik dago.",
+    },
     clock: {
         label: "Legegintzaldiaren amaiera",
         days: "Egun",

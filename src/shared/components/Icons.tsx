@@ -25,7 +25,7 @@ import {
   Pen,
   Printer,
   Image,
-  FileDown,
+  FileDown, FileUp, File,
   Crosshair,
   Plus,
   Wrench,
@@ -36,10 +36,17 @@ import {
   Calendar,
   Share2,
   MousePointerClick,
-  ArrowRightCircle, ArrowUp, ArrowDown,
+  ArrowRightCircle, ArrowUp, ArrowDown, ArrowLeft,
   Clock,
   Ban,
   GraduationCap,
+  FlaskConical,
+  GitCommitVertical,
+  Save,
+  Trash2,
+  Edit2,
+  CheckCircle2,
+  XCircle
 } from "lucide-react";
 
 export interface IconProps extends SVGProps<SVGSVGElement> {
@@ -99,7 +106,7 @@ export {
   Pen,
   Printer,
   Image,
-  FileDown,
+  FileDown, FileUp, File as FileIcon,
   Crosshair,
   Plus,
   Wrench,
@@ -110,8 +117,15 @@ export {
   Calendar,
   Share2 as Share,
   MousePointerClick,
-  ArrowRightCircle, ArrowDown, ArrowUp,
+  ArrowRightCircle, ArrowDown, ArrowUp, ArrowLeft,
   Clock,
   Ban,
-  GraduationCap
+  GraduationCap,
+  FlaskConical,
+  GitCommitVertical,
+  Save,
+  Trash2 as Trash,
+  Edit2 as Edit,
+  CheckCircle2 as CheckCircle,
+  XCircle
 };

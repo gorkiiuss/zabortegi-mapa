@@ -3,7 +3,7 @@
 import type { AppAction } from "@features/orchestrator/domain/types";
 
 export interface Attachment {
-  type: "pdf" | "link";
+  type: "pdf" | "link" | "folder";
   label: { es: string; eu: string };
   url: string;
 }
@@ -49,4 +49,6 @@ export interface ChangeLogEntry {
   date: string;
   title: { es: string; eu: string };
   items: ChangeLogItem[];
+  isSnapshot?: boolean;
+  targetVersion?: string;
 }

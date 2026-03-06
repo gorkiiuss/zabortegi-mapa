@@ -1,5 +1,6 @@
 // src/features/about/components/AboutModal.tsx
 
+import { useRef, useCallback, useEffect } from "react";
 import { useLanguageStore } from "@shared/state/languageStore";
 
 import { useAboutModalLogic, type AboutTab } from "../hooks/useAboutModalLogic";
@@ -30,7 +31,24 @@ export function AboutModal() {
     hasUnseenUpdate,
     appVersion,
     targetAnnouncementId,
+    scrollTop,
+    setScrollTop,
   } = useAboutModalLogic();
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollContainerRef.current && scrollTop > 0) {
+      scrollContainerRef.current.scrollTop = scrollTop;
+    }
+  }, []);
+
+  const handleScroll = useCallback(
+    (e: React.UIEvent<HTMLDivElement>) => {
+      setScrollTop(e.currentTarget.scrollTop);
+    },
+    [setScrollTop]
+  );
 
   const renderTab = (
     id: AboutTab,
@@ -101,7 +119,7 @@ export function AboutModal() {
           </button>
         </div>
         <div className="flex shrink-0 items-center gap-3">
-          <span className="font-mono text-[10px] font-medium text-slate-400 select-none">v{appVersion}</span>
+          <span className="font-mono text-[10px] font-medium text-slate-400 select-none">{appVersion}</span>
           <LanguageSelector />
         </div>
       </div>
@@ -112,7 +130,11 @@ export function AboutModal() {
         {renderTab("project", <Info size={16} />, t("about.tabs.project_info") || "Proyecto", false)}
       </div>
 
-      <div className="flex-1 overflow-y-auto overscroll-contain bg-slate-50/30 p-6 pb-12">
+      <div
+        ref={scrollContainerRef}
+        onScroll={handleScroll}
+        className="flex-1 overflow-y-auto overscroll-contain bg-slate-50/30 p-6 pb-12"
+      >
         <div className="mx-auto max-w-3xl animate-in fade-in slide-in-from-bottom-2 duration-300">
           <div className={activeTab === "announcements" ? "block" : "hidden"}>
             <AnnouncementsSection targetId={targetAnnouncementId} isActive={activeTab === "announcements"} />

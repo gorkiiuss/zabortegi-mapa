@@ -59,6 +59,12 @@ export default {
       subtitle_all: "Abrir el índice completo",
     },
   },
+  changelog: {
+    show_development_versions: "Mostrar versiones en desarrollo",
+    in_development: "En Desarrollo",
+    new: "Nuevo",
+    upcoming: "Próximamente",
+  },
   legend: {
     title: "Leyenda",
     subtitle: "Simbología y niveles de riesgo",
@@ -184,6 +190,12 @@ export default {
         leaflet: "Motor de mapas",
       },
     },
+  },
+  folder_explorer: {
+    title: "Explorador de carpetas",
+    search_placeholder: "Buscar en carpetas...",
+    no_results: "No se encontraron ficheros",
+    empty_folder: "Esta carpeta está vacía.",
   },
   about: {
     tabs: {

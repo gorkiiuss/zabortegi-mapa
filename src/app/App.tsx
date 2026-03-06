@@ -38,6 +38,7 @@ import { useNewsStore } from "@features/about/state/newsStore";
 import { TutorialManager } from "@features/tutorial/components/TutorialManager";
 import { useAppOrchestrator } from "@features/orchestrator/hooks/useAppOrchestrator";
 import { MediaExplorerModal } from "@features/media/components/MediaExplorerModal";
+import { FolderExplorerModal } from "@features/media/components/FolderExplorerModal";
 import { isItemUnseenAndNew } from "@features/about/utils/isNew";
 
 function App() {
@@ -366,6 +367,8 @@ function App() {
           renderCenteredAlertWrapper(<ContactModal />)}
 
         {activeModal === "media_explorer" && renderIndexWrapper(<MediaExplorerModal />)}
+        
+        {activeModal === "folder_explorer" && renderIndexWrapper(<FolderExplorerModal />)}
       </MapContainer>
       <TutorialManager />
       <LandfillsLoadingOverlay />

@@ -1,7 +1,7 @@
 // src/features/about/components/sections/AnnouncementsSection.tsx
 
 import { useLanguageStore } from "@shared/state/languageStore";
-import { FileText, ExternalLink, MapPin, Calendar } from "@shared/components/Icons";
+import { FileText, ExternalLink, MapPin, Calendar, Folder } from "@shared/components/Icons";
 import { useLandfillsStore } from "@features/landfills/state/landfillsStore";
 import { useLandfillNavigation } from "@features/landfills/hooks/useLandfillNavigation";
 import { useNewsStore } from "@features/about/state/newsStore";
@@ -20,6 +20,7 @@ interface AnnouncementsSectionProps {
 export function AnnouncementsSection({ targetId, isActive }: AnnouncementsSectionProps) {
   const { currentLanguage, t, formatDate } = useLanguageStore();
 
+  const { toggleActiveModal } = useUiStore();
   const landfills = useLandfillsStore((s) => s.landfills);
   const { navigateByCode } = useLandfillNavigation();
   const announcements = useNewsStore((s) => s.announcements);
@@ -27,14 +28,12 @@ export function AnnouncementsSection({ targetId, isActive }: AnnouncementsSectio
   const [openShareId, setOpenShareId] = useState<string | null>(null);
 
   useEffect(() => {
-    // Si la ID existe y estamos activos/visibles, disparamos el scroll
     if (targetId && isActive) {
       const timer = setTimeout(() => {
         const el = document.getElementById(`announcement-${targetId}`);
         if (el) {
           el.scrollIntoView({ behavior: "smooth", block: "start" });
 
-          // Opcionalmente borrar el store tras lograr scrollear por si un change de tabs manual lo vuelve a lanzar repetidamente
           useUiStore.setState((state) => {
             if (!state.modalData || !('initialTab' in state.modalData)) return state;
 
@@ -94,7 +93,6 @@ export function AnnouncementsSection({ targetId, isActive }: AnnouncementsSectio
                   </time>
                 </div>
 
-                {/* BOTÓN COMPARTIR */}
                 <div className="relative">
                   <DropdownMenu
                     isOpen={openShareId === post.id}
@@ -202,18 +200,73 @@ export function AnnouncementsSection({ targetId, isActive }: AnnouncementsSectio
                   )}
 
                   {post.attachments && post.attachments.length > 0 && (
-                    <div className="flex flex-wrap gap-3">
-                      {post.attachments.map((att, idx) => (
-                        <a
-                          key={idx}
-                          href={att.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-xs font-bold text-white! shadow-sm transition-transform hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md active:translate-y-0"                      >
-                          {att.type === "pdf" ? <FileText size={14} /> : <ExternalLink size={14} />}
-                          {att.label[currentLanguage]}
-                        </a>
-                      ))}
+                    <div className="flex flex-col gap-3">
+                      {post.attachments.map((att, idx) => {
+                        const lang = currentLanguage;
+                        if (att.type === "pdf" || att.type === "folder") {
+                          const isFolder = att.type === "folder";
+                          const Icon = isFolder ? Folder : FileText;
+                          const label = typeof att.label === 'object' ? (att.label[lang] || att.label.es) : att.label;
+
+                          if (isFolder) {
+                            return (
+                              <button
+                                key={idx}
+                                onClick={() => toggleActiveModal("folder_explorer", true, { targetFolder: att.url })}
+                                className="flex w-full items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 text-left transition-all hover:border-emerald-300 hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                              >
+                                <div className="shrink-0 rounded-md bg-amber-50 p-2 text-amber-500">
+                                  <Icon size={20} />
+                                </div>
+                                <div className="flex-1 overflow-hidden">
+                                  <p className="truncate text-sm font-medium text-slate-700">
+                                    {label}
+                                  </p>
+                                  <p className="text-[11px] text-slate-500 uppercase">Carpeta</p>
+                                </div>
+                                <div className="shrink-0 text-slate-300">
+                                  <ExternalLink size={16} />
+                                </div>
+                              </button>
+                            );
+                          }
+
+                          return (
+                            <a
+                              key={idx}
+                              href={att.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 transition-all hover:border-emerald-300 hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                            >
+                              <div className="shrink-0 rounded-md bg-red-50 p-2 text-red-500">
+                                <Icon size={20} />
+                              </div>
+                              <div className="flex-1 overflow-hidden">
+                                <p className="truncate text-sm font-medium text-slate-700">
+                                  {label}
+                                </p>
+                                <p className="text-[11px] text-slate-500">PDF Document</p>
+                              </div>
+                              <div className="shrink-0 text-slate-300">
+                                <ExternalLink size={16} />
+                              </div>
+                            </a>
+                          );
+                        }
+                        return (
+                          <a
+                            key={idx}
+                            href={att.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-xs font-bold text-white! shadow-sm transition-transform hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md active:translate-y-0"
+                          >
+                            <ExternalLink size={14} />
+                            {att.label[currentLanguage]}
+                          </a>
+                        );
+                      })}
                     </div>
                   )}
                 </div>
