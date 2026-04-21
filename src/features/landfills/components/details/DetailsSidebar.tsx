@@ -47,7 +47,7 @@ export function DetailsSidebar() {
         <div className="flex shrink-0 items-center gap-1">
           {/* BOTÓN CENTRAR */}
           <button
-            onClick={() => setFocusLandfillId(landfill.parcelId ?? null)}
+            onClick={() => setFocusLandfillId(landfill.id)}
             className="rounded-md p-1.5 text-slate-400 transition-colors hover:bg-emerald-50 hover:text-emerald-600"
             title={t("selection.center_map")}
             aria-label={t("selection.center_map")}

@@ -3,7 +3,6 @@
 import type * as GeoJSON from "geojson";
 import type {
   Landfill,
-  LandfillId,
   LandfillKind,
   RiskLevel,
   Territory,
@@ -141,7 +140,6 @@ function normalizeKind(value?: string): LandfillKind {
 
 export function createLandfillFromFeature(
   feature: LandfillFeature,
-  index: number,
 ): Landfill {
   const { geometry, properties } = feature;
   const sections = (properties.sections ?? {}) as RawSections;
@@ -150,11 +148,7 @@ export function createLandfillFromFeature(
   const loc = datosGenerales.LOCALIZACIÓN ?? {};
   const expl = datosGenerales.EXPLOTACIÓN ?? {};
 
-  const rawParcelId = properties.IdParcela;
-  const objectId = properties.OBJECTID;
-
-  const technicalId: LandfillId = `lf-${index}-${objectId ?? "no-id"}`;
-  const businessId = rawParcelId ? String(rawParcelId) : technicalId;
+  const id: string = String(properties.IdParcela);
 
   const name = properties.NombreVertedero;
   const municipality = (loc.Municipio as string | undefined) ?? "Desconocido";
@@ -177,8 +171,7 @@ export function createLandfillFromFeature(
 
   return {
     hasInfo,
-    id: technicalId,
-    parcelId: businessId,
+    id,
     code: properties.Código,
     name,
     municipality,

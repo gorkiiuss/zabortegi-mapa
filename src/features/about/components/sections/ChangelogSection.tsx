@@ -65,7 +65,7 @@ export function ChangelogSection() {
               key={cIdx}
               onClick={() => hasAction && item.action && dispatch(item.action)}
               className={`
-                group/item flex items-start gap-2.5 text-xs sm:text-sm transition-all duration-200 rounded-md p-1 -ml-1
+                group/item flex items-start gap-2.5 text-sm transition-all duration-200 rounded-md p-1 -ml-1
                 ${hasAction ? "cursor-pointer hover:bg-white hover:shadow-sm hover:ring-1 hover:ring-slate-200" : ""}
                 ${isLatest && !hasAction ? "text-emerald-800" : "text-slate-600"}
               `}
@@ -132,7 +132,7 @@ export function ChangelogSection() {
                   }
                 `}
               >
-                <span className={`text-[10px] font-bold ${!hasMain ? "text-amber-700" : ""}`}>
+                <span className={`text-[11px] sm:text-xs font-bold ${!hasMain ? "text-amber-700" : ""}`}>
                   v{group.version}
                 </span>
               </div>
@@ -146,21 +146,21 @@ export function ChangelogSection() {
               >
                 <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex items-center gap-2">
-                    <h4 className={`text-sm font-bold ${isLatestMain ? "text-emerald-900" : (!hasMain ? "text-amber-700" : "text-slate-700")}`}>
+                    <h4 className={`text-base sm:text-sm font-bold ${isLatestMain ? "text-emerald-900" : (!hasMain ? "text-amber-700" : "text-slate-700")}`}>
                       {hasMain ? mainEntry!.title[lang] : t("changelog.in_development")}
                     </h4>
                     {isLatestMain && (
-                      <span className="inline-flex animate-pulse items-center rounded-full bg-emerald-600 px-1.5 py-0.5 text-[9px] font-bold tracking-wider text-white uppercase shadow-sm">
+                      <span className="inline-flex animate-pulse items-center rounded-full bg-emerald-600 px-1.5 py-0.5 text-[10px] sm:text-[11px] font-bold tracking-wider text-white uppercase shadow-sm">
                         {t("changelog.new")}
                       </span>
                     )}
                     {!hasMain && (
-                      <span className="inline-flex items-center rounded-full bg-amber-100 px-1.5 py-0.5 text-[9px] font-bold tracking-wider text-amber-700 uppercase shadow-xs">
+                      <span className="inline-flex items-center rounded-full bg-amber-100 px-1.5 py-0.5 text-[10px] sm:text-[11px] font-bold tracking-wider text-amber-700 uppercase shadow-xs">
                         {t("changelog.upcoming")}
                       </span>
                     )}
                   </div>
-                  <span className={`text-[10px] font-medium tracking-wide uppercase ${isLatestMain ? "text-emerald-400" : "text-slate-400"}`}>
+                  <span className={`text-[10px] sm:text-[11px] font-medium tracking-wide uppercase ${isLatestMain ? "text-emerald-400" : "text-slate-400"}`}>
                     {hasMain ? mainEntry!.date : "-"}
                   </span>
                 </div>
@@ -185,19 +185,19 @@ export function ChangelogSection() {
                       <div className="flex-1 space-y-1">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <span className="text-xs font-bold text-blue-600">
+                            <span className="text-sm sm:text-xs font-bold text-blue-600">
                               {snap.version}
                             </span>
-                            <span className="text-[11px] font-medium text-slate-500">
+                            <span className="text-[12px] sm:text-[11px] font-medium text-slate-500">
                               {snap.title[lang]}
                             </span>
                             {isLatestSnap && (
-                              <span className="inline-flex animate-pulse items-center rounded-full bg-blue-500 px-1.5 py-0.5 text-[9px] font-bold tracking-wider text-white uppercase shadow-sm">
+                              <span className="inline-flex animate-pulse items-center rounded-full bg-blue-500 px-1.5 py-0.5 text-[10px] font-bold tracking-wider text-white uppercase shadow-sm">
                                 {t("changelog.new")}
                               </span>
                             )}
                           </div>
-                          <span className="text-[9px] font-medium tracking-wide uppercase text-slate-400">
+                          <span className="text-[10px] font-medium tracking-wide uppercase text-slate-400">
                             {snap.date}
                           </span>
                         </div>

@@ -29,10 +29,10 @@ export function useSearchLogic(
   }, [totalItems]);
 
   const handleSelectLandfill = (item: LandfillSummary) => {
-    const target = landfills.find((lf) => lf.parcelId === item.id);
+    const target = landfills.find((lf) => lf.id === item.id);
     if (target) {
-      setSelectedLandfillId(target.parcelId ?? null);
-      setFocusLandfillId(target.parcelId ?? null);
+      setSelectedLandfillId(target.id);
+      setFocusLandfillId(target.id);
       onClose?.();
     }
   };

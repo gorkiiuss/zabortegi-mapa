@@ -20,24 +20,23 @@ export function useMediaIndex() {
 
     landfills.forEach(lf => {
       const raw = lf.rawProperties as unknown as RawProperties;
-      const idParcela = raw?.IdParcela;
-      if (!idParcela) return;
+      if (!lf.id) return;
 
       if (Array.isArray(raw.imgs)) {
         raw.imgs.forEach((img: any, idx: number) => {
-          const url = buildLandfillMediaUrl(idParcela, img.path);
+          const url = buildLandfillMediaUrl(lf.id, img.path);
           if (!url) return;
 
           const filename = img.path.split('/').pop() || `img_${idx}.jpg`;
 
           items.push({
-            id: `lf-${idParcela}-img-${idx}`,
+            id: `lf-${lf.id}-img-${idx}`,
             url,
             filename,
             title: img.titulo || filename,
             type: 'image',
             context: 'landfill_image',
-            relatedId: String(idParcela),
+            relatedId: lf.id,
             relatedName: lf.name
           });
         });
@@ -45,20 +44,20 @@ export function useMediaIndex() {
 
       if (Array.isArray(raw.documentation)) {
         raw.documentation.forEach((doc: any, idx: number) => {
-          const url = buildLandfillMediaUrl(idParcela, doc.path);
+          const url = buildLandfillMediaUrl(lf.id, doc.path);
           if (!url) return;
 
           const filename = doc.path.split('/').pop() || `doc_${idx}.pdf`;
           const isPdf = filename.toLowerCase().endsWith('.pdf');
 
           items.push({
-            id: `lf-${idParcela}-doc-${idx}`,
+            id: `lf-${lf.id}-doc-${idx}`,
             url,
             filename,
             title: doc.label || filename,
             type: isPdf ? 'pdf' : 'other',
             context: 'landfill_doc',
-            relatedId: String(idParcela),
+            relatedId: lf.id,
             relatedName: lf.name
           });
         });

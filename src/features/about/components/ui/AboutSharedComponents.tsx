@@ -47,12 +47,12 @@ export function StatBox({
         } `}
     >
       <span
-        className={`text-xl font-black ${isPulse ? "text-orange-700" : "text-slate-700"}`}
+        className={`text-xl sm:text-2xl font-black ${isPulse ? "text-orange-700" : "text-slate-700"}`}
       >
         {value}
       </span>
       <span
-        className={`mt-0.5 text-[10px] font-bold tracking-wide uppercase ${isPulse ? "text-orange-600" : "text-slate-400"}`}
+        className={`mt-0.5 text-[10px] sm:text-[11px] font-bold tracking-wide uppercase ${isPulse ? "text-orange-600" : "text-slate-400"}`}
       >
         {label}
       </span>

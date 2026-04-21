@@ -89,7 +89,7 @@ export function AboutModal() {
         <X />
       </button>
 
-      <div className="group relative h-48 w-full shrink-0 bg-slate-900 sm:h-56">
+      <div className="group relative h-24 w-full shrink-0 bg-slate-900 sm:h-56">
         <img
           src={PORTADA}
           alt="Portada"
@@ -97,20 +97,20 @@ export function AboutModal() {
           onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
         />
         <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
-        <div className="absolute bottom-0 left-0 w-full p-6 text-white">
-          <div className="mb-2 inline-block animate-pulse rounded bg-red-600 px-2 py-0.5 text-[10px] font-bold tracking-widest text-white uppercase shadow-lg">
+        <div className="absolute bottom-0 left-0 w-full p-4 sm:p-6 text-white">
+          <div className="mb-1 sm:mb-2 inline-block animate-pulse rounded bg-red-600 px-2 py-0.5 text-[10px] sm:text-xs font-bold tracking-widest text-white uppercase shadow-lg">
             {t("about.hero.badge")}
           </div>
           <h1
-            className="text-2xl leading-tight font-bold drop-shadow-md sm:text-3xl"
+            className="text-xl sm:text-3xl leading-tight font-bold drop-shadow-md"
             dangerouslySetInnerHTML={{ __html: t("about.hero.title") }}
           />
-          <p className="mt-2 mb-0 text-sm font-light text-slate-200 drop-shadow-sm">
+          <p className="mt-1 sm:mt-2 mb-0 text-xs sm:text-sm font-light text-slate-200 drop-shadow-sm">
             {t("about.hero.subtitle")}
           </p>
         </div>
       </div>
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 bg-white px-6 py-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 bg-white px-4 py-3 sm:gap-4 sm:px-6 sm:py-4">
         <div className="flex flex-wrap gap-2">
           <Chip href="https://github.com/gorkiiuss/zabortegi-mapa" icon={<Github />} label={t("about.chips.code")} />
           <Chip href="https://ekologistakmartxan.org" icon={<Globe />} label="Ekologistak Martxan" iconHoverColor="text-green-600" />
@@ -124,7 +124,7 @@ export function AboutModal() {
         </div>
       </div>
 
-      <div className="sticky top-0 z-20 flex w-full border-b border-slate-200 bg-white px-4 shadow-xs">
+      <div className="sticky top-0 z-20 flex w-full overflow-x-auto whitespace-nowrap hide-scrollbar border-b border-slate-200 bg-white px-2 sm:px-4 shadow-xs">
         {renderTab("announcements", <Megaphone size={16} />, t("about.tabs.announcements_title") || "Avisos", hasUnseenAnnouncement)}
         {renderTab("changelog", <Sparkles size={16} />, t("about.tabs.whats_new") || "Novedades", hasUnseenUpdate)}
         {renderTab("project", <Info size={16} />, t("about.tabs.project_info") || "Proyecto", false)}

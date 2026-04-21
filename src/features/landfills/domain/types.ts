@@ -2,7 +2,7 @@
 
 import type * as GeoJSON from "geojson";
 
-export type LandfillId = string;
+
 
 export type Territory = "Araba" | "Bizkaia" | "Gipuzkoa";
 
@@ -17,8 +17,7 @@ export type LandfillKind =
 export type RiskLevel = "low" | "medium" | "high" | "very-high" | "unknown";
 
 export interface Landfill {
-  id: LandfillId;
-  parcelId?: string;
+  id: string;
   code?: string;
 
   hasInfo: boolean;
