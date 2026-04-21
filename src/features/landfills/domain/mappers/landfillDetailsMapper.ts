@@ -197,15 +197,14 @@ export function buildSelectionPanelData(
 
   const subtitle = subtitleParts.join(" · ");
 
-  const idParcela = raw.IdParcela;
   const galleryImages: GalleryImage[] =
-    idParcela && imgs.length > 0
+    imgs.length > 0
       ? imgs
           .map((img) => {
             if (!img.path) return null;
             return {
               title: img.titulo || landfill.name,
-              url: buildLandfillMediaUrl(idParcela, img.path),
+              url: buildLandfillMediaUrl(landfill.id, img.path),
             };
           })
           .filter((img): img is GalleryImage => Boolean(img && img.url))

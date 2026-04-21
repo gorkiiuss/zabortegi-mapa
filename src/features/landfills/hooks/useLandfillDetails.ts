@@ -20,7 +20,7 @@ export function useSelectionLogic() {
 
   const landfill = useMemo(() => {
     if (!selectedId) return undefined;
-    return landfills.find((lf) => lf.parcelId === selectedId);
+    return landfills.find((lf) => lf.id === selectedId);
   }, [landfills, selectedId]);
 
   useEffect(() => {

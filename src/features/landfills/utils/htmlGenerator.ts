@@ -151,7 +151,7 @@ export async function generateLandfillHtml(
     .replace("{{__LOGO_IHOBE__}}", logoIhobeB64)
     .replace("{{__LOGO_GV__}}", logoGvB64)
     .replace("{{__FECHA__}}", new Date().toLocaleDateString("es-ES"))
-    .replace(/{{HEADER::ID}}/g, landfill.parcelId ?? "")
+    .replace(/{{HEADER::ID}}/g, landfill.id)
     .replace(/{{HEADER::NAME}}/g, landfill.name);
 
   // 2. Extracción de Datos del Vertedero
@@ -195,8 +195,7 @@ async function renderImages(landfill: Landfill): Promise<string> {
     [];
   if (rawImgs.length === 0) return "<p>No hay imágenes disponibles.</p>";
 
-  const idParcela = landfill.rawProperties?.IdParcela;
-  const folderId = idParcela ? String(idParcela) : landfill.id;
+  const folderId = landfill.id;
 
   const processedImages = await Promise.all(
     rawImgs.map(async (img) => {

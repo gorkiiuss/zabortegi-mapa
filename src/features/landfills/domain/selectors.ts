@@ -66,7 +66,7 @@ export function getRiskScoreRange(
 
 export function summarize(landfill: Landfill): LandfillSummary {
   return {
-    id: landfill.parcelId ?? "",
+    id: landfill.id,
     name: landfill.name,
     municipality: landfill.municipality,
     score: landfill.riskScore,
@@ -82,7 +82,7 @@ export function getTopRiskLandfillIds(
     .slice()
     .sort((a, b) => (b.riskScore ?? 0) - (a.riskScore ?? 0));
 
-  const top = sorted.slice(0, count).map((l) => l.parcelId ?? "");
+  const top = sorted.slice(0, count).map((l) => l.id);
   return new Set(top);
 }
 
@@ -103,5 +103,5 @@ export function matchesQuery(landfill: Landfill, query: string): boolean {
 }
 
 export function hasId(landfill: Landfill, id: string): boolean {
-  return landfill.parcelId === id;
+  return landfill.id === id;
 }

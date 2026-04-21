@@ -19,7 +19,7 @@ export function DetailsRelatedDocumentationModal() {
 
   const { landfills } = useLandfills();
   const currentLandfill = landfills.find(
-    (l) => l.parcelId === selectedLandfillId,
+    (l) => l.id === selectedLandfillId,
   );
 
   const rawProps = currentLandfill?.rawProperties as unknown as
@@ -27,7 +27,6 @@ export function DetailsRelatedDocumentationModal() {
     | undefined;
 
   const docs = rawProps?.documentation || [];
-  const idParcela = rawProps?.IdParcela;
 
   const handleClose = () => closeModal();
 
@@ -72,7 +71,7 @@ export function DetailsRelatedDocumentationModal() {
         {docs.length > 0 ? (
           <div className="space-y-2">
             {docs.map((doc, idx) => {
-              const fullUrl = buildLandfillMediaUrl(idParcela, doc.path);
+              const fullUrl = buildLandfillMediaUrl(currentLandfill?.id, doc.path);
 
               if (!fullUrl) return null;
 

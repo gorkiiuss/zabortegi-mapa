@@ -8,7 +8,7 @@ export function useLandfillNavigation() {
     const allLandfills = useLandfillsStore.getState().landfills;
     const target = allLandfills.find((l) => l.code === code);
 
-    if (!target || !target.parcelId) {
+    if (!target) {
       console.warn(`[Navigation] Vertedero con código ${code} no encontrado.`);
       return;
     }
@@ -18,8 +18,8 @@ export function useLandfillNavigation() {
 
     uiStore.openModal("selection", true);
 
-    uiStore.setSelectedLandfillId(target.parcelId);
-    mapStore.setFocusLandfillId(target.parcelId);
+    uiStore.setSelectedLandfillId(target.id);
+    mapStore.setFocusLandfillId(target.id);
     
   }, []);
 

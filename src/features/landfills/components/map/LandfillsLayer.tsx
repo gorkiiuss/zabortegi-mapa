@@ -57,11 +57,11 @@ export function LandfillsLayer() {
         const latlngs = geometryToLatLngs(lf.geometry);
         if (!latlngs.length) return null;
 
-        const isSelected = selectedLandfillId === lf.parcelId;
+        const isSelected = selectedLandfillId === lf.id;
 
         const handleClick = async () => {
-          setSelectedLandfillId(lf.parcelId ?? null);
-          setFocusLandfillId(lf.parcelId ?? null);
+          setSelectedLandfillId(lf.id);
+          setFocusLandfillId(lf.id);
         };
 
         const color = getRiskFillColor(
@@ -71,7 +71,7 @@ export function LandfillsLayer() {
           maxRiskScore,
         );
 
-        const isHighlighted = topVisibleIds.has(lf.parcelId ?? "");
+        const isHighlighted = topVisibleIds.has(lf.id);
 
         return (
           <Fragment key={lf.id}>

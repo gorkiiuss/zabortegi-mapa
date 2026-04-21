@@ -1,7 +1,7 @@
 // src/features/landfills/data/geojsonRepository.ts
 
 import type * as GeoJSON from "geojson";
-import type { Landfill, LandfillId } from "../domain/types";
+import type { Landfill } from "../domain/types";
 import type { LandfillRepository } from "../domain/repository";
 import type { RawProperties } from "../domain/rawTypes";
 import {
@@ -35,13 +35,13 @@ export const geoJsonLandfillRepository: LandfillRepository = {
   async getAll(): Promise<Landfill[]> {
     const data = await fetchGeoJson();
     // Delegamos toda la lógica de transformación a la Factoría
-    return data.features.map((f, index) =>
-      createLandfillFromFeature(f, index),
+    return data.features.map((f) =>
+      createLandfillFromFeature(f),
     );
   },
 
-  async getById(id: LandfillId): Promise<Landfill | null> {
+  async getById(id: string): Promise<Landfill | null> {
     const all = await this.getAll();
-    return all.find((lf) => lf.parcelId === id || lf.id === id) || null;
+    return all.find((lf) => lf.id === id) ?? null;
   },
 };

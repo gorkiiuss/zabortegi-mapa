@@ -52,7 +52,7 @@ export function MapViewportTracker() {
   useEffect(() => {
     if (!focusLandfillId || !landfills.length) return;
 
-    const lf = landfills.find((l) => l.parcelId === focusLandfillId);
+    const lf = landfills.find((l) => l.id === focusLandfillId);
     if (!lf) {
       setFocusLandfillId(null);
       return;

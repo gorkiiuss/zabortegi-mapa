@@ -57,8 +57,8 @@ export function LandfillListModal({
   );
 
   const handleSelect = (lf: Landfill) => {
-    setSelectedLandfillId(lf.parcelId ?? null);
-    setFocusLandfillId(lf.parcelId ?? null);
+    setSelectedLandfillId(lf.id);
+    setFocusLandfillId(lf.id);
     onClose();
   };
 

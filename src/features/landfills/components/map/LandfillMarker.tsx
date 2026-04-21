@@ -73,7 +73,7 @@ export function LandfillMarker({
 }: LandfillMarkerProps) {
   ensureStylesInjected();
 
-  const targetId = customId ?? landfill.parcelId;
+  const targetId = customId ?? landfill.id;
 
   const useBigSize = isSelected || isHighlighted;
 

@@ -72,7 +72,7 @@ function App() {
   const hasQuery = searchQuery.trim().length > 0;
 
   const selectedLandfill = useMemo(
-    () => landfills.find((l) => l.parcelId === selectedLandfillId),
+    () => landfills.find((l) => l.id === selectedLandfillId),
     [landfills, selectedLandfillId],
   );
 

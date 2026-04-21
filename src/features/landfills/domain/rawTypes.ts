@@ -60,7 +60,7 @@ export interface RawProperties {
     path: string;
   }[];
   hasFicha?: boolean;
-  IdParcela?: number;
+  IdParcela: number;
   risk?: RawRisk | null;
   [key: string]: unknown;
 }

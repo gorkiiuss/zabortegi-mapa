@@ -72,7 +72,7 @@ export function groupLandfillsForList(
     const filtered = filterRankingByQuery(rankingItems, trimmed);
     const allowed = new Set(filtered.map((r) => r.id));
 
-    working = landfills.filter((lf) => allowed.has(lf.parcelId ?? ""));
+    working = landfills.filter((lf) => allowed.has(lf.id));
   }
 
   const byTerritory = new Map<TerritoryKey, Map<string, Landfill[]>>();
