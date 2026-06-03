@@ -72,7 +72,7 @@ export function ContactModal() {
 
           {/* 2. Email */}
           <a
-            href="mailto:info@example.eus"
+            href="mailto:barakaldo@ekologistakmartxan.org"
             className="group flex items-center gap-3 rounded-xl bg-slate-50 p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-600"
           >
             <div className="rounded-lg bg-white p-2 text-slate-400 shadow-sm transition-colors group-hover:text-emerald-500">
