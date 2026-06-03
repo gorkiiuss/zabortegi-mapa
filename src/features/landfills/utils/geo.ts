@@ -1,6 +1,6 @@
 // src/features/landfills/utils/geo.ts
 
-import type { Landfill } from "../domain/types";
+import type * as GeoJSON from "geojson";
 import type { LatLngExpression } from "leaflet";
 
 /**
@@ -11,7 +11,7 @@ import type { LatLngExpression } from "leaflet";
  * - Para MultiPolygon: concatena todos los polígonos.
  */
 export function geometryToLatLngs(
-  geometry: Landfill["geometry"],
+  geometry: GeoJSON.Polygon | GeoJSON.MultiPolygon,
 ): LatLngExpression[][] {
   if (geometry.type === "Polygon") {
     return geometry.coordinates.map((ring) =>

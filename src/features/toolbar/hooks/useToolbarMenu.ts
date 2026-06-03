@@ -1,8 +1,7 @@
 // src/features/toolbar/hooks/useToolbarMenu.ts
 
-import { useMapStore } from "@features/map/state/mapStore";
 import { useUiStore } from "@features/map/state/uiStore";
-import { useTutorialStore } from "@features/tutorial/state/tutorialStore";
+
 import { useLanguageStore } from "@shared/state/languageStore";
 import { shareUtils } from "@shared/utils/sharing";
 
@@ -30,13 +29,8 @@ export function useToolbarMenu({
   onOpenIndex,
   onCloseUi,
 }: UseToolbarMenuProps) {
-  const showNoInfoLandFills = useMapStore((s) => s.showNoInfoLandfills);
-  const toggleShowNoInfoLandfills = useMapStore(
-    (s) => s.toggleShowNoInfoLandfills,
-  );
   const { toggleActiveModal } = useUiStore();
   const { t, setLanguage, currentLanguage } = useLanguageStore();
-  const { startTutorial } = useTutorialStore();
 
   const menuStructure: MenuSection[] = [
     {
@@ -63,24 +57,11 @@ export function useToolbarMenu({
           },
         },
         {
+          id: "tutorial-btn-advanced-search",
           label: t("toolbar.search"),
           isFutureFeature: true,
           action: () => {
             toggleActiveModal("future_feature", true);
-          },
-        },
-      ],
-    },
-    {
-      id: "view",
-      label: t("toolbar.view"),
-      items: [
-        {
-          label: showNoInfoLandFills
-            ? t("toolbar.hide_no_info")
-            : t("toolbar.show_no_info"),
-          action: () => {
-            toggleShowNoInfoLandfills();
           },
         },
       ],
@@ -150,9 +131,10 @@ export function useToolbarMenu({
           },
         },
         {
+          id: "tutorial-btn-selection",
           label: t("toolbar.tutorial"),
           action: () => {
-            startTutorial("onboarding");    
+            toggleActiveModal("tutorial_selection", true);
           },
         },
       ],

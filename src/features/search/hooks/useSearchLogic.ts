@@ -2,9 +2,9 @@
 import { useState, useEffect } from "react";
 import { useUiStore } from "@features/map/state/uiStore";
 import { useMapStore } from "@features/map/state/mapStore";
-import { useNoInfoLandfills } from "@features/landfills/hooks/useNoInfoLandfills";
 import { useQueryFilteredLandfillSummaries } from "@features/landfills/hooks/useQueryFilteredLandfillSummaries";
-import type { LandfillSummary } from "@features/landfills/domain/types";
+import { useLandfillsStore } from "@features/landfills/state/landfillsStore";
+import type { LandfillSummaryEntity } from "@features/landfills/domain/entities/LandfillSummary";
 
 export function useSearchLogic(
   onOpenIndex?: (q: string) => void,
@@ -15,7 +15,7 @@ export function useSearchLogic(
   const setSelectedLandfillId = useUiStore((s) => s.setSelectedLandfillId);
   const setFocusLandfillId = useMapStore((s) => s.setFocusLandfillId);
 
-  const landfills = useNoInfoLandfills();
+  const { landfillsSummary } = useLandfillsStore();
 
   const suggestions = useQueryFilteredLandfillSummaries(searchQuery.trim(), 9);
   const hasQuery = searchQuery.trim().length > 0;
@@ -28,11 +28,11 @@ export function useSearchLogic(
     setHighlightedIndex(totalItems > 0 ? 0 : -1);
   }, [totalItems]);
 
-  const handleSelectLandfill = (item: LandfillSummary) => {
-    const target = landfills.find((lf) => lf.parcelId === item.id);
+  const handleSelectLandfill = (item: LandfillSummaryEntity) => {
+    const target = landfillsSummary.find((lf) => lf.id === item.id);
     if (target) {
-      setSelectedLandfillId(target.parcelId ?? null);
-      setFocusLandfillId(target.parcelId ?? null);
+      setSelectedLandfillId(target.id);
+      setFocusLandfillId(target.id);
       onClose?.();
     }
   };

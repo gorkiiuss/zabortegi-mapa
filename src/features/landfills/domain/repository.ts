@@ -1,8 +1,11 @@
 // src/features/landfills/domain/repository.ts
 
-import type { Landfill, LandfillId } from "./types";
+import type { LandfillDetailsEntity } from "./entities/LandfillDetails";
+import type { LandfillSummaryEntity } from "./entities/LandfillSummary";
+import type { LandfillVersionEntity } from "./entities/LandfillVersion";
 
 export interface LandfillRepository {
-  getAll(): Promise<Landfill[]>;
-  getById(id: LandfillId): Promise<Landfill | null>;
+  getSummary(): Promise<LandfillSummaryEntity[]>;
+  getDetails(id: string, versionId?: number | null): Promise<LandfillDetailsEntity | null>;
+  getVersions(id: string): Promise<LandfillVersionEntity[]>;
 }

@@ -1,9 +1,11 @@
 // src/features/tutorial/state/tutorialStore.ts
 
 import { create } from "zustand";
-import type { TutorialDefinition } from "../domain/types";
+import type { TutorialDefinition } from "../types";
 import { onboardingTutorial } from "../data/onboardingTutorial";
 import { onboardingTutorialMobile } from "../data/onboardingTutorialMobile";
+import { fullDetailsTutorial } from "../data/fullDetailsTutorial";
+import { fullDetailsTutorialMobile } from "../data/fullDetailsTutorialMobile";
 
 interface TutorialState {
     tutorials: Record<string, TutorialDefinition>;
@@ -19,7 +21,9 @@ interface TutorialState {
 export const useTutorialStore = create<TutorialState>((set, get) => ({
     tutorials: {
         [onboardingTutorial.id]: onboardingTutorial,
-        [onboardingTutorialMobile.id]: onboardingTutorialMobile
+        [onboardingTutorialMobile.id]: onboardingTutorialMobile,
+        [fullDetailsTutorial.id]: fullDetailsTutorial,
+        [fullDetailsTutorialMobile.id]: fullDetailsTutorialMobile
     },
 
     activeTutorialId: null,

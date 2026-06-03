@@ -30,8 +30,17 @@ public/media/
 # Si tienes archivos temporales de tus scripts
 temp/
 *.log
-public/data/changelog.json
 .gitignore
-public/data/announcements.json
+public/data/
 manage-content.js
 public/imagenes/announcements/zabortegien_zerratzea-02_17/
+
+# CMS Local
+cms/
+src/features/cms/
+
+
+cms.html
+src/cms-main.tsx
+
+/local_backend/

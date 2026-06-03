@@ -1,44 +1,42 @@
+// src/features/landfills/hooks/useLandfillGeneralStats.ts
+
 import { useMemo } from "react";
 import { useLandfillsStore } from "../state/landfillsStore";
-import type { Territory } from "../domain/types";
+import type { HistoricTerritory } from "../domain/valueObjects/location/HistoricTerritory";
 
 export interface LandfillStats {
   total: number;
-  byTerritory: Record<Territory, number>;
+  byTerritory: Record<HistoricTerritory, number>;
   undocumented: number;
 }
 
 export function useLandfillGeneralStats() {
-  const landfills = useLandfillsStore((s) => s.landfills);
-  const loading = useLandfillsStore((s) => s.loading);
+  const landfillsSummary = useLandfillsStore((s) => s.landfillsSummary);
+  const loading = useLandfillsStore((s) => s.isLoadingSummary);
 
   const stats = useMemo<LandfillStats>(() => {
     const counts = {
       total: 0,
       byTerritory: {
-        Bizkaia: 0,
-        Gipuzkoa: 0,
-        Araba: 0,
-      } as Record<Territory, number>,
+        BIZKAIA: 0,
+        GIPUZKOA: 0,
+        ARABA: 0,
+      } as Record<HistoricTerritory, number>,
       undocumented: 0,
     };
 
-    if (!landfills || landfills.length === 0) return counts;
+    if (!landfillsSummary || landfillsSummary.length === 0) return counts;
 
-    counts.total = landfills.length;
+    counts.total = landfillsSummary.length;
 
-    for (const lf of landfills) {
-      if (lf.territory && counts.byTerritory[lf.territory] !== undefined) {
-        counts.byTerritory[lf.territory]++;
-      }
-
-      if (!lf.hasInfo) {
-        counts.undocumented++;
+    for (const lf of landfillsSummary) {
+      if (lf.historicTerritory && counts.byTerritory[lf.historicTerritory] !== undefined) {
+        counts.byTerritory[lf.historicTerritory]++;
       }
     }
 
     return counts;
-  }, [landfills]);
+  }, [landfillsSummary]);
 
   return {
     stats,

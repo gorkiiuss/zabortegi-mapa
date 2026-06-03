@@ -1,6 +1,6 @@
 // src/features/tutorial/data/onboardingTutorialMobile.ts
 
-import type { TutorialDefinition } from "../domain/types";
+import type { TutorialDefinition } from "../types";
 
 export const onboardingTutorialMobile: TutorialDefinition = {
     id: 'onboarding-mobile',
@@ -46,7 +46,7 @@ export const onboardingTutorialMobile: TutorialDefinition = {
                 eu: "Zabortegi batean klik egitean, bere informazio guztia ikusiko duzu: txostenak, arriskuen ebaluazioa eta dokumentazio ofiziala."
             },
             onEnterAction: [
-                { type: 'SELECT_LANDFILL', payload: { landfillId: '1309' } },
+                { type: 'SELECT_LANDFILL', payload: { landfillId: 'e2179184-f96d-43d5-86b8-e98d30df53c2' } },
                 { type: 'TOGGLE_MODAL', payload: { modalId: 'selection' } }
             ]
         },
@@ -54,30 +54,41 @@ export const onboardingTutorialMobile: TutorialDefinition = {
             id: 'details-pdf',
             targetId: 'mobile-tutorial-btn-pdf',
             position: 'bottom',
-            title: { es: "Descarga del Informe", eu: "Txostenaren Deskarga" },
+            title: { es: "Descarga del Informe (Legacy)", eu: "Txostenaren Deskarga (Legacy)" },
             content: {
-                es: "Aquí puedes generar y descargar al instante un informe completo en PDF con todos los datos técnicos del emplazamiento.",
-                eu: "Hemen berehala sortu eta deskarga dezakezu PDF formatuko txosten osoa, kokalekuaren datu tekniko guztiekin."
+                es: "Para los vertederos históricos o 'legacy', dispones de este botón para descargar el informe original digitalizado en formato PDF.",
+                eu: "Zabortegi historiko edo 'legacy'-etarako, botoi hau duzu jatorrizko txosten digitalizatua PDF formatuan deskargatzeko."
             }
         },
         {
-            id: 'details-docs',
-            targetId: 'mobile-tutorial-btn-docs',
+            id: 'details-more-info',
+            targetId: 'mobile-tutorial-btn-more-info',
             position: 'bottom',
-            title: { es: "Documentación Oficial", eu: "Dokumentazio Ofiziala" },
+            title: { es: "Ver más información", eu: "Ikusi informazio gehiago" },
             content: {
-                es: "Accede directamente a los documentos oficiales originales de las instituciones.",
-                eu: "Sartu zuzenean erakundeen dokumentu ofizialetara."
+                es: "Pulsa en este botón para entrar al expediente completo de este vertedero y acceder a información y opciones adicionales.",
+                eu: "Sakatu botoi hau zabortegi honen espediente osoa irekitzeko eta informazio eta aukera gehiago ikusteko."
             }
         },
         {
             id: 'details-corrections',
-            targetId: 'mobile-tutorial-btn-corrections',
+            targetId: 'full-details-btn-corrections',
             position: 'bottom',
             title: { es: "Próximas Funcionalidades", eu: "Hurrengo Funtzionalitateak" },
             content: {
-                es: "Los botones con estilo verde discontinuo indican funciones que estamos desarrollando, como la futura posibilidad de proponer correcciones o actualizaciones de datos.",
-                eu: "Ertz eteneko estilo berdea duten botoiek garatzen ari garen funtzioak adierazten dituzte, hala nola etorkizunean datuen zuzenketak edo eguneratzeak proposatzeko aukera."
+                es: "Las acciones indicadas en verde discontinuo representan funciones futuras, como la posibilidad de proponer correcciones o editar información.",
+                eu: "Ertz eten berdea duten ekintzek etorkizuneko funtzionalitateak adierazten dituzte, hala nola zuzenketak proposatzea edota informazioa editatzea."
+            },
+            onEnterAction: { type: 'TOGGLE_MODAL', payload: { modalId: 'full-details', stackPrevious: true } }
+        },
+        {
+            id: 'details-docs',
+            targetId: 'full-details-section-docs',
+            position: 'bottom',
+            title: { es: "Documentación Oficial", eu: "Dokumentazio Ofiziala" },
+            content: {
+                es: "En la parte inferior de la ficha técnica ampliada encontrarás la sección con todos los documentos y actas oficiales disponibles para este vertedero.",
+                eu: "Fitxa tekniko zabalduaren beheko aldean aurkituko duzu zabortegi honetarako eskuragarri dauden dokumentu eta akta ofizial guztien atala."
             }
         },
         {
@@ -94,6 +105,28 @@ export const onboardingTutorialMobile: TutorialDefinition = {
                 { type: 'SELECT_LANDFILL', payload: { landfillId: null } },
                 { type: 'RESET_MAP_ZOOM', payload: {} },
             ]
+        },
+        {
+            id: 'menu-tools-advanced-search',
+            targetId: 'mobile-tutorial-btn-advanced-search',
+            position: 'bottom',
+            title: { es: "Buscador Avanzado", eu: "Bilaketa Aurreratua" },
+            content: {
+                es: "Próximamente añadiremos un buscador avanzado en este apartado que te permitirá filtrar los vertederos con criterios más complejos. ¡Estará disponible la próxima semana!",
+                eu: "Laster bilaketa aurreratu bat gehituko dugu atal honetan, zabortegiak irizpide konplexuagoekin iragazteko aukera emango dizuna. Datorren astean egongo da erabilgarri!"
+            },
+            onEnterAction: { type: 'TOGGLE_MODAL', payload: { modalId: 'toolbar' } }
+        },
+        {
+            id: 'tutorial-selection',
+            targetId: 'mobile-tutorial-btn-selection',
+            position: 'top',
+            title: { es: "Otros Tutoriales", eu: "Beste tutorial batzuk" },
+            content: {
+                es: "Desde esta opción de menú podrás acceder a otros tutoriales en cualquier momento, como la guía del Expediente Completo para descubrir todas las novedades.",
+                eu: "Menu-aukera honetatik beste tutorial batzuk erabili ahal izango dituzu nahi duzunean, hala nola Espediente Osoaren gida, berrikuntza guztiak ezagutzeko."
+            },
+            onEnterAction: { type: 'TOGGLE_MODAL', payload: { modalId: 'toolbar' } }
         },
         {
             id: 'about-project',

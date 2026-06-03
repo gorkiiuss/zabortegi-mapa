@@ -1,6 +1,6 @@
 // src/features/about/hooks/useAboutModalLogic.ts
 
-import { useState, useEffect, useLayoutEffect, useMemo } from "react";
+import { useEffect, useLayoutEffect, useMemo } from "react";
 import { useMapModalInteractions } from "@shared/hooks/useMapModalInteractions";
 import { useUiStore, type AboutData } from "@features/map/state/uiStore";
 import { useNewsStore } from "../state/newsStore";
@@ -38,16 +38,31 @@ export function useAboutModalLogic() {
 
   const data = (modalData as AboutData) || {};
 
-  const targetTab = data.initialTab || "project";
+  const aboutModalState = useUiStore((s) => s.aboutModalState);
+  const setAboutModalState = useUiStore((s) => s.setAboutModalState);
 
-  const [activeTab, setActiveTab] = useState<AboutTab>(targetTab);
+  const activeTab = aboutModalState.activeTab;
 
   useEffect(() => {
-    if (data.initialTab) {
-      // Forzamos que la pestaña salte a donde indique el modalData (ej: cuando pulsan el botón interno)
-      setActiveTab(data.initialTab);
+    if (data.initialTab && data.initialTab !== activeTab) {
+      setAboutModalState({ activeTab: data.initialTab });
     }
   }, [data.initialTab, data.targetAnnouncementId]);
+
+  useEffect(() => {
+    if (activeTab === "announcements" && announcements.length > 0) {
+      const latestActive = announcements.find(a => a.active);
+      if (latestActive) {
+        localStorage.setItem("app_last_seen_announcement", latestActive.id);
+      }
+    }
+    if (activeTab === "changelog" && changelog.length > 0) {
+      const latestUpdate = changelog[0];
+      if (latestUpdate) {
+        localStorage.setItem("app_last_seen_update", latestUpdate.date);
+      }
+    }
+  }, [activeTab, announcements, changelog]);
 
 
   const lastSeenUpdate = localStorage.getItem("app_last_seen_update");
@@ -92,7 +107,9 @@ export function useAboutModalLogic() {
     handleClose,
     handleOpenAttributions,
     activeTab,
-    setActiveTab,
+    setActiveTab: (tab: AboutTab) => setAboutModalState({ activeTab: tab }),
+    scrollTop: aboutModalState.scrollTop,
+    setScrollTop: (scroll: number) => setAboutModalState({ scrollTop: scroll }),
     hasUnseenAnnouncement,
     hasUnseenUpdate,
     appVersion,

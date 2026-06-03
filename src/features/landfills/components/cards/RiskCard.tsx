@@ -1,9 +1,14 @@
 // src/features/landfills/components/cards/RiskCard.tsx
 
-import type { ClpSymbol } from "../../domain/types";
-import { getClpIconPath } from "../../domain/symbology";
 import { useLanguageStore } from "@shared/state/languageStore";
-import { CardShell } from "@shared/components/CardShell"; // Ajusta el import según tu estructura
+import { CardShell } from "@shared/components/CardShell";
+import type { Risks } from "@features/landfills/domain/valueObjects/Risks";
+import { CLPSymbolVO } from "@features/landfills/domain/valueObjects/CLPSymbol";
+import { getContinuousColor, getClpIconPath } from "../../config/styling";
+import type { WasteLegalCategory } from "@features/landfills/domain/valueObjects/operation/WasteLegalCategory";
+import type { LandfillType } from "@features/landfills/domain/valueObjects/operation/LandfillType";
+import type { WasteComponent } from "@features/landfills/domain/valueObjects/operation/WasteComponent";
+import type { TxKeyPath } from "i18n/config";
 
 export interface RiskSectionInfo {
   id: string;
@@ -11,51 +16,41 @@ export interface RiskSectionInfo {
   percent: number | null;
 }
 
-interface RiskCardProps {
-  hasRealRisk: boolean;
-  riskGlobalPercent: number | null;
-  hasDetailedRisk: boolean;
-  sections: RiskSectionInfo[];
-  mainClpSymbol: ClpSymbol | null;
-  clpSymbols: ClpSymbol[];
+interface CardInfo {
+  id: string;
+  label: TxKeyPath;
+  risk: number | null;
 }
 
-// Helper de color (Lógica de vista pura)
-function riskColor(percent: number): string {
-  if (percent >= 70) return "#b91c1c"; // rojo
-  if (percent >= 40) return "#f97316"; // naranja
-  return "#eab308"; // amarillo
+interface RiskCardProps {
+  risks: Risks;
+  wasteLegalCategory: WasteLegalCategory | null,
+  landfillType: LandfillType,
+  wasteComponents: WasteComponent[] | null
 }
+
+
 
 export function RiskCard({
-  hasRealRisk,
-  riskGlobalPercent,
-  hasDetailedRisk,
-  sections,
-  mainClpSymbol,
-  clpSymbols,
+  risks,
+  wasteLegalCategory,
+  landfillType,
+  wasteComponents
 }: RiskCardProps) {
   const { t } = useLanguageStore();
 
-  // 1. Lógica de Símbolos CLP
-  const clpSet: ClpSymbol[] = [];
-  if (mainClpSymbol) clpSet.push(mainClpSymbol);
-  for (const s of clpSymbols) {
-    if (!clpSet.includes(s)) clpSet.push(s);
-  }
-  const clpToShow = clpSet.slice(0, 3);
+  const clps = CLPSymbolVO.derive(wasteLegalCategory, landfillType, wasteComponents)
 
-  // 2. Preparamos el elemento de Iconos para el CardShell
-  const iconsElement = clpToShow.length > 0 ? (
+  const clpElements = clps.length > 0 ? (
     <div className="flex items-center gap-1">
-      {clpToShow.map((symbol) => {
-        const src = getClpIconPath(symbol);
+      {clps.map((clp) => {
+        const src = getClpIconPath(clp);
         if (!src) return null;
         return (
           <img
-            key={symbol}
+            key={clp}
             src={src}
-            alt="Hazard symbol"
+            alt={t("details.cards.risk.clp_alt")}
             className="h-4 w-4"
             draggable={false}
           />
@@ -64,70 +59,97 @@ export function RiskCard({
     </div>
   ) : undefined;
 
-  // 3. Clases "Atómicas" para el contenido interno
   const globalLabelClasses = "text-[12px] text-slate-600";
   const globalValueClasses = "text-[14px] font-semibold text-slate-800";
   const sectionLabelClasses = "w-32 truncate text-[12px] text-slate-500";
   const sectionValueClasses = "w-10 text-right text-[11px] text-slate-500";
 
+  const hasEnoughData = risks.hasEnoughData()
+
+  function mapToCardInfo(risks: Risks): CardInfo[] {
+    return [
+      {
+        id: 'infra',
+        label: 'domain.vos.risks.infra',
+        risk: risks.infra
+      },
+      {
+        id: 'hydro',
+        label: 'domain.vos.risks.hydro',
+        risk: risks.hydro
+      },
+      {
+        id: 'geology',
+        label: 'domain.vos.risks.geo',
+        risk: risks.geo
+      },
+      {
+        id: 'human',
+        label: 'domain.vos.risks.social',
+        risk: risks.social
+      },
+      {
+        id: 'impacts',
+        label: 'domain.vos.risks.impacts',
+        risk: risks.impacts
+      }
+    ]
+  }
+
   return (
     <CardShell
-      title={t("selection.cards.risk.title")}
-      icon={iconsElement} // Inyectamos los iconos en el slot estándar
-      className="bg-slate-50/90" // Sobrescribimos el fondo blanco por defecto
+      title={t("domain.vos.risks.title")}
+      clps={clpElements}
+      className="bg-slate-50/90"
     >
-      {/* Contenido del Body */}
       <div>
-        {/* Global Risk Header */}
         <div className="mb-2 flex items-center justify-between">
           <span className={globalLabelClasses}>
-            {t("selection.cards.risk.global")}
-            {hasRealRisk ? "" : ` ${t("selection.cards.risk.incomplete")}`}
+            {t("domain.vos.risks.global")}
+            {hasEnoughData ? "" : ` ${t("details.cards.risk.incomplete")}`}
           </span>
-          {riskGlobalPercent != null && (
+          {risks.global != null && (
             <span className={globalValueClasses}>
-              {riskGlobalPercent.toFixed(0)}%
+              {risks.global}%
             </span>
           )}
         </div>
 
-        {/* Global Risk Bar */}
-        {riskGlobalPercent != null && (
+        {hasEnoughData && (
           <div className="mb-3 h-2.5 w-full overflow-hidden rounded-full bg-slate-200 shadow-inner">
             <div
               className="h-full rounded-full transition-all duration-500"
               style={{
-                width: `${riskGlobalPercent}%`,
-                backgroundColor: riskColor(riskGlobalPercent),
+                width: `${risks.global}%`,
+                backgroundColor: getContinuousColor(risks.global!),
               }}
             />
           </div>
         )}
 
-        {/* Detailed Sections */}
-        {hasDetailedRisk ? (
+        {hasEnoughData ? (
           <div className="space-y-2 border-t border-slate-200/50 pt-2">
-            {sections.map(({ id, label, percent }) => (
+            {mapToCardInfo(risks).map(({ id, label, risk }) => (
               <div key={id} className="flex items-center gap-2">
-                <span className={sectionLabelClasses}>{t(label as any)}</span>
-                {percent != null ? (
+                <span className={sectionLabelClasses}>{t(label)}</span>
+                {risk != null ? (
                   <>
                     <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-200">
                       <div
                         className="h-full rounded-full transition-all duration-500"
                         style={{
-                          width: `${percent}%`,
-                          backgroundColor: riskColor(percent),
+                          width: `${risk}%`,
+                          backgroundColor: getContinuousColor(risk),
                         }}
                       />
                     </div>
                     <span className={sectionValueClasses}>
-                      {percent.toFixed(0)}%
+                      {risk}%
                     </span>
                   </>
                 ) : (
                   <span className="text-[11px] text-slate-400 italic">
-                    {t("selection.cards.risk.no_data")}
+                    {t("details.cards.risk.no_data")}
                   </span>
                 )}
               </div>
@@ -135,7 +157,7 @@ export function RiskCard({
           </div>
         ) : (
           <div className="text-[11px] text-slate-500 italic mt-2">
-            {t("selection.cards.risk.insufficient")}
+            {t("details.cards.risk.insufficient")}
           </div>
         )}
       </div>

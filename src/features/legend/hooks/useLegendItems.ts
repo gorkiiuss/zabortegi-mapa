@@ -1,7 +1,9 @@
+// src/features/legend/hooks/useLegendItems.ts
+
 import { useMemo } from "react";
 import { useLanguageStore } from "@shared/state/languageStore";
-import { legendConfig } from "../domain/config";
-import type { LegendItem } from "../domain/types";
+import { legendConfig } from "../config";
+import type { LegendItem } from "../types";
 
 export function useLegendItems(): LegendItem[] {
   const { t } = useLanguageStore();

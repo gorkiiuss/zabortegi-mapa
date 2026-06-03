@@ -1,19 +1,19 @@
 // src/features/landfills/components/list/LandfillsListModal.tsx
 
 import { useEffect, useMemo, useState } from "react";
-import type { Landfill } from "@features/landfills/domain/types";
 import {
-  groupLandfillsForList,
+  groupLandfills,
   type LandfillListGroupingResult,
-} from "@features/landfills/domain/listGrouping";
+} from "@features/landfills/components/list/utils/listGrouping";
 import { useUiStore } from "@features/map/state/uiStore";
 import { useMapStore } from "@features/map/state/mapStore";
 
 import { LandfillListHeader } from "./LandfillListHeader";
 import { TerritorySection } from "./TerritorySection";
-import { useNoInfoLandfills } from "@features/landfills/hooks/useNoInfoLandfills";
 import { useMapModalInteractions } from "@shared/hooks/useMapModalInteractions";
 import { useLanguageStore } from "@shared/state/languageStore";
+import { useLandfillsStore } from "@features/landfills/state/landfillsStore";
+import type { LandfillSummaryEntity } from "@features/landfills/domain/entities/LandfillSummary";
 
 interface LandfillListModalProps {
   initialQuery: string;
@@ -35,7 +35,7 @@ export function LandfillListModal({
   const { modalRef, handleMouseEnter, handleMouseLeave } =
     useMapModalInteractions();
 
-  const landfills = useNoInfoLandfills();
+  const { landfillsSummary } = useLandfillsStore();
   const setSelectedLandfillId = useUiStore((s) => s.setSelectedLandfillId);
   const setFocusLandfillId = useMapStore((s) => s.setFocusLandfillId);
 
@@ -52,13 +52,13 @@ export function LandfillListModal({
   }, [onClose]);
 
   const grouped: LandfillListGroupingResult = useMemo(
-    () => groupLandfillsForList(landfills, query),
-    [landfills, query],
+    () => groupLandfills(landfillsSummary, query),
+    [landfillsSummary, query],
   );
 
-  const handleSelect = (lf: Landfill) => {
-    setSelectedLandfillId(lf.parcelId ?? null);
-    setFocusLandfillId(lf.parcelId ?? null);
+  const handleSelect = (lf: LandfillSummaryEntity) => {
+    setSelectedLandfillId(lf.id);
+    setFocusLandfillId(lf.id);
     onClose();
   };
 
@@ -95,7 +95,7 @@ export function LandfillListModal({
       ref={modalRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`pointer-events-auto flex h-full w-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl`}
+      className={`pointer-events-auto flex h-full w-full flex-col overflow-hidden rounded-none sm:rounded-2xl border-0 sm:border border-slate-200 bg-white shadow-2xl`}
     >
       <LandfillListHeader
         query={query}
@@ -126,7 +126,7 @@ export function LandfillListModal({
           })
         ) : (
           <div className="flex h-full flex-col items-center justify-center p-8 text-center text-slate-400">
-            <p className="text-sm">{t("index.not_found")}</p>
+            <p className="text-sm">{t("list.not_found")}</p>
           </div>
         )}
       </div>

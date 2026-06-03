@@ -3,29 +3,41 @@
 import { useUiStore } from "@features/map/state/uiStore";
 import { useLanguageStore } from "@shared/state/languageStore";
 import { Image } from "@shared/components/Icons";
-import { buildSelectionPanelData } from "../../domain/mappers/landfillDetailsMapper";
-import type { Landfill } from "../../domain/types";
+import type { LandfillDetailsEntity } from "@features/landfills/domain/entities/LandfillDetails";
 
 interface DetailsHeaderProps {
-  landfill: Landfill;
+  details: LandfillDetailsEntity;
 }
 
-export function DetailsHeader({ landfill }: DetailsHeaderProps) {
+export function DetailsHeader({ details }: DetailsHeaderProps) {
   const { toggleActiveModal } = useUiStore();
   const { t } = useLanguageStore();
 
-  const data = buildSelectionPanelData(landfill);
-  const coverImageUrl = data.coverImageUrl;
-  const imgsCount = data.galleryImages.length;
+  const images = details.multimedia ?
+    details.multimedia.filter((multi) => multi.hasCategory("IMAGE"))
+    : []
+  const coverImageUrl = images.length > 0 ? images[0].filePath : null
+  const modalGallerytitle = details.name ? details.name : t("gallery.title_placeholder")
 
   const handleOpenGallery = () => {
     toggleActiveModal("gallery", true, {
-      title: landfill.name,
-      images: data.galleryImages,
+      title: modalGallerytitle,
+      images: images,
     });
   };
 
-  if (!coverImageUrl) return null;
+  if (!coverImageUrl) {
+    return (
+      <div className="flex h-48 w-full flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 bg-slate-50/30 p-6 text-center select-none">
+        <div className="rounded-full bg-slate-100 p-3 text-slate-400">
+          <Image size={24} className="stroke-[1.5]" />
+        </div>
+        <span className="mt-2.5 text-xs font-medium text-slate-400">
+          {t("details.no_images")}
+        </span>
+      </div>
+    );
+  }
 
   return (
     <div className="group relative h-48 w-full overflow-hidden rounded-xl border border-slate-200 shadow-sm">
@@ -35,15 +47,15 @@ export function DetailsHeader({ landfill }: DetailsHeaderProps) {
         className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
       />
 
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/20 to-transparent" />
 
-      {imgsCount > 0 && (
+      {images.length > 0 && (
         <button
           onClick={handleOpenGallery}
           className="absolute right-3 bottom-3 flex items-center gap-2 rounded-lg bg-white/90 px-3 py-1.5 text-xs font-medium text-slate-800 shadow-sm backdrop-blur-sm transition-all hover:bg-white"
         >
           <Image size={14} />
-          <span>{t("selection.see_photos", { count: imgsCount })}</span>
+          <span>{t("details.see_photos", { count: images.length })}</span>
         </button>
       )}
     </div>

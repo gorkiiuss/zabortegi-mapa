@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useMap } from "react-leaflet";
 import L from "leaflet";
 import { useMapStore } from "../state/mapStore";
-import { useNoInfoLandfills } from "@features/landfills/hooks/useNoInfoLandfills";
+import { useLandfillsStore } from "@features/landfills/state/landfillsStore";
 
 export function MapViewportTracker() {
   const map = useMap();
@@ -17,7 +17,7 @@ export function MapViewportTracker() {
 
   const resetZoomSignal = useMapStore((s) => s.resetZoomSignal);
 
-  const landfills = useNoInfoLandfills();
+  const { landfillsSummary } = useLandfillsStore();
 
   useEffect(() => {
     function updateViewport() {
@@ -50,9 +50,9 @@ export function MapViewportTracker() {
   }, [map, setViewport, setBounds]);
 
   useEffect(() => {
-    if (!focusLandfillId || !landfills.length) return;
+    if (!focusLandfillId || !landfillsSummary.length) return;
 
-    const lf = landfills.find((l) => l.parcelId === focusLandfillId);
+    const lf = landfillsSummary.find((l) => l.id === focusLandfillId);
     if (!lf) {
       setFocusLandfillId(null);
       return;
@@ -74,7 +74,7 @@ export function MapViewportTracker() {
     }
 
     setFocusLandfillId(null);
-  }, [focusLandfillId, focusOffset, landfills, map, setFocusLandfillId]);
+  }, [focusLandfillId, focusOffset, landfillsSummary, map, setFocusLandfillId]);
 
   useEffect(() => {
     if (resetZoomSignal > 0) {

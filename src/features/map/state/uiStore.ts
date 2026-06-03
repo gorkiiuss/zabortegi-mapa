@@ -1,10 +1,12 @@
 // src/features/map/state/uiStore.ts
 
+import type { MultimediaEntity } from "@features/landfills/domain/entities/Multimedia";
+import type { MediaItemEntity } from "@features/media/domain/entities/MediaItemEntity";
 import { create } from "zustand";
 
 export interface GalleryData {
   title: string;
-  images: Array<{ url: string; title?: string }>;
+  images: (MultimediaEntity | MediaItemEntity)[];
 }
 
 export interface AboutData {
@@ -12,7 +14,11 @@ export interface AboutData {
   targetAnnouncementId?: string;
 }
 
-export type ModalPayload = GalleryData | AboutData | null;
+export interface FolderExplorerData {
+  targetFolder: string;
+}
+
+export type ModalPayload = GalleryData | AboutData | FolderExplorerData | null;
 
 export type ModalId =
   | "none"
@@ -27,14 +33,28 @@ export type ModalId =
   | "about"
   | "future_feature"
   | "contact"
-  | "media_explorer";
+  | "media_explorer"
+  | "folder_explorer"
+  | "full-details"
+  | "tutorial_selection";
+
+interface ModalStackEntry {
+  id: ModalId;
+  data: ModalPayload | null;
+}
 
 interface UiState {
   selectedLandfillId: string | null;
   searchQuery: string;
   indexQuery: string;
 
-  modalStack: ModalId[];
+  aboutModalState: {
+    activeTab: "changelog" | "announcements" | "project";
+    scrollTop: number;
+  };
+  setAboutModalState: (state: Partial<UiState["aboutModalState"]>) => void;
+
+  modalStack: ModalStackEntry[];
   activeModal: ModalId;
 
   modalData: ModalPayload;
@@ -56,18 +76,25 @@ export const useUiStore = create<UiState>((set) => ({
   selectedLandfillId: null,
   searchQuery: "",
   indexQuery: "",
+  aboutModalState: {
+    activeTab: "project",
+    scrollTop: 0,
+  },
   activeModal: "none",
   modalStack: [],
   modalData: null,
   openToolbarDropdownId: null,
 
+  setAboutModalState: (partialState) =>
+    set((state) => ({
+      aboutModalState: { ...state.aboutModalState, ...partialState },
+    })),
 
   setSelectedLandfillId: (id) => set({ selectedLandfillId: id }),
   setSearchQuery: (q) => set({ searchQuery: q }),
 
   openModal: (id, stackPrevious = false, data = null) =>
     set((state) => {
-      // Si el modal ya está abierto y le pasamos nuevos datos o es la misma ID, actualizamos el modalData
       if (state.activeModal === id) {
         return {
           modalData: data,
@@ -76,7 +103,7 @@ export const useUiStore = create<UiState>((set) => ({
 
       const newStack =
         stackPrevious && state.activeModal !== "none"
-          ? [...state.modalStack, state.activeModal]
+          ? [...state.modalStack, { id: state.activeModal, data: state.modalData }]
           : state.modalStack;
 
       return {
@@ -90,13 +117,13 @@ export const useUiStore = create<UiState>((set) => ({
     set((state) => {
       if (state.activeModal === id) {
         const newStack = [...state.modalStack];
-        const prev = newStack.pop() || "none";
-        return { activeModal: prev, modalStack: newStack, modalData: null };
+        const prev = newStack.pop() || { id: "none", data: null };
+        return { activeModal: prev.id as ModalId, modalStack: newStack, modalData: prev.data };
       }
 
       const newStack =
         stackPrevious && state.activeModal !== "none"
-          ? [...state.modalStack, state.activeModal]
+          ? [...state.modalStack, { id: state.activeModal, data: state.modalData }]
           : [];
 
       return {
@@ -113,12 +140,12 @@ export const useUiStore = create<UiState>((set) => ({
       }
 
       const newStack = [...state.modalStack];
-      const prev = newStack.pop() ?? "none";
+      const prev = newStack.pop() ?? { id: "none", data: null };
 
       return {
-        activeModal: prev,
+        activeModal: prev.id as ModalId,
         modalStack: newStack,
-        modalData: null,
+        modalData: prev.data,
         openToolbarDropdownId: null,
       };
     }),
@@ -127,13 +154,13 @@ export const useUiStore = create<UiState>((set) => ({
     set((state) => {
       if (state.activeModal === "index") {
         const newStack = [...state.modalStack];
-        const prev = newStack.pop() || "none";
-        return { activeModal: prev, modalStack: newStack, modalData: null };
+        const prev = newStack.pop() || { id: "none", data: null };
+        return { activeModal: prev.id as ModalId, modalStack: newStack, modalData: prev.data };
       }
 
       const newStack =
         state.activeModal !== "none"
-          ? [...state.modalStack, state.activeModal]
+          ? [...state.modalStack, { id: state.activeModal, data: state.modalData }]
           : [];
 
       return {

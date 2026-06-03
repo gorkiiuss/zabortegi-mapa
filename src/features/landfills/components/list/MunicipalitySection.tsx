@@ -1,13 +1,13 @@
 // src/features/landfills/components/list/MunicipalitySection.tsx
 
 import { useState } from "react";
-import type { MunicipalityGroup } from "@features/landfills/domain/listGrouping";
-import type { Landfill } from "@features/landfills/domain/types";
+import type { MunicipalityGroup } from "@features/landfills/components/list/utils/listGrouping";
 import { useLanguageStore } from "@shared/state/languageStore";
+import type { LandfillSummaryEntity } from "@features/landfills/domain/entities/LandfillSummary";
 
 interface MunicipalitySectionProps {
   group: MunicipalityGroup;
-  onSelect: (lf: Landfill) => void;
+  onSelect: (lf: LandfillSummaryEntity) => void;
 }
 
 export function MunicipalitySection({
@@ -40,16 +40,16 @@ export function MunicipalitySection({
               onClick={() => onSelect(lf)}
             >
               <div>
-                <div className="font-medium text-slate-900">{lf.name}</div>
+                <div className="font-medium text-slate-900">{lf.name ? lf.name : t("domain.entities.landfill_summary.name_placeholder")}</div>
                 <div className="text-[11px] text-slate-500">
-                  {(lf.municipality ?? "").trim() || "Sin municipio"} ·{" "}
-                  {lf.code}
+                  {lf.municipality ? lf.municipality : t("domain.entities.landfill_summary.municipality_placeholder")} ·
+                  {lf.code ? lf.code : t("domain.entities.landfill_summary.code_placeholder")}
                 </div>
               </div>
               <div className="text-[11px] font-semibold text-slate-700">
-                {lf.riskLevel === "unknown"
-                  ? "Sin datos"
-                  : `${lf.riskScore} pts`}
+                {!lf.riskScore
+                  ? t("list.no_risk_score")
+                  : `${lf.riskScore}`}
               </div>
             </li>
           ))}

@@ -1,26 +1,24 @@
-// src/features/landfills/hooks/useQueryFilteredLandfillSummaires.ts
+// src/features/landfills/hooks/useQueryFilteredLandfillSummaries.ts
 
 import { useMemo } from "react";
-import type { LandfillSummary } from "../domain/types";
-import {
-  filterRankingByQuery as filterSummaryByQuery,
-  sortRankingByScore as sortSummaryByScore,
-  summarize,
-} from "../domain/selectors";
-import { useNoInfoLandfills } from "./useNoInfoLandfills";
+import { useLandfillsStore } from "../state/landfillsStore";
+import { matchesQuery } from "../state/selectors";
+import type { LandfillSummaryEntity } from "../domain/entities/LandfillSummary";
 
 export function useQueryFilteredLandfillSummaries(
   query: string,
   limit?: number,
-) {
-  const landfills = useNoInfoLandfills();
-
-  return useMemo<LandfillSummary[]>(() => {
-    const items: LandfillSummary[] = landfills.map((lf) => summarize(lf));
-
-    const filtered = filterSummaryByQuery(items, query);
-    const sorted = sortSummaryByScore(filtered);
-
+): LandfillSummaryEntity[] {
+  const landfillsSummary = useLandfillsStore((s) => s.landfillsSummary);
+  return useMemo(() => {
+    if (!landfillsSummary || landfillsSummary.length === 0) return [];
+    const filtered = landfillsSummary.filter((lf) => matchesQuery(lf, query));
+    const sorted = filtered.sort((a, b) => {
+      if (a.riskScore == null && b.riskScore == null) return 0;
+      if (a.riskScore == null) return 1;
+      if (b.riskScore == null) return -1;
+      return b.riskScore - a.riskScore;
+    });
     return typeof limit === "number" ? sorted.slice(0, limit) : sorted;
-  }, [landfills, query, limit]);
+  }, [landfillsSummary, query, limit]);
 }

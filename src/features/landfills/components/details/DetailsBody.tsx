@@ -5,25 +5,22 @@ import { DimensionsCard } from "../cards/DimensionsCard";
 import { LegalCard } from "../cards/LegalCard";
 import { ClimateCard } from "../cards/ClimateCard";
 import { MeasuresCard } from "../cards/MeasuresCard";
-import { MoreInfoAccordion } from "../cards/MoreInfoAccordion";
-import type { buildSelectionPanelData } from "../../domain/mappers/landfillDetailsMapper";
 import { useUiStore } from "@features/map/state/uiStore";
 import { useLanguageStore } from "@shared/state/languageStore";
-import { Download, Folder, Pen, Spinner } from "@shared/components/Icons";
+import { Plus } from "@shared/components/Icons";
+import type { LandfillDetailsEntity } from "@features/landfills/domain/entities/LandfillDetails";
 
 interface DetailsBodyProps {
-  data: ReturnType<typeof buildSelectionPanelData>;
-  landfill: any;
-  isDownloading: boolean;
-  onDownload: () => void;
+  details: LandfillDetailsEntity;
   idPrefix?: string;
 }
 
+function showCard(values: (any | null)[]) {
+  return values.every((value) => value != null)
+}
+
 export function DetailsBody({
-  data,
-  landfill,
-  isDownloading,
-  onDownload,
+  details,
   idPrefix = "",
 }: DetailsBodyProps) {
   const toggleActiveModal = useUiStore((s) => s.toggleActiveModal);
@@ -42,97 +39,55 @@ export function DetailsBody({
     hover:bg-slate-50 hover:border-slate-300
   `;
 
-  const unimplementedVariant = `
-    border-dashed border-emerald-300 bg-emerald-50/50 text-emerald-700
-    hover:border-emerald-400 hover:bg-emerald-50
-  `;
-
-  const buildId = (base: string) => idPrefix ? `${idPrefix}-${base}` : base;
-
   return (
     <div className="flex-1 space-y-3.5 pr-1.5 pb-1 text-slate-700 md:space-y-4">
-      {/* BOTÓN 1: Descargar Informe */}
-      <button
-        id={buildId("tutorial-btn-pdf")}
-        onClick={onDownload}
-        disabled={isDownloading}
-        className={`${baseLayoutClasses} ${standardVariant} ${isDownloading ? "cursor-wait opacity-70" : ""
-          }`}
-      >
-        {isDownloading ? (
-          <Spinner className="h-4 w-4 animate-spin text-slate-600" />
-        ) : (
-          <Download size={18} className="text-slate-500" />
-        )}
-        <span>
-          {isDownloading
-            ? t("selection.generating_report")
-            : t("selection.download_report")}
-        </span>
-      </button>
-
-      {/* BOTÓN 2: Documentos Relacionados */}
-      <button
-        id={buildId("tutorial-btn-docs")}
+      <button 
+        id={idPrefix ? `${idPrefix}-tutorial-btn-more-info` : undefined}
         className={`${baseLayoutClasses} ${standardVariant}`}
-        onClick={() => toggleActiveModal("related_documentation", true)}
+        onClick={() => toggleActiveModal("full-details", true)}
       >
-        <Folder size={18} className="text-slate-500" />
-        <span>{t("selection.related_docs")}</span>
-      </button>
-
-      <button
-        id={buildId("tutorial-btn-corrections")}
-        className={`${baseLayoutClasses} ${unimplementedVariant}`}
-        onClick={() => toggleActiveModal("future_feature" as any, true)}
-      >
-        <Pen size={18} className="text-emerald-400" />
-        <span>{t("selection.add_correction")}</span>
+        <Plus size={18} className="text-slate-500"/>
+        <span>{t("details.cards.more_info.button")}</span>
       </button>
 
       <RiskCard
-        hasRealRisk={data.hasRealRisk}
-        riskGlobalPercent={data.riskGlobalPercent}
-        hasDetailedRisk={data.hasDetailedRisk}
-        sections={data.riskSectionsInfo}
-        mainClpSymbol={landfill.mainClpSymbol}
-        clpSymbols={landfill.clpSymbols}
+        risks={details.risks}
+        wasteLegalCategory={details.operation.wasteLegalCategory}
+        landfillType={details.operation.landfillType}
+        wasteComponents={details.operation.wasteComponents}
       />
 
-      {data.showDimensions && (
-        <DimensionsCard
-          superficieDisplay={data.superficieDisplay}
-          volumenDisplay={data.volumenDisplay}
-          capacidadDisplay={data.capacidadDisplay}
-          fillPercent={data.fillPercent}
-        />
+      {showCard([
+        details.location.dimensions.surfaceHa, 
+        details.location.dimensions.volumeM3, 
+        details.location.dimensions.expectedTotalCapacityM3
+      ]) && (
+        <DimensionsCard dimensions={details.location.dimensions}/>
       )}
 
-      {data.showLegal && (
-        <LegalCard
-          situacionLegal={data.situacionLegal}
-          tipoVertedero={data.tipoVertedero}
-          tiposResiduos={data.tiposResiduos}
-          descripcionResiduos={data.descripcionResiduos}
-        />
-      )}
+      <LegalCard
+        legalStatus={details.operation.legalStatus}
+        landfillType={details.operation.landfillType}
+        wasteLegalCategory={details.operation.wasteLegalCategory}
+        wasteType={details.operation.wasteType}
+        wasteDescription={details.operation.wasteDescription}
+        ownership={details.operation.ownership}
+      />
 
-      {data.showClimate && (
+      {showCard([details.hydrology.annualPrecipitation, details.hydrology.effectiveRainfall]) && (
         <ClimateCard
-          precipitacion={data.precipitacion}
-          lluviaUtil={data.lluviaUtil}
+          annualPrecipitation={details.hydrology.annualPrecipitation}
+          effectiveRainfall={details.hydrology.effectiveRainfall}
         />
       )}
 
-      {data.showMeasures && (
+      {showCard([details.correctingMeasures.measures, details.correctingMeasures.description, details.correctingMeasures.other]) && (
         <MeasuresCard
-          titulo={data.medidasTitulo}
-          descripcion={data.medidasDescripcion}
-          otros={data.medidasOtros}
+          measures={details.correctingMeasures.measures}
+          description={details.correctingMeasures.description}
+          other={details.correctingMeasures.other}
         />
       )}
-
-      <MoreInfoAccordion sections={data.moreInfoSections} />
     </div>
   );
 }

@@ -2,8 +2,9 @@
 
 import { useUiStore } from "@features/map/state/uiStore";
 import { useLanguageStore } from "@shared/state/languageStore";
-import type { GalleryWidgetConfig } from "../../domain/types";
+import type { GalleryWidgetConfig } from "../../domain/valueObjects/Widget";
 import { Image as ImageIcon, Plus } from "@shared/components/Icons";
+import { MultimediaEntityFactory } from "@features/landfills/domain/entities/Multimedia";
 
 interface Props {
   config: GalleryWidgetConfig;
@@ -20,7 +21,14 @@ export function GalleryWidget({ config }: Props) {
   const handleOpenGallery = () => {
     toggleActiveModal("gallery", true, {
       title: t("about.widget.gallery.title"),
-      images: images.map(url => ({ url, title: '' }))
+      images: images.map(url => MultimediaEntityFactory.hydrate({
+        fileName: url.split('/').pop() || 'image.jpg',
+        filePath: url,
+        category: 'IMAGE',
+        description: null,
+        fileSizeBytes: null,
+        uploadedAt: new Date().toISOString()
+      }))
     });
   };
 

@@ -29,6 +29,7 @@ import { MobileRecenterButton } from "@features/map/components/MobileRecenterBut
 import { AttributionsModal } from "@features/attributions/components/AttributionsModal";
 import { AboutModal } from "@features/about/components/AboutModal";
 import { FutureFeatureModal } from "@shared/components/FutureFeatureModal";
+import { GlobalClockOverlay } from "@features/map/components/GlobalClockOverlay";
 
 import { useLanguageStore } from "@shared/state/languageStore";
 import { ContactModal } from "@features/toolbar/components/ContactModal";
@@ -37,10 +38,13 @@ import { useNewsStore } from "@features/about/state/newsStore";
 import { TutorialManager } from "@features/tutorial/components/TutorialManager";
 import { useAppOrchestrator } from "@features/orchestrator/hooks/useAppOrchestrator";
 import { MediaExplorerModal } from "@features/media/components/MediaExplorerModal";
+import { FolderExplorerModal } from "@features/media/components/FolderExplorerModal";
 import { isItemUnseenAndNew } from "@features/about/utils/isNew";
+import { FullDetailsModal } from "@features/landfills/components/details/FullDetailsModal";
+import { TutorialSelectionModal } from "@features/tutorial/components/TutorialSelectionModal";
 
 function App() {
-  const loadAll = useLandfillsStore((s) => s.loadAll);
+  const { fetchSummaryList } = useLandfillsStore();
   const {
     fetchNews,
     changelog,
@@ -48,9 +52,9 @@ function App() {
     loading: newsLoading
   } = useNewsStore();
 
-  const landfills = useLandfillsStore((s) => s.landfills);
+  const { landfillsSummary } = useLandfillsStore()
 
-  const landfillsLoading = useLandfillsStore((s) => s.loading);
+  const landfillsLoading = useLandfillsStore((s) => s.isLoadingSummary);
 
   const activeModal = useUiStore((s) => s.activeModal);
   const toggleModal = useUiStore((s) => s.toggleActiveModal);
@@ -70,21 +74,21 @@ function App() {
   const hasQuery = searchQuery.trim().length > 0;
 
   const selectedLandfill = useMemo(
-    () => landfills.find((l) => l.parcelId === selectedLandfillId),
-    [landfills, selectedLandfillId],
+    () => landfillsSummary.find((l) => l.id === selectedLandfillId),
+    [landfillsSummary, selectedLandfillId],
   );
 
   const { dispatch } = useAppOrchestrator()
 
   useEffect(() => {
-    loadAll();
+    fetchSummaryList();
     fetchNews();
-  }, [loadAll, fetchNews]);
+  }, [fetchSummaryList, fetchNews]);
 
   const hasCheckedUpdatesRef = useRef(false);
 
   useEffect(() => {
-    if (newsLoading || landfillsLoading || landfills.length == 0) return;
+    if (newsLoading || landfillsLoading || landfillsSummary.length == 0) return;
     if (hasCheckedUpdatesRef.current) return;
 
     const params = new URLSearchParams(window.location.search);
@@ -160,9 +164,8 @@ function App() {
 
     hasCheckedUpdatesRef.current = true;
 
-  }, [openModal, newsLoading, changelog, announcements, dispatch, landfillsLoading]);
+  }, [openModal, newsLoading, changelog, announcements, dispatch, landfillsLoading, landfillsSummary]);
 
-  // Wrapper para paneles móviles (Search, Legend, etc.)
   const renderModalWrapper = (content: React.ReactNode) => {
     const wrapperClasses = `
       absolute
@@ -180,15 +183,14 @@ function App() {
     );
   };
 
-  // Wrapper para modales a pantalla completa (Index, Gallery...)
   const renderIndexWrapper = (content: React.ReactNode) => {
     return (
       <div
-        className="absolute inset-0 z-2000 flex items-center justify-center bg-black/30 p-4 backdrop-blur-[2px] sm:p-8"
+        className="absolute inset-0 z-2000 flex items-center justify-center bg-black/30 p-0 sm:p-8 backdrop-blur-[2px]"
         onClick={() => toggleModal("none")}
       >
         <div
-          className="h-[85vh] w-full max-w-5xl"
+          className="h-[100dvh] sm:h-[85vh] w-full max-w-6xl"
           onClick={(e) => e.stopPropagation()}
         >
           {content}
@@ -197,14 +199,12 @@ function App() {
     );
   };
 
-  // Wrapper para alertas pequeñas centradas (Future Feature)
   const renderCenteredAlertWrapper = (content: React.ReactNode) => {
     return (
       <div
         className="absolute inset-0 z-2000 flex items-center justify-center bg-slate-900/20 p-4 backdrop-blur-sm"
         onClick={() => toggleModal("none")}
       >
-        {/* Contenedor sin tamaño fijo, se adapta al contenido */}
         <div
           onClick={(e) => e.stopPropagation()}
           className="pointer-events-auto"
@@ -237,14 +237,15 @@ function App() {
         <MapViewportTracker />
         <LandfillsLayer />
 
-        {/* ──────────────────────────────────────────────── */}
-        {/* DESKTOP                                          */}
-        {/* ──────────────────────────────────────────────── */}
         <div className="hidden lg:block">
           <ToolbarDesktop id="tutorial-menu-btn" onOpenLandfillIndex={() => openIndexWithQuery("")} />
 
           <div className="absolute top-6 left-1/2 z-950 -translate-x-1/2">
             <SearchDesktopPanel id="tutorial-search-btn" onOpenIndex={openIndexWithQuery} />
+          </div>
+
+          <div className="absolute top-3 right-3 z-900 animate-in fade-in slide-in-from-top-4 duration-500">
+            <GlobalClockOverlay />
           </div>
 
           <div className="absolute bottom-3 left-3 z-900 flex flex-col gap-3">
@@ -257,9 +258,6 @@ function App() {
           <DetailsSidebar />
         </div>
 
-        {/* ──────────────────────────────────────────────── */}
-        {/* MOBILE                                           */}
-        {/* ──────────────────────────────────────────────── */}
         <div className="block lg:hidden">
           <div id="tutorial-mobile-menu" className="absolute top-4 left-4 z-950">
             <ModalToggleButton
@@ -281,6 +279,10 @@ function App() {
             />
           </div>
 
+          <div className="absolute top-4 right-4 z-950 animate-in fade-in slide-in-from-top-4 duration-500">
+            <GlobalClockOverlay />
+          </div>
+
           <div id="tutorial-mobile-legend" className="absolute bottom-2 left-2 z-950">
             <ModalToggleButton
               label={t("app.legend")}
@@ -298,7 +300,7 @@ function App() {
 
               <div className="animate-in fade-in slide-in-from-bottom-4 pointer-events-auto duration-300">
                 <ModalToggleButton
-                  label={selectedLandfill ? selectedLandfill.name : "Vertedero"}
+                  label={selectedLandfill ? (selectedLandfill.name ? selectedLandfill.name : t("domain.entities.landfill_summary.name_placeholder")) : t("domain.entities.landfill_summary.name_placeholder")}
                   orientation="vertical"
                   isOpen={activeModal === "selection"}
                   onToggle={() => toggleModal("selection")}
@@ -307,7 +309,6 @@ function App() {
             </div>
           )}
 
-          {/* MODALES */}
           {activeModal === "search" &&
             renderModalWrapper(
               <SearchModal onOpenIndex={openIndexWithQuery} />,
@@ -324,10 +325,6 @@ function App() {
           {activeModal === "selection" &&
             renderModalWrapper(<DetailsModal />)}
         </div>
-
-        {/* ──────────────────────────────────────────────── */}
-        {/* GLOBAL MODALS                                   */}
-        {/* ──────────────────────────────────────────────── */}
 
         {activeModal === "index" &&
           renderIndexWrapper(
@@ -355,6 +352,13 @@ function App() {
           renderCenteredAlertWrapper(<ContactModal />)}
 
         {activeModal === "media_explorer" && renderIndexWrapper(<MediaExplorerModal />)}
+
+        {activeModal === "folder_explorer" && renderIndexWrapper(<FolderExplorerModal />)}
+
+        {activeModal === "full-details" && renderIndexWrapper(<FullDetailsModal />)}
+
+        {activeModal === "tutorial_selection" &&
+          renderCenteredAlertWrapper(<TutorialSelectionModal />)}
       </MapContainer>
       <TutorialManager />
       <LandfillsLoadingOverlay />

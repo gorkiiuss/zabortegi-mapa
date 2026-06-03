@@ -1,70 +1,12 @@
 // src/features/landfills/hooks/useLandfillDetails.ts
+import { useQuery } from "@tanstack/react-query";
+import { apiLandfillsRepository } from "../data/apiRepository";
 
-import { useState, useMemo, useEffect, useRef } from "react";
-import { useUiStore } from "@features/map/state/uiStore";
-import { useNoInfoLandfills } from "@features/landfills/hooks/useNoInfoLandfills";
-import { buildSelectionPanelData } from "../domain/mappers/landfillDetailsMapper";
-import { generateLandfillHtml } from "@features/landfills/utils/htmlGenerator";
-import { printHtmlInIframe } from "@features/landfills/utils/printer";
-
-export function useSelectionLogic() {
-  const selectedId = useUiStore((s) => s.selectedLandfillId);
-  const activeModal = useUiStore((s) => s.activeModal);
-  const setActiveModal = useUiStore((s) => s.openModal);
-  const closeModal = useUiStore((s) => s.closeModal);
-
-  const landfills = useNoInfoLandfills();
-  const [isDownloading, setIsDownloading] = useState(false);
-
-  const prevSelectedIdRef = useRef<string | null>(selectedId);
-
-  const landfill = useMemo(() => {
-    if (!selectedId) return undefined;
-    return landfills.find((lf) => lf.parcelId === selectedId);
-  }, [landfills, selectedId]);
-
-  useEffect(() => {
-    if (selectedId !== prevSelectedIdRef.current) {
-      prevSelectedIdRef.current = selectedId;
-
-      if (selectedId) {
-        if (useUiStore.getState().activeModal !== "selection") {
-          setActiveModal("selection");
-        }
-      } else {
-        if (activeModal === "selection") {
-          closeModal();
-        }
-      }
-    }
-  }, [selectedId, setActiveModal, closeModal]);
-
-  const handleClose = () => {
-    closeModal();
-  };
-
-  const handleDownloadReport = async () => {
-    if (!landfill || isDownloading) return;
-
-    setIsDownloading(true);
-    try {
-      const htmlString = await generateLandfillHtml(landfill);
-      printHtmlInIframe(htmlString);
-    } catch (error) {
-      console.error("Error al generar el PDF:", error);
-      alert("Hubo un error al generar el informe.");
-    } finally {
-      setIsDownloading(false);
-    }
-  };
-
-  const data = landfill ? buildSelectionPanelData(landfill) : null;
-
-  return {
-    landfill,
-    data,
-    isDownloading,
-    handleClose,
-    handleDownloadReport,
-  };
+export function useLandfillDetails(landfillId: string | null, versionId?: number | null) {
+  const { data: details, isLoading } = useQuery({
+    queryKey: ["landfill-details", landfillId, versionId],
+    queryFn: () => apiLandfillsRepository.getDetails(landfillId!, versionId),
+    enabled: !!landfillId
+  })
+  return { details, isLoading };
 }

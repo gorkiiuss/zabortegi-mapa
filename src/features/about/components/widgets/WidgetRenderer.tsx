@@ -1,6 +1,6 @@
 // src/features/about/components/widgets/WidgetRenderer.tsx
 
-import type { Widget } from "../../domain/types";
+import type { Widget } from "../../domain/valueObjects/Widget";
 import { CounterWidget } from "./CounterWidget";
 import { GalleryWidget } from "./GalleryWidget";
 
