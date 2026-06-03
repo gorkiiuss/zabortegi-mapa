@@ -41,9 +41,8 @@ export const DetailSection: React.FC<DetailSectionProps> = ({
         {rows.map(({ labelKey, value, score, fullWidth }) => (
           <div
             key={labelKey}
-            className={`flex flex-col gap-1 ${
-              fullWidth ? "sm:col-span-2 lg:col-span-3" : ""
-            }`}
+            className={`flex flex-col gap-1 ${fullWidth ? "sm:col-span-2 lg:col-span-3" : ""
+              }`}
           >
             <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">
               {t(labelKey)}
@@ -85,7 +84,7 @@ export const DetailSection: React.FC<DetailSectionProps> = ({
           )}
 
           <a
-            href={`mailto:tu-correo@ejemplo.com?subject=Revisión de privacidad - Vertedero ${code || "desconocido"}`}
+            href={`mailto:pd.gorka.lab@gmail.com?subject=Revisión de privacidad - Vertedero ${code || "desconocido"}`}
             className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-600 shadow-xs hover:bg-slate-50 transition-colors"
           >
             <Mail size={14} className="text-slate-400" />
