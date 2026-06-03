@@ -21,8 +21,8 @@ export function AnnouncementsSection({ targetId, isActive }: AnnouncementsSectio
   const { currentLanguage, t, formatDate } = useLanguageStore();
 
   const { toggleActiveModal } = useUiStore();
-  const landfills = useLandfillsStore((s) => s.landfills);
-  const { navigateByCode } = useLandfillNavigation();
+  const { landfillsSummary } = useLandfillsStore();
+  const { navigateById } = useLandfillNavigation();
   const announcements = useNewsStore((s) => s.announcements);
 
   const [openShareId, setOpenShareId] = useState<string | null>(null);
@@ -172,26 +172,26 @@ export function AnnouncementsSection({ targetId, isActive }: AnnouncementsSectio
                 dangerouslySetInnerHTML={{ __html: post.content[currentLanguage] }}
               />
 
-              {(post.relatedLandfillCodes?.length || post.attachments?.length) ? (
+              {(post.relatedLandfillIds?.length || post.attachments?.length) ? (
                 <div className="mt-8 flex flex-col gap-6 border-t border-slate-100 pt-6">
 
-                  {post.relatedLandfillCodes && post.relatedLandfillCodes.length > 0 && (
+                  {post.relatedLandfillIds && post.relatedLandfillIds.length > 0 && (
                     <div className="flex flex-col gap-3">
                       <span className="text-[10px] font-bold uppercase tracking-wide text-slate-400">
                         {t("about.announcements.mentioned_in")}
                       </span>
                       <div className="flex flex-wrap gap-2">
-                        {post.relatedLandfillCodes.map((code) => {
-                          const lf = landfills.find((l) => l.code === code);
+                        {post.relatedLandfillIds.map((id) => {
+                          const lf = landfillsSummary.find((l) => l.id === id);
                           if (!lf) return null;
                           return (
                             <button
-                              key={code}
-                              onClick={() => navigateByCode(code)}
+                              key={id}
+                              onClick={() => navigateById(id)}
                               className="group/btn flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600 transition-colors hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700"
                             >
                               <MapPin size={12} className="text-slate-400 transition-colors group-hover/btn:text-blue-500" />
-                              {lf.name}
+                              {lf.name ? lf.name : t("domain.entities.landfill_summary.name_placeholder")}
                             </button>
                           );
                         })}

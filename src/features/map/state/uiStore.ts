@@ -1,10 +1,12 @@
 // src/features/map/state/uiStore.ts
 
+import type { MultimediaEntity } from "@features/landfills/domain/entities/Multimedia";
+import type { MediaItemEntity } from "@features/media/domain/entities/MediaItemEntity";
 import { create } from "zustand";
 
 export interface GalleryData {
   title: string;
-  images: Array<{ url: string; title?: string }>;
+  images: (MultimediaEntity | MediaItemEntity)[];
 }
 
 export interface AboutData {
@@ -32,7 +34,9 @@ export type ModalId =
   | "future_feature"
   | "contact"
   | "media_explorer"
-  | "folder_explorer";
+  | "folder_explorer"
+  | "full-details"
+  | "tutorial_selection";
 
 interface ModalStackEntry {
   id: ModalId;

@@ -1,18 +1,20 @@
+// src/features/search/components/SearchBody.tsx
+
 import SearchCard from "./SearchCard";
 import MoreResultsCard from "./MoreResultsCard";
-import type { LandfillSummary } from "@features/landfills/domain/types";
 import { useLanguageStore } from "@shared/state/languageStore";
 import { Search, X } from "@shared/components/Icons";
+import type { LandfillSummaryEntity } from "@features/landfills/domain/entities/LandfillSummary";
 
 interface SearchBodyProps {
   searchQuery: string;
   setSearchQuery: (q: string) => void;
-  suggestions: LandfillSummary[];
+  suggestions: LandfillSummaryEntity[];
   highlightedIndex: number;
   setHighlightedIndex: (i: number) => void;
   hasMoreCard: boolean;
   totalItems: number;
-  onSelect: (item: LandfillSummary) => void;
+  onSelect: (item: LandfillSummaryEntity) => void;
   onOpenIndex: () => void;
   onSubmit: (e: React.FormEvent) => void;
   onKeyDown: (e: React.KeyboardEvent) => void;
@@ -46,10 +48,8 @@ export function SearchBody({
 
   return (
     <div className="flex flex-col gap-4">
-      {/* ─── INPUT / FORMULARIO ─── */}
       <form onSubmit={onSubmit} className="group relative">
         {showInput ? (
-          // ─── MODO EXPANDIDO / MÓVIL ───
           <div className="relative">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
               <Search size={16} className="text-slate-400" />
@@ -65,7 +65,6 @@ export function SearchBody({
               onKeyDown={onKeyDown}
             />
 
-            {/* BOTÓN BORRAR */}
             {searchQuery && (
               <button
                 type="button"
@@ -78,7 +77,6 @@ export function SearchBody({
             )}
           </div>
         ) : (
-          // ─── MODO REDUCIDO ───
           <div className="relative flex cursor-text items-center gap-2 rounded-xl border border-transparent px-3 py-2.5 transition-colors">
             <Search size={16} className="text-slate-400" />
             <span
@@ -87,7 +85,6 @@ export function SearchBody({
               {searchQuery || t("search.placeholder_collapsed")}
             </span>
 
-            {/* BOTÓN BORRAR MODO REDUCIDO */}
             {searchQuery && (
               <button
                 type="button"
@@ -102,7 +99,6 @@ export function SearchBody({
         )}
       </form>
 
-      {/* ─── RESULTADOS ─── */}
       {showInput && (
         <div className="space-y-3">
           {totalItems > 0 ? (
@@ -111,7 +107,6 @@ export function SearchBody({
                 <span className="text-[10px] font-bold tracking-wider text-slate-400 uppercase">
                   {t("search.results_title")}
                 </span>
-                {/* HTML inyectado para las teclas de ayuda */}
                 <span
                   className="hidden text-[10px] text-slate-400 sm:inline-block"
                   dangerouslySetInnerHTML={{

@@ -10,6 +10,7 @@ interface LanguageState {
   setLanguage: (lang: Language) => void;
   t: (path: TxKeyPath, params?: Record<string, string | number>) => string;
   formatDate: (dateStr: string, type?: 'numeric' | 'long') => string;
+  formatSeparatedDate: (yyyy: string, mm: string, dd: string) => string;
 }
 
 const getNestedValue = (obj: any, path: string): string => {
@@ -49,6 +50,12 @@ export const useLanguageStore = create<LanguageState>()(
       formatDate: (dateStr: string, type: 'numeric' | 'long' = 'numeric') => {
         const lang = get().currentLanguage;
         return formatLiteralDate(dateStr, lang, { type });
+      },
+
+      formatSeparatedDate: (yyyy: string, mm: string, dd: string) => {
+        const lang = get().currentLanguage;
+        if (lang === "eu") return `${yyyy}/${mm}/${dd}`
+        else return `${dd}/${mm}/${yyyy}`
       }
     }),
     {

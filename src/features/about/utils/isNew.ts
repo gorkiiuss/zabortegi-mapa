@@ -1,6 +1,7 @@
 // src/features/about/utils/isNew.ts
 
-import type { AnnouncementPost, ChangeLogEntry } from "../domain/types";
+import type { AnnouncementEntity } from "../domain/entities/Announcement";
+import type { ChangeLogEntryEntity } from "../domain/entities/ChangeLogEntry";
 
 export function getAgeInDays(dateString: string): number {
     const itemDate = new Date(dateString);
@@ -10,21 +11,17 @@ export function getAgeInDays(dateString: string): number {
 }
 
 export function isItemNew(
-    item: AnnouncementPost | ChangeLogEntry,
+    item: AnnouncementEntity | ChangeLogEntryEntity,
     type: "announcement" | "update",
     lastSeenDateStr: string | null
 ): boolean {
     const ageDays = getAgeInDays(item.date);
 
-    // Consideramos que un elemento NO se ha visto si no hay fecha de última visita
-    // o si la fecha del elemento es posterior a la de última visita.
-    // Para las fechas del mismo día, consideramos que sí se ha visto.
     const isUnseen = !lastSeenDateStr || new Date(item.date) > new Date(lastSeenDateStr);
 
     if (isUnseen) {
         return ageDays <= 7;
     } else {
-        // Si ya se ha visto, se mantiene "nuevo" (destacado) por unos días
         if (type === "update") {
             return ageDays <= 3;
         } else {
@@ -34,7 +31,7 @@ export function isItemNew(
 }
 
 export function isItemUnseenAndNew(
-    item: AnnouncementPost | ChangeLogEntry,
+    item: AnnouncementEntity | ChangeLogEntryEntity,
     lastSeenDateStr: string | null
 ): boolean {
     const isUnseen = !lastSeenDateStr || new Date(item.date) > new Date(lastSeenDateStr);

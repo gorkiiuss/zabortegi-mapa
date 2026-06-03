@@ -1,7 +1,8 @@
 // src/features/media/state/mediaExplorerStore.ts
 
 import { create } from 'zustand';
-import type { MediaType, MediaContext } from '@shared/domain/mediaTypes';
+import type { MultimediaCategory } from '@features/landfills/domain/valueObjects/MultimediaCategory';
+import type { MediaContext } from '../domain/valueObjects/MediaContext';
 
 export type SortOption = 'az' | 'za' | 'type' | 'context' | 'related';
 export type SortDirection = 'asc' | 'desc';
@@ -9,7 +10,7 @@ export type ViewMode = 'grid' | 'list';
 
 interface MediaExplorerState {
     searchQuery: string;
-    typeFilter: MediaType | 'all';
+    typeFilter: MultimediaCategory | 'all';
     contextFilter: MediaContext | 'all';
 
     sortBy: SortOption;
@@ -17,7 +18,7 @@ interface MediaExplorerState {
     viewMode: ViewMode;
 
     setSearchQuery: (query: string) => void;
-    setTypeFilter: (type: MediaType | 'all') => void;
+    setTypeFilter: (type: MultimediaCategory | 'all') => void;
     setContextFilter: (context: MediaContext | 'all') => void;
     setSortBy: (sort: SortOption) => void;
     setSortDirection: (dir: SortDirection) => void;

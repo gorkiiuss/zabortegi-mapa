@@ -1,11 +1,11 @@
-// src/features/about/state/newsStore.ts
-
 import { create } from "zustand";
-import type { AnnouncementPost, ChangeLogEntry } from "../domain/types";
+import type { AnnouncementEntity } from "../domain/entities/Announcement";
+import type { ChangeLogEntryEntity } from "../domain/entities/ChangeLogEntry";
+import { apiNewsRepository } from "../data/apiRepository";
 
 interface NewsState {
-  announcements: AnnouncementPost[];
-  changelog: ChangeLogEntry[];
+  announcements: AnnouncementEntity[];
+  changelog: ChangeLogEntryEntity[];
   loading: boolean;
   error: boolean;
 
@@ -24,19 +24,10 @@ export const useNewsStore = create<NewsState>((set, get) => ({
     set({ loading: true, error: false });
 
     try {
-      const baseUrl = import.meta.env.BASE_URL;
-      
-      const cacheBuster = Date.now();
-
-      const [annRes, logRes] = await Promise.all([
-        fetch(`${baseUrl}data/announcements.json?v=${cacheBuster}`),
-        fetch(`${baseUrl}data/changelog.json?v=${cacheBuster}`)
+      const [announcements, changelog] = await Promise.all([
+        apiNewsRepository.getAnnouncements(),
+        apiNewsRepository.getChangelog()
       ]);
-
-      if (!annRes.ok || !logRes.ok) throw new Error("Error loading data");
-
-      const announcements = await annRes.json();
-      const changelog = await logRes.json();
 
       set({
         announcements,

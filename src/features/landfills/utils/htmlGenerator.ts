@@ -1,10 +1,7 @@
 // src/features/landfills/utils/htmlGenerator.ts
 
-import type { Landfill } from "../domain/types";
+import { useLanguageStore } from "@shared/state/languageStore";
 
-// ---------------------------------------------------------------------------
-// 1. CONFIGURACIÓN DE RUTAS
-// ---------------------------------------------------------------------------
 const BASE_URL = import.meta.env.BASE_URL.endsWith("/")
   ? import.meta.env.BASE_URL
   : `${import.meta.env.BASE_URL}/`;
@@ -25,16 +22,12 @@ const TEMPLATE_URL =
   (import.meta.env.VITE_MEDIA_BASE_URL as string | undefined) ??
   `${BASE_URL}templates/report.html`;
 
-// ---------------------------------------------------------------------------
-// 2. HELPERS
-// ---------------------------------------------------------------------------
 
 async function imageToBase64(url: string): Promise<string> {
   try {
     const response = await fetch(url);
     if (!response.ok) return "";
     const blob = await response.blob();
-    // Evita intentar convertir un 404 HTML en imagen
     if (
       blob.type.includes("text/html") ||
       blob.type.includes("application/json")
@@ -56,14 +49,10 @@ function normalize(str: string): string {
   if (!str) return "";
   return str
     .toLowerCase()
-    .replace(/\s+/g, " ") // Colapsar espacios y saltos de línea
+    .replace(/\s+/g, " ")
     .trim();
 }
 
-/**
- * BÚSQUEDA PROFUNDA E INTELIGENTE DE VALORES
- * Encuentra la clave aunque esté en subniveles o con diferencias de mayúsculas/espacios.
- */
 function findValueInSections(
   sectionsData: any,
   sectionNameRaw: string,
@@ -72,18 +61,15 @@ function findValueInSections(
   const targetSection = normalize(sectionNameRaw);
   const targetKey = normalize(keyNameRaw);
 
-  // Recorremos todas las Secciones del JSON
   for (const rootKey in sectionsData) {
     const rootData = sectionsData[rootKey];
     const rootKeyNorm = normalize(rootKey);
 
     let contextData = null;
 
-    // A. ¿Coincide la raíz? (ej: "1.- Datos generales" == "1.- Datos generales")
     if (rootKeyNorm.includes(targetSection)) {
       contextData = rootData;
     } else {
-      // B. ¿Es una subsección? (ej: "LOCALIZACIÓN" dentro de "1.- Datos generales")
       if (typeof rootData === "object" && rootData !== null) {
         for (const childKey in rootData) {
           if (normalize(childKey).includes(targetSection)) {
@@ -94,22 +80,17 @@ function findValueInSections(
       }
     }
 
-    // Si encontramos dónde buscar...
     if (contextData && typeof contextData === "object") {
-      // 1. Buscamos la clave directamente
       for (const k in contextData) {
         if (normalize(k) === targetKey) return String(contextData[k]);
       }
 
-      // 2. Búsqueda profunda (por si está anidado un nivel más)
       for (const subKey in contextData) {
         const subItem = contextData[subKey];
         if (typeof subItem === "object" && subItem !== null) {
           for (const k in subItem) {
-            // Comparación normalizada
             if (normalize(k) === targetKey) return String(subItem[k]);
 
-            // Lógica especial para (m3) vs (m 3 )
             if (targetKey.includes("(m3)")) {
               const kNorm = normalize(k).replace(/\s/g, "");
               const targetKeyNoSpace = targetKey.replace(/\s/g, "");
@@ -123,14 +104,16 @@ function findValueInSections(
   return "";
 }
 
-// ---------------------------------------------------------------------------
-// 3. FUNCIÓN PRINCIPAL
-// ---------------------------------------------------------------------------
-
 export async function generateLandfillHtml(
-  landfill: Landfill,
+  legacyRawData: any,
+  uuid?: string,
 ): Promise<string> {
-  // Carga de recursos
+  const properties = legacyRawData?.properties || legacyRawData || {};
+  const parcelId = String(properties.IdParcela || properties.id || "");
+  const folderId = uuid || String(properties.id || parcelId);
+  const name = String(properties.NombreVertedero || properties.name || "");
+  const sectionsData = properties.sections || {};
+
   const [templateRes, cssRes, logoIhobeB64, logoGvB64] = await Promise.all([
     fetch(TEMPLATE_URL),
     fetch(CSS_URL),
@@ -144,20 +127,16 @@ export async function generateLandfillHtml(
 
   let html = await templateRes.text();
   const cssContent = cssRes.ok ? await cssRes.text() : "";
-
-  // 1. Reemplazos Estáticos
+  const documentsNotice = useLanguageStore.getState().t("details.legacy_documents_notice");
   html = html
     .replace("{{__STYLES__}}", cssContent)
     .replace("{{__LOGO_IHOBE__}}", logoIhobeB64)
     .replace("{{__LOGO_GV__}}", logoGvB64)
     .replace("{{__FECHA__}}", new Date().toLocaleDateString("es-ES"))
-    .replace(/{{HEADER::ID}}/g, landfill.id)
-    .replace(/{{HEADER::NAME}}/g, landfill.name);
+    .replace(/{{HEADER::ID}}/g, parcelId)
+    .replace(/{{HEADER::NAME}}/g, name)
+    .replace("{{__DOCUMENTS_LEGACY_NOTICE__}}", documentsNotice);
 
-  // 2. Extracción de Datos del Vertedero
-  const sectionsData = (landfill.rawProperties?.sections as any) || {};
-
-  // REGEX SEGURA: Usamos _match para evitar el warning del linter sin romper la lógica
   html = html.replace(
     /{{([^{}]+?)::([^{}]+?)}}/g,
     (_match, sectionNameRaw, keyNameRaw) => {
@@ -165,13 +144,12 @@ export async function generateLandfillHtml(
     },
   );
 
-  // 3. Tablas Dinámicas y Fotos
   const dynamicTables5 = renderDynamicTables(
-    landfill,
+    sectionsData,
     "5.- Localización de los puntos de muestreo y analítica realizada",
   );
   const dynamicTables7 = renderDynamicTables(
-    landfill,
+    sectionsData,
     "7.- Estudios realizados",
   );
 
@@ -179,23 +157,17 @@ export async function generateLandfillHtml(
     .replace("{{__DYNAMIC_TABLES_5__}}", dynamicTables5)
     .replace("{{__DYNAMIC_TABLES_7__}}", dynamicTables7);
 
-  const imagesHtml = await renderImages(landfill);
+  const imagesHtml = await renderImages(folderId, properties.imgs);
   html = html.replace("{{__IMAGES__}}", imagesHtml);
 
   return html;
 }
 
-// ---------------------------------------------------------------------------
-// 4. SUB-FUNCIONES
-// ---------------------------------------------------------------------------
-
-async function renderImages(landfill: Landfill): Promise<string> {
+async function renderImages(folderId: string, imgs: any): Promise<string> {
   const rawImgs =
-    (landfill.rawProperties?.imgs as Array<{ titulo: string; path: string }>) ||
+    (imgs as Array<{ titulo: string; path: string }>) ||
     [];
   if (rawImgs.length === 0) return "<p>No hay imágenes disponibles.</p>";
-
-  const folderId = landfill.id;
 
   const processedImages = await Promise.all(
     rawImgs.map(async (img) => {
@@ -222,14 +194,12 @@ async function renderImages(landfill: Landfill): Promise<string> {
 }
 
 function renderDynamicTables(
-  landfill: Landfill,
+  sectionsData: any,
   sectionNameTarget: string,
 ): string {
-  const sectionsData = (landfill.rawProperties?.sections as any) || {};
   const targetNorm = normalize(sectionNameTarget);
 
   let section = null;
-  // Búsqueda flexible de la sección dinámica
   for (const k in sectionsData) {
     if (normalize(k).includes(targetNorm)) {
       section = sectionsData[k];

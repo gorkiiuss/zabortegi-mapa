@@ -2,6 +2,8 @@
 
 import type { ReactNode } from "react";
 import { Plus } from "./Icons";
+import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 
 export interface MenuItem {
   label: string;
@@ -31,8 +33,40 @@ export function DropdownMenu({
   widthClass = "w-56",
   idPrefix = "",
 }: DropdownMenuProps) {
-  const originClass =
-    align === "left" ? "origin-top-left left-0" : "origin-top-right right-0";
+  const triggerRef = useRef<HTMLDivElement>(null);
+  const [coords, setCoords] = useState<{ top: number; left: number } | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const updateCoords = () => {
+    if (!triggerRef.current) return;
+    const rect = triggerRef.current.getBoundingClientRect();
+    setCoords({
+      top: rect.bottom,
+      left: align === "left" ? rect.left : rect.right,
+    });
+  };
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    updateCoords();
+
+    const handleScrollOrResize = () => {
+      updateCoords();
+    };
+
+    window.addEventListener("scroll", handleScrollOrResize, true);
+    window.addEventListener("resize", handleScrollOrResize);
+
+    return () => {
+      window.removeEventListener("scroll", handleScrollOrResize, true);
+      window.removeEventListener("resize", handleScrollOrResize);
+    };
+  }, [isOpen, align]);
 
   const getItemClasses = (item: MenuItem) => {
     const base =
@@ -53,15 +87,25 @@ export function DropdownMenu({
     return `${base} cursor-pointer hover:bg-emerald-50 hover:text-emerald-900 text-slate-700`;
   };
 
-  return (
-    <div className="relative">
-      {trigger}
-
+  const menuContent = isOpen && coords && (
+    <>
       <div
-        className={`absolute top-full z-50 mt-2 ${widthClass} ${originClass} overflow-hidden rounded-xl border border-slate-200 bg-white text-sm shadow-lg transition-all duration-150 ${isOpen
-            ? "translate-y-0 scale-100 opacity-100"
-            : "pointer-events-none -translate-y-1 scale-95 opacity-0"
-          }`}
+        className="fixed inset-0 z-[9998] cursor-default"
+        onClick={(e) => {
+          e.stopPropagation();
+          onClose();
+        }}
+      />
+      <div
+        style={{
+          position: "fixed",
+          top: `${coords.top}px`,
+          left: `${coords.left}px`,
+          transform: align === "right" ? "translateX(-100%)" : undefined,
+          transformOrigin: align === "right" ? "top right" : "top left",
+          animation: "dropdown-fade-in 0.15s ease-out forwards",
+        }}
+        className={`z-[9999] mt-2 ${widthClass} overflow-hidden rounded-xl border border-slate-200 bg-white text-sm shadow-lg`}
       >
         <ul className="divide-y divide-slate-100">
           {items.map((item, idx) => (
@@ -85,16 +129,24 @@ export function DropdownMenu({
           ))}
         </ul>
       </div>
+    </>
+  );
 
+  return (
+    <div ref={triggerRef} className="relative inline-block">
+      {trigger}
       {isOpen && (
-        <div
-          className="fixed inset-0 z-40 cursor-default"
-          onClick={(e) => {
-            e.stopPropagation();
-            onClose();
-          }}
-        />
+        <>
+          <style>{`
+            @keyframes dropdown-fade-in {
+              from { opacity: 0; transform: translateY(-4px) ${align === "right" ? "translateX(-100%) scale(0.95)" : "scale(0.95)"}; }
+              to { opacity: 1; transform: translateY(0) ${align === "right" ? "translateX(-100%) scale(1)" : "scale(1)"}; }
+            }
+          `}</style>
+          {isMounted && createPortal(menuContent, document.body)}
+        </>
       )}
     </div>
   );
 }
+

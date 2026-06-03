@@ -9,12 +9,12 @@ function cn(...inputs: ClassValue[]) {
 
 interface CardShellProps {
   title: string;
-  icon?: React.ReactNode;
+  clps?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
 }
 
-export const CardShell = ({ title, icon, children, className }: CardShellProps) => (
+export const CardShell = ({ title, clps: icon, children, className }: CardShellProps) => (
   <div 
     className={cn(
       "rounded-xl border border-slate-200 bg-white shadow-sm p-4", 

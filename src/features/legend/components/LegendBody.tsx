@@ -1,4 +1,6 @@
-import type { LegendItem } from "../domain/types";
+// src/features/legend/components/LegendBody.tsx
+
+import type { LegendItem } from "../types";
 import { useLanguageStore } from "@shared/state/languageStore";
 
 interface LegendBodyProps {
@@ -23,7 +25,6 @@ export function LegendBody({
 
   return (
     <>
-      {/* Renderizado condicional del título y separador */}
       {showHeader && (
         <>
           <div className="px-3 py-2 font-semibold">{displayTitle}</div>
@@ -31,9 +32,7 @@ export function LegendBody({
         </>
       )}
 
-      {/* Scrollable content container */}
       <div className="flex-1 space-y-3 overflow-y-auto px-3 pb-3">
-        {/* Sección 1: color + pulsante */}
         <section>
           <div className="mb-1 text-xs font-semibold tracking-wide text-slate-500 uppercase">
             {t("legend.risk_color")}
@@ -45,7 +44,6 @@ export function LegendBody({
               className="relative h-3 flex-1 cursor-pointer rounded-full bg-linear-to-r from-[#F7D44D] to-[#FF0000]"
               onPointerDown={onPointerDown}
             >
-              {/* Thumb */}
               <div
                 className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white bg-slate-900/80 shadow"
                 style={{ left: `${riskPercent}%` }}
@@ -63,10 +61,8 @@ export function LegendBody({
           />
         </section>
 
-        {/* Divider */}
         <div className="h-px bg-slate-200" />
 
-        {/* Sección 2: pictogramas CLP */}
         <section>
           <div className="mb-1 text-xs font-semibold tracking-wide text-slate-500 uppercase">
             {t("legend.clp_pictograms")}
