@@ -1,82 +1,54 @@
 // src/features/landfills/components/map/LandfillsLayer.tsx
 
-import { Fragment, useEffect } from "react";
+import { Fragment } from "react";
 import { Polygon } from "react-leaflet";
-
 import { LandfillMarker } from "./LandfillMarker";
 
 import { useUiStore } from "@features/map/state/uiStore";
 import { useMapStore } from "@features/map/state/mapStore";
-import { useNoInfoLandfills } from "../../hooks/useNoInfoLandfills";
-import { getRiskScoreRange, getTopRiskLandfillIds } from "../../domain/selectors";
-import { useQueryFilteredVisibleLandfills } from "../../hooks/useQueryFilteredVisibleLandfills";
-import { getRiskFillColor } from "../../domain/symbology";
-import { useLandfillsStore } from "../../state/landfillsStore";
+import { getRiskFillColor } from "../../config/styling";
+
 import { geometryToLatLngs } from "../../utils/geo";
 
+import { getTopRiskLandfillIds } from "../../state/selectors";
+import { useQueryFilteredVisibleLandfills } from "../../hooks/useQueryFilteredVisibleLandfills";
+
 export function LandfillsLayer() {
-  const allLandfills = useNoInfoLandfills();
   const visibleLandfills = useQueryFilteredVisibleLandfills();
 
-  const markAsRendered = useLandfillsStore((s) => s.markAsRendered);
-  const loading = useLandfillsStore((s) => s.loading);
-
-  useEffect(() => {
-    if (!loading || allLandfills.length === 0) return;
-
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        markAsRendered();
-      });
-    });
-  }, [allLandfills, loading, markAsRendered]);
-
+  const selectedLandfillId = useUiStore((s) => s.selectedLandfillId);
   const setSelectedLandfillId = useUiStore((s) => s.setSelectedLandfillId);
   const setFocusLandfillId = useMapStore((s) => s.setFocusLandfillId);
 
-  const { selectedLandfillId } = useUiStore();
+  const topPulsatingCount = Math.max(Math.ceil(visibleLandfills.length * 0.01), 5);
+  const topVisibleIds = getTopRiskLandfillIds(visibleLandfills, topPulsatingCount);
 
-  if (!allLandfills.length) return null;
-
-  const scoreRange = getRiskScoreRange(allLandfills);
-  const minRiskScore = scoreRange?.min ?? 0;
-  const maxRiskScore = scoreRange?.max ?? 100;
-
-  const topPulsatingCount = Math.max(
-    Math.ceil(visibleLandfills.length * 0.01),
-    5,
-  );
-  const topVisibleIds = getTopRiskLandfillIds(
-    visibleLandfills,
-    topPulsatingCount,
-  );
+  const minRiskScore = 0;
+  const maxRiskScore = 100;
 
   return (
     <>
       {visibleLandfills.map((lf) => {
-        const latlngs = geometryToLatLngs(lf.geometry);
-        if (!latlngs.length) return null;
+        const latlngs = geometryToLatLngs(lf.geometry as any);
+        if (!latlngs || !latlngs.length) return null;
 
         const isSelected = selectedLandfillId === lf.id;
+        const isHighlighted = topVisibleIds.has(lf.id);
 
-        const handleClick = async () => {
+        const handleClick = () => {
           setSelectedLandfillId(lf.id);
           setFocusLandfillId(lf.id);
         };
 
         const color = getRiskFillColor(
-          lf.riskLevel,
-          lf.riskScore ?? 0,
+          lf.riskScore,
           minRiskScore,
           maxRiskScore,
         );
 
-        const isHighlighted = topVisibleIds.has(lf.id);
-
         return (
           <Fragment key={lf.id}>
             <Polygon
-              key={`poly-${lf.id}`}
               positions={latlngs}
               pathOptions={{
                 color,
@@ -85,17 +57,14 @@ export function LandfillsLayer() {
                 weight: 1,
               }}
               eventHandlers={{
-                click: () => handleClick,
+                click: handleClick,
               }}
             />
 
             <LandfillMarker
-              key={`marker-${lf.id}`}
               landfill={lf}
               color={color}
               onClick={handleClick}
-              minRiskScore={minRiskScore}
-              maxRiskScore={maxRiskScore}
               isHighlighted={isHighlighted}
               isSelected={isSelected}
             />

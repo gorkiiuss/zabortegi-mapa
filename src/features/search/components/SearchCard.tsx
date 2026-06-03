@@ -1,8 +1,10 @@
 // src/features/search/components/SearchCard.tsx
-import type { LandfillSummary } from "@features/landfills/domain/types";
+
+import type { LandfillSummaryEntity } from "@features/landfills/domain/entities/LandfillSummary";
+import { useLanguageStore } from "@shared/state/languageStore";
 
 interface SearchCardProps {
-  item: LandfillSummary;
+  item: LandfillSummaryEntity;
   active: boolean;
   onClick: () => void;
   onMouseEnter: () => void;
@@ -14,6 +16,7 @@ export default function SearchCard({
   onClick,
   onMouseEnter,
 }: SearchCardProps) {
+  const { t } = useLanguageStore()
   return (
     <div
       onClick={(e) => {
@@ -24,15 +27,14 @@ export default function SearchCard({
         e.stopPropagation();
         onMouseEnter();
       }}
-      className={`cursor-pointer rounded-xl border px-3 py-2 text-sm transition-colors ${
-        active
-          ? "border-emerald-300 bg-emerald-50"
-          : "border-slate-200 bg-white hover:bg-slate-50"
-      } `}
+      className={`cursor-pointer rounded-xl border px-3 py-2 text-sm transition-colors ${active
+        ? "border-emerald-300 bg-emerald-50"
+        : "border-slate-200 bg-white hover:bg-slate-50"
+        } `}
     >
-      <div className="font-medium text-slate-900">{item.name}</div>
+      <div className="font-medium text-slate-900">{item.name ? item.name : t("domain.entities.landfill_summary.name_placeholder")}</div>
       <div className="text-xs text-slate-500">
-        {item.municipality} · {item.id}
+        {item.municipality ? item.municipality : t("domain.entities.landfill_summary.municipality_placeholder")} · {item.code ? item.code : t("domain.entities.landfill_summary.code_placeholder")}
       </div>
     </div>
   );

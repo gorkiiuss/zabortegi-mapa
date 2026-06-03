@@ -6,7 +6,7 @@ import { useAppOrchestrator } from "@features/orchestrator/hooks/useAppOrchestra
 import { MousePointerClick, ArrowRightCircle, FlaskConical, GitCommitVertical } from "@shared/components/Icons";
 import { isItemNew } from "@features/about/utils/isNew";
 import { useMemo, useState } from "react";
-import type { ChangeLogEntry } from "@features/about/domain/types";
+import type { ChangeLogEntryEntity } from "@features/about/domain/entities/ChangeLogEntry";
 
 export function ChangelogSection() {
   const { t, currentLanguage } = useLanguageStore();
@@ -28,7 +28,7 @@ export function ChangelogSection() {
 
   const groupedChangelog = useMemo(() => {
     const order: string[] = [];
-    const groups: Record<string, { main: ChangeLogEntry | null; snapshots: ChangeLogEntry[] }> = {};
+    const groups: Record<string, { main: ChangeLogEntryEntity | null; snapshots: ChangeLogEntryEntity[] }> = {};
 
     changelog.forEach((entry) => {
       const v = entry.isSnapshot ? (entry.targetVersion || entry.version) : entry.version;
@@ -54,7 +54,7 @@ export function ChangelogSection() {
     });
   }, [changelog, showSnapshots]);
 
-  const renderEntryItems = (entry: ChangeLogEntry, isLatest: boolean, isSubVersion = false) => {
+  const renderEntryItems = (entry: ChangeLogEntryEntity, isLatest: boolean, isSubVersion = false) => {
     return (
       <ul className={`space-y-1.5 ${isSubVersion ? "ml-4 border-l-2 border-slate-100 pl-4 py-2" : ""}`}>
         {entry.items.map((item, cIdx) => {
@@ -63,7 +63,12 @@ export function ChangelogSection() {
           return (
             <li
               key={cIdx}
-              onClick={() => hasAction && item.action && dispatch(item.action)}
+              onClick={(e) => {
+                if (hasAction && item.action) {
+                  e.stopPropagation();
+                  dispatch(item.action);
+                }
+              }}
               className={`
                 group/item flex items-start gap-2.5 text-sm transition-all duration-200 rounded-md p-1 -ml-1
                 ${hasAction ? "cursor-pointer hover:bg-white hover:shadow-sm hover:ring-1 hover:ring-slate-200" : ""}

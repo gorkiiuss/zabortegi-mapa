@@ -3,7 +3,7 @@
 import { useMapPanelInteractions } from "@shared/hooks/useMapPanelInteractions";
 import { useLegendLogic } from "../hooks/useLegendLogic";
 import { LegendBody } from "./LegendBody";
-import type { LegendItem } from "../domain/types";
+import type { LegendItem } from "../types";
 
 interface LegendDesktopPanelProps {
   items: LegendItem[];

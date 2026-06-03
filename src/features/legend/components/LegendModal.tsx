@@ -2,7 +2,7 @@
 
 import { useLegendLogic } from "../hooks/useLegendLogic";
 import { LegendBody } from "./LegendBody";
-import type { LegendItem } from "../domain/types";
+import type { LegendItem } from "../types";
 
 import { useMapModalInteractions } from "@shared/hooks/useMapModalInteractions";
 import { useUiStore } from "@features/map/state/uiStore";
@@ -27,7 +27,6 @@ export function LegendModal({ items }: LegendModalProps) {
       onMouseLeave={handleMouseLeave}
       className={`pointer-events-auto flex h-full w-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl`}
     >
-      {/* ─── HEADER UNIFICADO ─── */}
       <div className="flex shrink-0 items-center justify-between border-b border-slate-200 bg-slate-50/50 px-4 py-3">
         <div>
           <h2 className="text-sm font-semibold text-slate-800">
@@ -44,7 +43,6 @@ export function LegendModal({ items }: LegendModalProps) {
         </button>
       </div>
 
-      {/* ─── BODY ─── */}
       <div className="flex-1 overflow-y-auto overscroll-contain bg-slate-50/30 p-4">
         <LegendBody
           items={items}

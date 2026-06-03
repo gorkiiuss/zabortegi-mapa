@@ -1,14 +1,14 @@
 // src/features/media/components/MediaGroupSection.tsx
 
 import { useState, useEffect } from "react";
-import type { MediaItem } from "@shared/domain/mediaTypes";
+import type { MediaItemEntity } from "../domain/entities/MediaItemEntity";
 import type { ViewMode } from "../state/mediaExplorerStore";
 import { MediaItemCard } from "./MediaItemCard";
 import { useLanguageStore } from "@shared/state/languageStore";
 import { Plus } from "@shared/components/Icons";
 
 interface Props {
-    group: { key: string; label: string; items: MediaItem[] };
+    group: { key: string; label: string; items: MediaItemEntity[] };
     viewMode: ViewMode;
     forceOpen?: boolean;
 }

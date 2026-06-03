@@ -1,3 +1,5 @@
+// src/features/about/components/sections/ProjectInfoSection.tsx
+
 import { useLanguageStore } from "@shared/state/languageStore";
 import { useUiStore } from "@features/map/state/uiStore";
 import { StatBox, SectionTitle } from "../ui/AboutSharedComponents";
@@ -14,7 +16,6 @@ export function ProjectInfoSection() {
   return (
     <div className="space-y-8 pt-2">
       <section className="space-y-4">
-        {/* BLOQUE DESTACADO: 40.404 Presiones */}
         <div className="flex justify-center mb-2">
           <div className="relative inline-flex flex-col items-center justify-center rounded-xl border-2 border-amber-200 bg-amber-50 px-8 py-3 pb-8 text-amber-800 shadow-sm transition-all hover:shadow-md w-full sm:w-auto">
             <span className="text-3xl sm:text-4xl font-extrabold tracking-tight drop-shadow-xs">
@@ -37,7 +38,6 @@ export function ProjectInfoSection() {
           </div>
         </div>
 
-        {/* CONTENEDOR INVENTARIO (Texto introductorio + Resto de estadísticas) */}
         <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-4">
           <p className="mb-4 text-sm leading-relaxed text-slate-600">
             {t("about.stats.intro")}
@@ -57,11 +57,13 @@ export function ProjectInfoSection() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <StatBox label="Bizkaia" value={fmt(stats.byTerritory.Bizkaia)} />
-            <StatBox label="Gipuzkoa" value={fmt(stats.byTerritory.Gipuzkoa)} />
-            <StatBox label="Araba" value={fmt(stats.byTerritory.Araba)} />
+          <div className="grid grid-cols-3 gap-2 mt-4">
+            <StatBox label="Bizkaia" value={fmt(stats.byTerritory.BIZKAIA)} />
+            <StatBox label="Gipuzkoa" value={fmt(stats.byTerritory.GIPUZKOA)} />
+            <StatBox label="Araba" value={fmt(stats.byTerritory.ARABA)} />
+          </div>
 
+          <div className="mt-4">
             <StatBox
               label={t("about.stats.undocumented")}
               value={fmt(stats.undocumented)}

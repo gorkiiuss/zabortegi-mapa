@@ -2,21 +2,21 @@
 
 import { useState } from "react";
 import type {
-  TerritoryGroup,
+  HistoricTerritoryGroup,
   MunicipalityGroup,
-} from "@features/landfills/domain/listGrouping";
-import type { Landfill } from "@features/landfills/domain/types";
+} from "@features/landfills/components/list/utils/listGrouping";
 import { MunicipalitySection } from "./MunicipalitySection";
 import { useLanguageStore } from "@shared/state/languageStore";
+import type { LandfillSummaryEntity } from "@features/landfills/domain/entities/LandfillSummary";
 
 interface TerritorySectionProps {
   territoryKey: string;
-  group: TerritoryGroup;
+  group: HistoricTerritoryGroup;
   isOpen?: boolean;
   onToggle: () => void;
   isMunicipalityOpen: (tKey: string, mKey: string) => boolean;
   onToggleMunicipality: (tKey: string, mKey: string) => void;
-  onSelect: (lf: Landfill) => void;
+  onSelect: (lf: LandfillSummaryEntity ) => void;
 }
 
 export function TerritorySection({ group, onSelect }: TerritorySectionProps) {

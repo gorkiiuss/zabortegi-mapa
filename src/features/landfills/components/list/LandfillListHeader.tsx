@@ -23,15 +23,15 @@ export function LandfillListHeader({
   const { t } = useLanguageStore();
 
   const subtitle = trimmed
-    ? `${t("index.header.subtitle_q", { count: totalCount, found: matchCount })}`
-    : `${t("index.header.subtitle", { count: totalCount })}`;
+    ? `${t("list.header.subtitle_q", { count: totalCount, found: matchCount })}`
+    : `${t("list.header.subtitle", { count: totalCount })}`;
 
   return (
     <div className="flex shrink-0 flex-col border-b border-slate-200 bg-slate-50/50">
       <div className="flex items-center justify-between px-4 py-3">
         <div>
           <h2 className="text-sm font-semibold text-slate-800">
-            {t("index.header.title")}
+            {t("list.header.title")}
           </h2>
           <p className="text-[11px] text-slate-500">{subtitle}</p>
         </div>

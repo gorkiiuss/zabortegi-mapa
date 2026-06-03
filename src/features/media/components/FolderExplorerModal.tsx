@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useUiStore } from "@features/map/state/uiStore";
 import { useMapModalInteractions } from "@shared/hooks/useMapModalInteractions";
 import { useLanguageStore } from "@shared/state/languageStore";
-import { X, Search, Folder as FolderIcon, FileIcon, ArrowLeft, Download } from "@shared/components/Icons";
+import { X, Search, Folder as FolderIcon, FileIcon, ArrowLeft, Download, Spinner } from "@shared/components/Icons";
 
 interface FolderIndexItem {
   name: string;
@@ -111,7 +111,7 @@ export function FolderExplorerModal() {
       ref={modalRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="pointer-events-auto flex h-full w-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl"
+      className="pointer-events-auto flex h-full w-full flex-col overflow-hidden rounded-none sm:rounded-2xl border-0 sm:border border-slate-200 bg-white shadow-2xl"
     >
       <div className="flex flex-col gap-3 border-b border-slate-200 bg-slate-50/50 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
         <div className="flex flex-col gap-1">
@@ -154,7 +154,7 @@ export function FolderExplorerModal() {
           <button
             onClick={closeModal}
             className="rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-200 hover:text-slate-600"
-            aria-label={t("selection.close")}
+            aria-label={t("details.close")}
           >
             <X size={18} />
           </button>
@@ -164,7 +164,7 @@ export function FolderExplorerModal() {
       <div className="flex-1 overflow-y-auto overscroll-contain bg-slate-50/30 p-4">
         {loading ? (
           <div className="flex h-full flex-col items-center justify-center p-6 text-center text-slate-400">
-            <div className="h-6 w-6 animate-spin rounded-full border-2 border-emerald-500 border-t-transparent" />
+            <Spinner className="h-6 w-6 animate-spin text-emerald-500" />
           </div>
         ) : items.length > 0 ? (
           <div className="space-y-2">

@@ -5,8 +5,11 @@ import { createPortal } from "react-dom";
 import { useTutorialStore } from "../state/tutorialStore";
 import { useLanguageStore } from "@shared/state/languageStore";
 import { useAppOrchestrator } from "@features/orchestrator/hooks/useAppOrchestrator";
-import { X, ChevronRight, ChevronLeft, GraduationCap } from "@shared/components/Icons";
+import { X, ChevronRight, ChevronLeft, GraduationCap, Spinner } from "@shared/components/Icons";
 import { LanguageSelector } from "@shared/components/LanguageSelector";
+import { useUiStore } from "@features/map/state/uiStore";
+import { useLandfillDetails } from "@features/landfills/hooks/useLandfillDetails";
+import { useLandfillVersions } from "@features/landfills/hooks/useLandfillVersions";
 
 const TUTORIAL_STYLES = `
   .tutorial-pulse-ring {
@@ -30,6 +33,18 @@ export function TutorialManager() {
   const { t, currentLanguage } = useLanguageStore();
   const { dispatch } = useAppOrchestrator();
   const lang = currentLanguage as 'es' | 'eu';
+
+  const selectedLandfillId = useUiStore((s) => s.selectedLandfillId);
+  const { isLoading: isLoadingDetails } = useLandfillDetails(
+    activeTutorialId?.startsWith("full-details-tour") ? selectedLandfillId : null
+  );
+  const { isLoading: isLoadingVersions } = useLandfillVersions(
+    activeTutorialId?.startsWith("full-details-tour") ? selectedLandfillId : null
+  );
+
+  const isDataLoading =
+    activeTutorialId?.startsWith("full-details-tour") &&
+    (isLoadingDetails || isLoadingVersions);
 
   const cardRef = useRef<HTMLDivElement>(null);
   const [targetRect, setTargetRect] = useState<DOMRect | null>(null);
@@ -56,7 +71,17 @@ export function TutorialManager() {
         dispatch(currentStep.onEnterAction);
       }
     }
-  }, [currentStep, dispatch]);
+
+    if (currentStep?.targetId) {
+      const timer = setTimeout(() => {
+        const el = document.getElementById(currentStep.targetId!);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 150);
+      return () => clearTimeout(timer);
+    }
+  }, [currentStep, currentStepIndex, dispatch]);
 
   const handleFinish = () => {
     if (activeTutorial?.onCompleteAction) {
@@ -110,6 +135,21 @@ export function TutorialManager() {
   }, [currentStepIndex, currentLanguage, activeTutorialId]);
 
   if (!activeTutorial || !currentStep) return null;
+
+  if (isDataLoading) {
+    return createPortal(
+      <div className="fixed inset-0 z-9999 overflow-hidden">
+        <div className="absolute inset-0 bg-slate-900/30 cursor-default pointer-events-auto backdrop-blur-xs" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[380px] pointer-events-auto flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white p-8 shadow-2xl">
+          <Spinner className="h-8 w-8 animate-spin text-emerald-600" />
+          <p className="mt-4 text-xs font-semibold text-slate-400 uppercase tracking-wider text-center animate-pulse">
+            {currentLanguage === "es" ? "Cargando expediente..." : "Espedientea kargatzen..."}
+          </p>
+        </div>
+      </div>,
+      document.body
+    );
+  }
 
   const getCardPosition = () => {
     if (!currentStep.targetId || !targetRect) {

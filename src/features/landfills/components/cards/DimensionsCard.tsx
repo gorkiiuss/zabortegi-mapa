@@ -2,76 +2,67 @@
 
 import { useLanguageStore } from "@shared/state/languageStore";
 import { CardShell } from "@shared/components/CardShell";
+import type { Dimensions } from "@features/landfills/domain/valueObjects/location/Dimensions";
+import { getContinuousColor } from "../../config/styling";
 
 interface DimensionsCardProps {
-  superficieDisplay: string;
-  volumenDisplay: string;
-  capacidadDisplay: string | null;
-  fillPercent: number | null;
+  dimensions: Dimensions
 }
 
 export function DimensionsCard({
-  superficieDisplay,
-  volumenDisplay,
-  capacidadDisplay,
-  fillPercent,
+  dimensions
 }: DimensionsCardProps) {
   const { t } = useLanguageStore();
 
   const rowLabelClasses = "text-[12px] text-slate-600";
   const rowValueClasses = "font-medium text-[12px] text-slate-800";
 
+  const surfaceHaDisplay = dimensions.surfaceHa ? `${dimensions.surfaceHa} Ha`
+    : t("details.cards.no_data")
+  const volumeM3Display = dimensions.volumeM3 ? `${dimensions.volumeM3} m3`
+    : t("details.cards.no_data")
+  const expectedTotalCapacityM3Display = dimensions.expectedTotalCapacityM3 ? `${dimensions.expectedTotalCapacityM3} m3`
+    : t("details.cards.no_data")
+
+
   return (
-    <CardShell title={t("selection.cards.dimensions.title")}>
+    <CardShell title={t("domain.vos.location.dimensions.title")}>
       <div className="space-y-2">
-        
-        {/* Superficie */}
         <div className="flex justify-between items-baseline">
           <span className={rowLabelClasses}>
-            {t("selection.cards.dimensions.surface")}
+            {t("domain.vos.location.dimensions.surface_ha")}
           </span>
           <span className={rowValueClasses}>
-            {superficieDisplay}{" "}
-            {superficieDisplay !== "—" &&
-              t("selection.cards.dimensions.unit_has")}
+            {surfaceHaDisplay}
           </span>
         </div>
-
-        {/* Volumen */}
         <div className="flex justify-between items-baseline">
           <span className={rowLabelClasses}>
-            {t("selection.cards.dimensions.volume")}
+            {t("domain.vos.location.dimensions.volume_m3")}
           </span>
           <span className={rowValueClasses}>
-            {volumenDisplay}{" "}
-            {volumenDisplay !== "—" && t("selection.cards.dimensions.unit_m3")}
+            {volumeM3Display}
           </span>
         </div>
-
-        {/* Capacidad */}
-        {capacidadDisplay != null && (
+        {dimensions.expectedTotalCapacityM3 != null && (
           <div className="flex justify-between items-baseline">
             <span className={rowLabelClasses}>
-              {t("selection.cards.dimensions.capacity")}
+              {t("domain.vos.location.dimensions.expected_total_capacity_m3")}
             </span>
             <span className={rowValueClasses}>
-              {capacidadDisplay}{" "}
-              {capacidadDisplay !== "—" &&
-                t("selection.cards.dimensions.unit_m3")}
+              {expectedTotalCapacityM3Display}
             </span>
           </div>
         )}
-
-        {/* Barra de Llenado */}
-        {fillPercent != null && capacidadDisplay != null && (
+        {dimensions.fillPercent() != null && dimensions.expectedTotalCapacityM3 != null && (
           <div className="mt-2 pt-2 border-t border-slate-50 space-y-1">
             <div className="flex items-center justify-between">
               <span className={rowLabelClasses}>
-                {t("selection.cards.dimensions.fill")}
+                {t("domain.vos.location.dimensions.fill_percent")}
               </span>
-              <span className={rowValueClasses}>{fillPercent.toFixed(0)}%</span>
+              <span className={rowValueClasses}>{dimensions.fillPercent()?.toFixed(2)}%</span>
             </div>
-            <FillBar percent={fillPercent} />
+            <FillBar percent={dimensions.fillPercent()!} />
           </div>
         )}
       </div>
@@ -79,18 +70,11 @@ export function DimensionsCard({
   );
 }
 
-/* ---------------------- Barra de llenado ---------------------- */
 interface FillBarProps {
   percent: number;
 }
 
-// 0% -> verde, 100%+ -> rojo
-function fillColor(percent: number): string {
-  if (percent >= 100) return "#b91c1c"; // rojo
-  if (percent >= 70) return "#f97316"; // naranja
-  if (percent >= 40) return "#eab308"; // amarillo
-  return "#22c55e"; // verde
-}
+
 
 function FillBar({ percent }: FillBarProps) {
   const safe = Math.max(0, percent);
@@ -106,13 +90,13 @@ function FillBar({ percent }: FillBarProps) {
     capacityWidth = 10000 / safe;
   }
 
-  const color = fillColor(safe);
+  const color = getContinuousColor(safe);
 
   return (
     <div className="relative mt-1 h-3.5 w-full overflow-visible rounded-full bg-slate-100">
       <div
         className="absolute inset-y-0 left-0 h-full rounded-full bg-slate-300/50"
-        style={{ width: `${capacityWidth}%` }}
+        style={{ width: `${capacityWidth.toFixed(2)}%` }}
       />
       <div
         className="absolute top-1/2 left-0 h-2.5 -translate-y-1/2 rounded-full shadow-sm transition-all duration-500 ease-out"

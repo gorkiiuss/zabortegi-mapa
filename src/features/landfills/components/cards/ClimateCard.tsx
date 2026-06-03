@@ -2,37 +2,43 @@
 
 import { useLanguageStore } from "@shared/state/languageStore";
 import { CardShell } from "@shared/components/CardShell";
+import type { NumberRange } from "@features/landfills/domain/valueObjects/NumberRange";
+import { formatNumberRange } from "../details/fullDetails/parseDisplay";
 
 interface ClimateCardProps {
-  precipitacion: string | null;
-  lluviaUtil: string | null;
+  annualPrecipitation: NumberRange | null;
+  effectiveRainfall: NumberRange | null;
 }
 
-export function ClimateCard({ precipitacion, lluviaUtil }: ClimateCardProps) {
+export function ClimateCard(
+  { 
+    annualPrecipitation, 
+    effectiveRainfall 
+  }: ClimateCardProps) {
   const { t } = useLanguageStore();
 
-  if (!precipitacion && !lluviaUtil) return null;
+  if (!annualPrecipitation && !effectiveRainfall) return null;
 
   const rowLabelClasses = "text-[12px] text-slate-600";
   const rowValueClasses = "text-right font-medium text-[12px] text-slate-800";
 
   return (
-    <CardShell title={t("selection.cards.climate.title")}>
+    <CardShell title={t("details.cards.climate.title")}>
       <div className="space-y-1.5">
-        {precipitacion && (
+        {annualPrecipitation && (
           <div className="flex justify-between items-center">
             <span className={rowLabelClasses}>
-              {t("selection.cards.climate.precip")}
+              {t("domain.vos.hydrology.annual_precipitation")}
             </span>
-            <span className={rowValueClasses}>{precipitacion}</span>
+            <span className={rowValueClasses}>{formatNumberRange(annualPrecipitation)} mm</span>
           </div>
         )}
-        {lluviaUtil && (
+        {effectiveRainfall && (
           <div className="flex justify-between items-center">
             <span className={rowLabelClasses}>
-              {t("selection.cards.climate.rain")}
+              {t("domain.vos.hydrology.effective_rainfall")}
             </span>
-            <span className={rowValueClasses}>{lluviaUtil}</span>
+            <span className={rowValueClasses}>{formatNumberRange(effectiveRainfall)} mm</span>
           </div>
         )}
       </div>

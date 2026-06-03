@@ -1,11 +1,11 @@
 // src/features/landfills/utils/printer.ts
 
-/**
- * Imprime un string HTML utilizando un iframe invisible.
- * Esto permite una impresión "pixel-perfect" vectorial aislada de los estilos de la APP.
- */
-export function printHtmlInIframe(htmlContent: string): void {
-  // 1. Crear un iframe oculto
+export function printHtmlInIframe(htmlContent: string, title?: string): void {
+  const originalTitle = document.title;
+  if (title) {
+    document.title = title;
+  }
+
   const iframe = document.createElement("iframe");
 
   iframe.style.position = "fixed";
@@ -17,10 +17,12 @@ export function printHtmlInIframe(htmlContent: string): void {
 
   document.body.appendChild(iframe);
 
-  // 2. Escribir el contenido en el documento del iframe
   const doc = iframe.contentWindow?.document;
   if (!doc) {
     console.error("No se pudo acceder al documento del iframe de impresión");
+    if (title) {
+      document.title = originalTitle;
+    }
     document.body.removeChild(iframe);
     return;
   }
@@ -29,7 +31,10 @@ export function printHtmlInIframe(htmlContent: string): void {
   doc.write(htmlContent);
   doc.close();
 
-  // 3. Esperar a que cargue (imágenes, estilos) y lanzar impresión
+  if (title && iframe.contentWindow?.document) {
+    iframe.contentWindow.document.title = title;
+  }
+
   iframe.onload = () => {
     setTimeout(() => {
       try {
@@ -38,8 +43,10 @@ export function printHtmlInIframe(htmlContent: string): void {
       } catch (e) {
         console.error("Error al invocar la impresión nativa", e);
       } finally {
-        // 4. Limpieza: Eliminar el iframe un segundo después de lanzar el diálogo
         setTimeout(() => {
+          if (title) {
+            document.title = originalTitle;
+          }
           if (document.body.contains(iframe)) {
             document.body.removeChild(iframe);
           }

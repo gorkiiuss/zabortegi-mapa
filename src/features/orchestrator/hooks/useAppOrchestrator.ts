@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { useUiStore } from "@features/map/state/uiStore";
 import { useTutorialStore } from "@features/tutorial/state/tutorialStore";
 import { useMapStore } from "@features/map/state/mapStore";
-import type { AppAction } from "../domain/types";
+import type { AppAction } from "../types";
 
 export function useAppOrchestrator() {
     const { toggleActiveModal, setSelectedLandfillId, setOpenToolbarDropdownId } = useUiStore();
@@ -14,8 +14,6 @@ export function useAppOrchestrator() {
     const triggerResetZoom = useMapStore((s) => s.triggerResetZoom);
 
     const dispatch = useCallback((action: AppAction) => {
-        console.log("Orchestrator Dispatch:", action.type, action.payload);
-
         switch (action.type) {
             case 'TOGGLE_MODAL':
                 toggleActiveModal(action.payload.modalId, action.payload.stackPrevious, action.payload.modalPayload);
@@ -38,10 +36,7 @@ export function useAppOrchestrator() {
 
             case 'SELECT_LANDFILL':
                 setSelectedLandfillId(action.payload.landfillId);
-                if (action.payload.landfillId) {
-                    console.log("Se está haciendo un zoom al vertedero " + action.payload.landfillId + " con un offset de " + action.payload.offset);
-                    setFocusedLandfillId(action.payload.landfillId, action.payload.offset);
-                }
+                setFocusedLandfillId(action.payload.landfillId, action.payload.offset);
                 break;
 
             case 'RESET_MAP_ZOOM':

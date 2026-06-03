@@ -55,14 +55,14 @@ export function MediaExplorerHeader({ totalCount, onClose }: Props) {
 
             <div className="flex flex-wrap items-center justify-between gap-2 px-4 pb-3">
                 <div className="flex rounded-lg bg-slate-200/50 p-1">
-                    {(['all', 'image', 'pdf'] as const).map((type) => (
+                    {(['all', 'IMAGE', 'PDF'] as const).map((type) => (
                         <button
                             key={type}
                             onClick={() => setTypeFilter(type)}
                             className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${typeFilter === type ? "bg-white text-emerald-700 shadow-sm" : "text-slate-500 hover:text-slate-700"
                                 }`}
                         >
-                            {type === 'all' ? 'Todos' : type === 'image' ? 'Fotos' : 'PDFs'}
+                            {type === 'all' ? 'Todos' : type === 'IMAGE' ? 'Fotos' : 'PDFs'}
                         </button>
                     ))}
                 </div>

@@ -1,15 +1,18 @@
+// src/features/landfills/hooks/useLandfillNavigation.ts
+
 import { useCallback } from "react";
 import { useLandfillsStore } from "../state/landfillsStore";
 import { useUiStore } from "@features/map/state/uiStore";
 import { useMapStore } from "@features/map/state/mapStore";
 
 export function useLandfillNavigation() {
-  const navigateByCode = useCallback((code: string) => {
-    const allLandfills = useLandfillsStore.getState().landfills;
-    const target = allLandfills.find((l) => l.code === code);
+  const { landfillsSummary } = useLandfillsStore();
+
+  const navigateById = useCallback((id: string) => {
+    const target = landfillsSummary.find((l) => l.id === id);
 
     if (!target) {
-      console.warn(`[Navigation] Vertedero con código ${code} no encontrado.`);
+      console.warn(`[Navigation] Vertedero con id ${id} no encontrado.`);
       return;
     }
 
@@ -23,5 +26,5 @@ export function useLandfillNavigation() {
     
   }, []);
 
-  return { navigateByCode };
+  return { navigateById: navigateById };
 }

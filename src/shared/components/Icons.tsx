@@ -46,7 +46,9 @@ import {
   Trash2,
   Edit2,
   CheckCircle2,
-  XCircle
+  XCircle,
+  Archive,
+  History
 } from "lucide-react";
 
 export interface IconProps extends SVGProps<SVGSVGElement> {
@@ -127,5 +129,7 @@ export {
   Trash2 as Trash,
   Edit2 as Edit,
   CheckCircle2 as CheckCircle,
-  XCircle
+  XCircle,
+  Archive,
+  History
 };
