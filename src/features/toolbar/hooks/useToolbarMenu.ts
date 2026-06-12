@@ -50,18 +50,17 @@ export function useToolbarMenu({
           },
         },
         {
+          id: "tutorial-btn-extractor",
           label: t("toolbar.extractor"),
-          isFutureFeature: true,
           action: () => {
-            toggleActiveModal("future_feature", true);
+            toggleActiveModal("data-extractor", true);
           },
         },
         {
           id: "tutorial-btn-advanced-search",
           label: t("toolbar.search"),
-          isFutureFeature: true,
           action: () => {
-            toggleActiveModal("future_feature", true);
+            toggleActiveModal("advanced-search", true);
           },
         },
       ],

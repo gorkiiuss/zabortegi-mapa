@@ -80,7 +80,13 @@ export function FullDetailsModal() {
     })
   }
 
-  const activeSections = FULL_DETAILS_SCHEMA.map((section) => {
+  const activeSections = FULL_DETAILS_SCHEMA
+    .filter(
+      (section) =>
+        section.titleKey !== "domain.vos.studies" &&
+        section.titleKey !== "domain.vos.sampling.title"
+    )
+    .map((section) => {
     const valueObject = (section.voKey ? details[section.voKey] : details) as Record<string, any>;
 
     if (!valueObject) return { ...section, rows: [] };

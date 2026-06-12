@@ -3,8 +3,11 @@
 import SearchCard from "./SearchCard";
 import MoreResultsCard from "./MoreResultsCard";
 import { useLanguageStore } from "@shared/state/languageStore";
+import { useUiStore } from "@features/map/state/uiStore";
 import { Search, X } from "@shared/components/Icons";
 import type { LandfillSummaryEntity } from "@features/landfills/domain/entities/LandfillSummary";
+import { useAdvancedSearchStore } from "../state/useAdvancedSearchStore";
+import { Trash2 } from "lucide-react";
 
 interface SearchBodyProps {
   searchQuery: string;
@@ -39,6 +42,7 @@ export function SearchBody({
   placeholderText,
 }: SearchBodyProps) {
   const { t } = useLanguageStore();
+  const { advancedSearchResults, clearResults, resetFilters } = useAdvancedSearchStore();
 
   const handleClear = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -77,12 +81,19 @@ export function SearchBody({
             )}
           </div>
         ) : (
-          <div className="relative flex cursor-text items-center gap-2 rounded-xl border border-transparent px-3 py-2.5 transition-colors">
-            <Search size={16} className="text-slate-400" />
+          <div className={`relative flex cursor-text items-center gap-2 rounded-xl border border-slate-200/60 px-3 py-2.5 transition-colors hover:bg-slate-100/50 ${advancedSearchResults !== null ? "bg-emerald-50/50 border-emerald-200 text-emerald-800" : ""}`}>
+            <Search size={16} className={advancedSearchResults !== null ? "text-emerald-500" : "text-slate-400"} />
             <span
-              className={`flex-1 truncate pr-6 text-sm ${searchQuery ? "font-medium text-slate-800" : "text-slate-500"}`}
+              className={`flex-1 truncate pr-6 text-sm ${advancedSearchResults !== null
+                ? "font-semibold text-emerald-800"
+                : searchQuery
+                  ? "font-medium text-slate-800"
+                  : "text-slate-500"
+                }`}
             >
-              {searchQuery || t("search.placeholder_collapsed")}
+              {advancedSearchResults !== null
+                ? `${t("search.advanced.active")} (${advancedSearchResults.length})`
+                : searchQuery || t("search.placeholder_collapsed")}
             </span>
 
             {searchQuery && (
@@ -98,6 +109,45 @@ export function SearchBody({
           </div>
         )}
       </form>
+
+      {showInput && advancedSearchResults !== null && (
+        <div className="flex items-center justify-between rounded-xl bg-emerald-50 border border-emerald-100 px-3 py-2 text-xs text-emerald-800 animate-in fade-in slide-in-from-top-1 duration-200 -mt-2">
+          <div className="flex items-center gap-1.5 font-medium">
+            <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span>
+              {t("search.advanced.active_filters")}: <strong>{advancedSearchResults.length}</strong> {t("search.advanced.landfills")}
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              clearResults();
+              resetFilters();
+            }}
+            className="flex items-center justify-center rounded-lg p-1 text-emerald-600 hover:bg-emerald-100 hover:text-emerald-800 transition-colors"
+            title={t("search.clear_advanced")}
+          >
+            <Trash2 size={13} />
+          </button>
+        </div>
+      )}
+
+      {showInput && (
+        <div className="flex justify-end px-1 -mt-2">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              useUiStore.getState().toggleActiveModal("advanced-search");
+            }}
+            className="text-[11px] text-emerald-600 hover:text-emerald-700 font-semibold transition-colors flex items-center gap-0.5"
+          >
+            <span>{t("search.advanced.title")}</span>
+            <span>→</span>
+          </button>
+        </div>
+      )}
 
       {showInput && (
         <div className="space-y-3">

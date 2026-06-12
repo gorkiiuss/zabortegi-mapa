@@ -41,6 +41,44 @@ export default {
         not_found: "Bilaketa-irizpide hauekin ez dira zabortegirik aurkitu.",
     },
     search: {
+        advanced: {
+            landfills: "zabortegi",
+            active_filters: "Iragazki aktiboak",
+            active: "Bilaketa aktibatuta",
+            selected: "hautatuta",
+            title: "Bilaketa aurreratua",
+            expected_format: "Esperotako formatua",
+            digits: "digitu",
+            example: "adib",
+            or: "edo",
+            description: "Gurutzatu inbentarioko eremu guztiak zabortegi espezifikoak aurkitzeko.",
+            inputs: {
+                ti_placeholder: "Idatzi bilatzeko...",
+                null: "Nulu",
+                ignore: "Baztertu",
+                no_data: "Daturik ez?",
+                rotate: "Klikatu aldatzeko",
+                searching_for_null: " Datu hori ez duten zabortegiak bilatzen... "
+            },
+            sections: {
+                title: "Atalak",
+                has_samples: "Laginketarik du?",
+                has_studies: "Azterlanik du?",
+                has_multimedia: "Multimediarik du?",
+                general: "Orokorra",
+                location: "Kokapena",
+                operation: "Uztiapena",
+                risks: "Arriskuak",
+                infrastructure: "Infraestruktura",
+                natural_medium: "Ingurune naturala",
+                human_medium: "Giza ingurunea",
+                impacts_measures: "Inpaktua eta neurriak"
+            },
+            clear: "Garbitu",
+            results: "emaitza",
+            search: "Bilatu"
+        },
+        clear_advanced: "Bilaketa aurreratua garbitu",
         title: "Bilaketa",
         subtitle: "Zabortegiak aurkitu",
         placeholder_default:
@@ -61,6 +99,58 @@ export default {
                 "Ireki “{{query}}” bilaketarekin iragazitako aurkibidea",
             subtitle_all: "Ireki aurkibide osoa",
         },
+    },
+    extractor: {
+        title: "Datu-erauzlea",
+        description: "Konfiguratu eta deskargatu inbentarioko datuak zure neurrira.",
+        steps: {
+            landfills: "1. Zabortegiak",
+            fields: "2. Eremuak",
+            format: "3. Formatua",
+        },
+        landfills: {
+            choose_scope: "1. Zabortegien esparrua",
+            all: "Zabortegi guztiak",
+            all_desc: "Aktibo dagoen inbentario osoa esportatzen du.",
+            filtered: "Iragazki aktiboa",
+            filtered_desc: "Bilaketaren emaitzak.",
+            no_active_filter: "Ez dago bilaketa aktiborik.",
+            manual: "Eskuzko hautapena",
+            manual_desc: "Markatu nahi dituzunak banan-banan.",
+        },
+        select_all: "Hautatu denak",
+        deselect_all: "Desmarkatu denak",
+        fields: {
+            choose: "2. Hautatu sartu nahi dituzun eremuak",
+            selected: "eremu hautatuta",
+        },
+        format: {
+            choose: "3. Formatuaren konfigurazioa",
+            csv_desc: "Egokia Excel edo kalkulu-orrietarako.",
+            json_desc: "Datu-formatu hierarkiko gordina.",
+            geojson_desc: "Mapako geometriak txertatutako datuekin.",
+            csv_options: "CSV-aren aukerak",
+            delimiter: "Zutabeen bereizlea",
+            comma: "Koma (,)",
+            semicolon: "Puntu eta koma (;)",
+            header_labels: "Goiburuko izenak",
+            translated: "Itzulita",
+            technical: "Teknikoak (db)",
+        },
+        validation: {
+            no_landfills: "Ez dago hautatutako zabortegirik",
+            no_landfills_desc: "Itzuli 1. urratsera eta hautatu esportatu nahi dituzun zabortegiak.",
+            no_fields: "Ez dago hautatutako eremurik",
+            no_fields_desc: "Itzuli 2. urratsera eta markatu gutxienez inbentarioko eremu bat.",
+        },
+        buttons: {
+            back: "Atzera",
+            next: "Jarraitu",
+            exporting: "Esportatzen...",
+            download: "Deskargatu",
+            export_shortcut: "Esportatu",
+        },
+        error_exporting: "Errorea datuak esportatzean.",
     },
     legend: {
         title: "Legenda",
@@ -113,6 +203,8 @@ export default {
         download_report: "Deskargatu PDF txostena",
         legacy_report: "Legacy txostena",
         legacy_report_tooltip: "Deskargatu jatorrizko txostena",
+        export_data: "Zabortegiaren datuak esportatu",
+        export_data_tooltip: "Datu-erauzlean ireki",
         legacy_documents_notice: "Jatorrizko dokumentuak deskargatzeko eskuragarri daude aplikazioan.",
         no_historic_territory: "Lurralde historikorik esleitu gabe",
         related_docs: "Erlazionatutako dokumentuak",
@@ -332,6 +424,7 @@ export default {
                 code_placeholder: "Koderik gabe"
             },
             landfill_details: {
+                basic_data: "Oinarrizko datuak",
                 title: "Zabortegiaren xehetasunak",
                 parcel_id: "Partzelaren zkia.",
                 code: "Zabortegiaren kodea",
@@ -431,6 +524,7 @@ export default {
                 },
                 ownership: {
                     ownership_types: {
+                        title: "Jabetza mota",
                         types: {
                             private_individual: "Banakako pribatua",
                             private_company: "Enpresa pribatua",
@@ -453,7 +547,8 @@ export default {
                         c_and_d_inert_landfill: "Eraikuntza-hondakin inerten zabortegia",
                         terrain_remodeling: "Lursaila egokitzea",
                         inert_industrial_landfill: "Hondakin industrial inerten zabortegia",
-                        inertized_hazardous_landfill: "Hondakin arriskutsu inertizatuen zabortegia"
+                        inertized_hazardous_landfill: "Hondakin arriskutsu inertizatuen zabortegia",
+                        inert_landfill: "Zabortegi inertea"
                     }
                 },
                 equipment_installation_date: "Ekipamendua instalatzeko data",
@@ -840,7 +935,8 @@ export default {
                         impermeable_barriers: "Estalki iragazgaitzak",
                         groundwater_drainage: "Lurpeko uraren drenajea",
                         biological_treatment: "Tratamendu biologikoa",
-                        other: "Beste neurri batzuk"
+                        other: "Beste neurri batzuk",
+                        phys_chem_treatment: "Tratamendu fisiko-kimikoa",
                     }
                 },
                 description: "Deskribapena",
@@ -911,6 +1007,10 @@ export default {
         onboarding_desc: "Ikasi mapan nabigatzen, iragazkiak erabiltzen, zerrenda kontsultatzen eta legenda ulertzen.",
         full_details_title: "Espediente Osoa",
         full_details_desc: "Ezagutu fitxa dinamiko berriaren funtzionamendua: bertsioen historia, arrisku zehatzak, zuzentze-neurriak eta analisi kimikoak.",
+        extractor_title: "Datu-erauzlea",
+        extractor_desc: "Ikasi zabortegien informazioa zure neurrira esportatzen eta deskargatzen CSV, JSON edo GeoJSON formatuetan.",
+        advanced_search_title: "Bilaketa Aurreratua",
+        advanced_search_desc: "Ikasi inbentarioko eremuen edozein konbinazioren arabera bilatzen.",
         btn_start: "Hasi",
         btn_cancel: "Utzi"
     },

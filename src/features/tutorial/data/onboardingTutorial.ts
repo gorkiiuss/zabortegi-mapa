@@ -112,8 +112,19 @@ export const onboardingTutorial: TutorialDefinition = {
       position: 'right',
       title: { es: "Buscador Avanzado", eu: "Bilaketa Aurreratua" },
       content: {
-        es: "Próximamente añadiremos un buscador avanzado en este apartado que te permitirá filtrar los vertederos con criterios más complejos. ¡Estará disponible la próxima semana!",
-        eu: "Laster bilaketa aurreratu bat gehituko dugu atal honetan, zabortegiak irizpide konplexuagoekin iragazteko aukera emango dizuna. Datorren astean egongo da erabilgarri!"
+        es: "Esta potente herramienta te permite buscar y filtrar vertederos cruzando múltiples criterios del inventario, como localización, riesgos o dimensiones.",
+        eu: "Tresna indartsu honek zabortegiak bilatzeko eta iragazteko aukera ematen dizu, inbentarioko hainbat irizpide gurutzatuz (kokapena, arriskuak edo dimentsioak, adibidez)."
+      },
+      onEnterAction: { type: 'OPEN_TOOLBAR_DROPDOWN', payload: { dropdownId: 'tools' } }
+    },
+    {
+      id: 'menu-tools-extractor',
+      targetId: 'desktop-tutorial-btn-extractor',
+      position: 'right',
+      title: { es: "Extractor de Datos", eu: "Datu-erauzlea" },
+      content: {
+        es: "Permite configurar y descargar la información de los vertederos adaptada a tus necesidades en formatos CSV, JSON o GeoJSON.",
+        eu: "Zabortegien informazioa zure beharretara egokituta konfiguratu eta deskargatzeko aukera ematen dizu CSV, JSON edo GeoJSON formatuetan."
       },
       onEnterAction: { type: 'OPEN_TOOLBAR_DROPDOWN', payload: { dropdownId: 'tools' } }
     },

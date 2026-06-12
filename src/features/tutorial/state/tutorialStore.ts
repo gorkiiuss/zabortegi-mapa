@@ -6,6 +6,10 @@ import { onboardingTutorial } from "../data/onboardingTutorial";
 import { onboardingTutorialMobile } from "../data/onboardingTutorialMobile";
 import { fullDetailsTutorial } from "../data/fullDetailsTutorial";
 import { fullDetailsTutorialMobile } from "../data/fullDetailsTutorialMobile";
+import { extractorTutorial } from "../data/extractorTutorial";
+import { extractorTutorialMobile } from "../data/extractorTutorialMobile";
+import { advancedSearchTutorial } from "../data/advancedSearchTutorial";
+import { advancedSearchTutorialMobile } from "../data/advancedSearchTutorialMobile";
 
 interface TutorialState {
     tutorials: Record<string, TutorialDefinition>;
@@ -23,7 +27,11 @@ export const useTutorialStore = create<TutorialState>((set, get) => ({
         [onboardingTutorial.id]: onboardingTutorial,
         [onboardingTutorialMobile.id]: onboardingTutorialMobile,
         [fullDetailsTutorial.id]: fullDetailsTutorial,
-        [fullDetailsTutorialMobile.id]: fullDetailsTutorialMobile
+        [fullDetailsTutorialMobile.id]: fullDetailsTutorialMobile,
+        [extractorTutorial.id]: extractorTutorial,
+        [extractorTutorialMobile.id]: extractorTutorialMobile,
+        [advancedSearchTutorial.id]: advancedSearchTutorial,
+        [advancedSearchTutorialMobile.id]: advancedSearchTutorialMobile
     },
 
     activeTutorialId: null,
