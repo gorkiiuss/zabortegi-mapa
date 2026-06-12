@@ -4,6 +4,7 @@ import { useCallback } from "react";
 import { useUiStore } from "@features/map/state/uiStore";
 import { useTutorialStore } from "@features/tutorial/state/tutorialStore";
 import { useMapStore } from "@features/map/state/mapStore";
+import { useDataExtractorStore } from "@features/extractor/state/useDataExtractorStore";
 import type { AppAction } from "../types";
 
 export function useAppOrchestrator() {
@@ -15,9 +16,17 @@ export function useAppOrchestrator() {
 
     const dispatch = useCallback((action: AppAction) => {
         switch (action.type) {
-            case 'TOGGLE_MODAL':
-                toggleActiveModal(action.payload.modalId, action.payload.stackPrevious, action.payload.modalPayload);
+            case 'TOGGLE_MODAL': {
+                const currentActive = useUiStore.getState().activeModal;
+                if (action.payload.modalId === 'none') {
+                    if (currentActive !== 'none') {
+                        toggleActiveModal(currentActive);
+                    }
+                } else if (currentActive !== action.payload.modalId) {
+                    toggleActiveModal(action.payload.modalId, action.payload.stackPrevious, action.payload.modalPayload);
+                }
                 break;
+            }
 
             case 'TRIGGER_SEARCH':
                 openIndexWithQuery(action.payload.query);
@@ -45,6 +54,10 @@ export function useAppOrchestrator() {
 
             case 'OPEN_TOOLBAR_DROPDOWN':
                 setOpenToolbarDropdownId(action.payload.dropdownId);
+                break;
+
+            case 'SET_EXTRACTOR_STEP' as any:
+                useDataExtractorStore.getState().setStep((action as any).payload.step);
                 break;
 
             default:

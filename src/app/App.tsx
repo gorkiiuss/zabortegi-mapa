@@ -18,6 +18,8 @@ import { DetailsSidebar } from "@features/landfills/components/details/DetailsSi
 import { DetailsModal } from "@features/landfills/components/details/DetailsModal";
 import { SearchDesktopPanel } from "@features/search/components/SearchDesktopPanel";
 import { SearchModal } from "@features/search/components/SearchModal";
+import { AdvancedSearchModal } from "@features/search/components/advanced/AdvancedSearchModal";
+import { DataExtractorModal } from "@features/extractor/components/DataExtractorModal";
 import { LegendModal } from "@features/legend/components/LegendModal";
 import { LegendDesktopPanel } from "@features/legend/components/LegendDesktopPanel";
 import { ToolbarModal } from "@features/toolbar/components/ToolbarModal";
@@ -356,6 +358,10 @@ function App() {
         {activeModal === "folder_explorer" && renderIndexWrapper(<FolderExplorerModal />)}
 
         {activeModal === "full-details" && renderIndexWrapper(<FullDetailsModal />)}
+
+        {activeModal === "advanced-search" && renderIndexWrapper(<AdvancedSearchModal />)}
+
+        {activeModal === "data-extractor" && renderIndexWrapper(<DataExtractorModal />)}
 
         {activeModal === "tutorial_selection" &&
           renderCenteredAlertWrapper(<TutorialSelectionModal />)}

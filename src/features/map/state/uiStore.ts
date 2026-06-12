@@ -36,7 +36,9 @@ export type ModalId =
   | "media_explorer"
   | "folder_explorer"
   | "full-details"
-  | "tutorial_selection";
+  | "tutorial_selection"
+  | "data-extractor"
+  | "advanced-search";
 
 interface ModalStackEntry {
   id: ModalId;

@@ -41,6 +41,44 @@ export default {
     not_found: "No se encontraron vertederos con ese criterio.",
   },
   search: {
+    advanced: {
+      landfills: "vertederos",
+      active_filters: "Filtros activos",
+      active: "Búsqueda activa",
+      selected: "seleccionados",
+      title: "Búsqueda avanzada",
+      expected_format: "Formato esperado",
+      digits: "dígitos",
+      example: "ej",
+      or: "o",
+      description: "Cruza todos los campos del inventario para encontrar vertederos específicos.",
+      inputs: {
+        ti_placeholder: "Escribe para buscar...",
+        null: "Nulo",
+        ignore: "Ignorar",
+        no_data: "¿Sin datos?",
+        rotate: "Click para rotar",
+        searching_for_null: "Buscando vertederos sin este dato..."
+      },
+      sections: {
+        title: "Secciones",
+        has_samples: "¿Tiene muestras?",
+        has_studies: "¿Tiene estudios?",
+        has_multimedia: "¿Tiene multimedia?",
+        general: "General",
+        location: "Localización",
+        operation: "Explotación",
+        risks: "Riesgos",
+        infrastructure: "Infraestructura",
+        natural_medium: "Medio natural",
+        human_medium: "Medio social",
+        impacts_measures: "Impacto y medidas"
+      },
+      clear: "Limpiar",
+      results: "resultados",
+      search: "Buscar"
+    },
+    clear_advanced: "Limpiar búsqueda avanzada",
     title: "Búsqueda",
     subtitle: "Localizar vertederos",
     placeholder_default: "Buscar por nombre, municipio o ID...",
@@ -59,6 +97,58 @@ export default {
       subtitle_filtered: "Abrir índice filtrado por “{{query}}”",
       subtitle_all: "Abrir el índice completo",
     },
+  },
+  extractor: {
+    title: "Extractor de datos",
+    description: "Configura y descarga los datos del inventario a tu medida.",
+    steps: {
+      landfills: "1. Vertederos",
+      fields: "2. Campos",
+      format: "3. Formato",
+    },
+    landfills: {
+      choose_scope: "1. Ámbito de vertederos",
+      all: "Todos los vertederos",
+      all_desc: "Exporta todo el inventario activo.",
+      filtered: "Filtro activo",
+      filtered_desc: "Resultados de la búsqueda.",
+      no_active_filter: "No hay búsqueda activa.",
+      manual: "Selección manual",
+      manual_desc: "Marca uno a uno los que quieras.",
+    },
+    select_all: "Seleccionar todos",
+    deselect_all: "Desmarcar todos",
+    fields: {
+      choose: "2. Selecciona los campos a incluir",
+      selected: "campos seleccionados",
+    },
+    format: {
+      choose: "3. Configuración del formato",
+      csv_desc: "Ideal para Excel u hojas de cálculo.",
+      json_desc: "Formato de datos jerárquico crudo.",
+      geojson_desc: "Geometrías de mapa con datos integrados.",
+      csv_options: "Opciones del CSV",
+      delimiter: "Separador de columnas",
+      comma: "Coma (,)",
+      semicolon: "Punto y coma (;)",
+      header_labels: "Nombres de cabecera",
+      translated: "Traducidos",
+      technical: "Técnicos (db)",
+    },
+    validation: {
+      no_landfills: "No hay vertederos seleccionados",
+      no_landfills_desc: "Vuelve al paso 1 y selecciona qué vertederos deseas exportar.",
+      no_fields: "No hay campos seleccionados",
+      no_fields_desc: "Vuelve al paso 2 y marca al menos un campo del inventario.",
+    },
+    buttons: {
+      back: "Atrás",
+      next: "Continuar",
+      exporting: "Exportando...",
+      download: "Descargar",
+      export_shortcut: "Exportar",
+    },
+    error_exporting: "Error al exportar los datos.",
   },
   changelog: {
     show_development_versions: "Mostrar versiones en desarrollo",
@@ -117,6 +207,8 @@ export default {
     generating_report: "Generando informe...",
     legacy_report: "Informe Legacy",
     legacy_report_tooltip: "Descargar informe original",
+    export_data: "Exportar datos del vertedero",
+    export_data_tooltip: "Abrir en el extractor de datos",
     legacy_documents_notice: "Los documentos originales están disponibles para descarga en la aplicación.",
     no_historic_territory: "Sin territorio histórico asignado",
     related_docs: "Documentos relacionados",
@@ -321,6 +413,7 @@ export default {
         code_placeholder: "Sin código"
       },
       landfill_details: {
+        basic_data: "Datos Básicos",
         title: "Detalles del vertedero",
         parcel_id: "Nº de parcela",
         code: "Código del vertedero",
@@ -419,6 +512,7 @@ export default {
         },
         ownership: {
           ownership_types: {
+            title: "Tipo de propiedad",
             types: {
               private_individual: "Privada individual",
               private_company: "Empresa privada",
@@ -441,7 +535,8 @@ export default {
             c_and_d_inert_landfill: "Vertedero de residuos inertes de construcción",
             terrain_remodeling: "Acondicionamiento de terreno",
             inert_industrial_landfill: "Vertedero de residuos industriales inertes",
-            inertized_hazardous_landfill: "Vertedero de residuos peligrosos inertizados"
+            inertized_hazardous_landfill: "Vertedero de residuos peligrosos inertizados",
+            inert_landfill: "Vertedero inerte"
           }
         },
         equipment_installation_date: "Fecha de instalación del equipamiento",
@@ -828,6 +923,7 @@ export default {
             impermeable_barriers: "Pantallas impermeables",
             groundwater_drainage: "Drenaje de aguas subterráneas",
             biological_treatment: "Tratamiento biológico",
+            phys_chem_treatment: "Tratamiento físico-químico",
             other: "Otras medidas"
           }
         },
@@ -899,6 +995,10 @@ export default {
     onboarding_desc: "Aprende a navegar por el mapa, utilizar los filtros, consultar el listado y entender la leyenda.",
     full_details_title: "Expediente Completo",
     full_details_desc: "Descubre el funcionamiento de la nueva ficha dinámica: historial de versiones, riesgos detallados, medidas correctoras y análisis químicos.",
+    extractor_title: "Extractor de Datos",
+    extractor_desc: "Aprende a exportar y descargar la información de los vertederos a tu medida en formatos CSV, JSON o GeoJSON.",
+    advanced_search_title: "Búsqueda Avanzada",
+    advanced_search_desc: "Aprende a buscar por cualquier combinación de campos del inventario.",
     btn_start: "Comenzar",
     btn_cancel: "Cancelar"
   },

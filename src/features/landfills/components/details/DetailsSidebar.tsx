@@ -7,7 +7,8 @@ import { DetailsBody } from "./DetailsBody";
 import { useUiStore } from "@features/map/state/uiStore";
 import { useMapStore } from "@features/map/state/mapStore";
 import { useLanguageStore } from "@shared/state/languageStore";
-import { Crosshair, X, Spinner, Archive } from "@shared/components/Icons";
+import { Crosshair, X, Spinner, Archive, Download } from "@shared/components/Icons";
+import { useDataExtractorStore } from "@features/extractor/state/useDataExtractorStore";
 
 export function DetailsSidebar() {
   const {
@@ -18,7 +19,7 @@ export function DetailsSidebar() {
     handleClose,
     handleDownloadLegacyReport,
   } = useDetailsLogic();
-  const { setSelectedLandfillId } = useUiStore();
+  const { setSelectedLandfillId, toggleActiveModal } = useUiStore();
   const setFocusLandfillId = useMapStore((s) => s.setFocusLandfillId);
   const { t } = useLanguageStore();
 
@@ -75,6 +76,22 @@ export function DetailsSidebar() {
                   )}
                 </button>
               )}
+
+              <button
+                onClick={() => {
+                  useDataExtractorStore.setState({
+                    selectedOption: "manual",
+                    manualSelectedIds: { [details.id]: true },
+                    currentStep: 1,
+                  });
+                  toggleActiveModal("data-extractor", true);
+                }}
+                className="rounded-md p-1.5 text-slate-400 transition-colors hover:bg-emerald-50 hover:text-emerald-600"
+                title={t("details.export_data_tooltip")}
+                aria-label={t("details.export_data")}
+              >
+                <Download size={18} />
+              </button>
 
               <button
                 onClick={() => setFocusLandfillId(details.id)}

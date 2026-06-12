@@ -6,7 +6,9 @@ import { DetailsHeader } from "./DetailsHeader";
 import { DetailsBody } from "./DetailsBody";
 import { useMapModalInteractions } from "@shared/hooks/useMapModalInteractions";
 import { useLanguageStore } from "@shared/state/languageStore";
-import { X, Spinner, Archive } from "@shared/components/Icons";
+import { X, Spinner, Archive, Download } from "@shared/components/Icons";
+import { useUiStore } from "@features/map/state/uiStore";
+import { useDataExtractorStore } from "@features/extractor/state/useDataExtractorStore";
 
 export function DetailsModal() {
   const {
@@ -16,6 +18,7 @@ export function DetailsModal() {
     handleClose,
     handleDownloadLegacyReport,
   } = useDetailsLogic();
+  const { toggleActiveModal } = useUiStore();
   const { handleMouseEnter, handleMouseLeave, modalRef } =
     useMapModalInteractions();
   const { t } = useLanguageStore();
@@ -63,6 +66,22 @@ export function DetailsModal() {
               )}
             </button>
           )}
+
+          <button
+            onClick={() => {
+              useDataExtractorStore.setState({
+                selectedOption: "manual",
+                manualSelectedIds: { [details.id]: true },
+                currentStep: 1,
+              });
+              toggleActiveModal("data-extractor", true);
+            }}
+            className="rounded-md p-1.5 text-slate-400 transition-colors hover:bg-emerald-50 hover:text-emerald-600"
+            title={t("details.export_data_tooltip")}
+            aria-label={t("details.export_data")}
+          >
+            <Download size={18} />
+          </button>
 
           <button
             onClick={handleClose}

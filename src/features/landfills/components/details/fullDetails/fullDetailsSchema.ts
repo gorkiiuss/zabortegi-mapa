@@ -463,5 +463,43 @@ export const FULL_DETAILS_SCHEMA: SectionSchema[] = [
         fullWidth: true
       }
     }
+  },
+  {
+    titleKey: "domain.vos.studies",
+    fields: {
+      studies: {
+        labelKey: "domain.vos.studies",
+        getValue: (details: any) => {
+          if (!details.studies) return [];
+          return details.studies.map((s: any) => s.study);
+        }
+      }
+    }
+  },
+  {
+    titleKey: "domain.vos.sampling.title",
+    fields: {
+      samplings: {
+        labelKey: "domain.vos.sampling.title",
+        getValue: (details: any) => {
+          if (!details.samplings) return [];
+          return details.samplings.map((s: any) => ({
+            description: s.description,
+            samplingDate: s.samplingDate instanceof Date ? s.samplingDate.toISOString().split('T')[0] : s.samplingDate,
+            sampleType: s.sampleType || "UNKNOWN",
+            location: s.location,
+            results: s.results?.map((r: any) => ({
+              parameterName: r.parameter?.name,
+              parameterFamily: r.parameter?.family,
+              legalLimit: r.parameter?.legalLimit,
+              matrix: r.matrix || "UNKNOWN",
+              resultOperator: r.resultOperator,
+              resultValue: r.resultValue,
+              unit: r.unit
+            }))
+          }));
+        }
+      }
+    }
   }
 ];
